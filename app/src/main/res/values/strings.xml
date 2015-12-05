@@ -1,0 +1,38 @@
+<!--
+  ~ Copyright (C) 2015 Felix Wiemuth
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="app_name">Lincal</string>
+    <string name="title_entry_detail">Entry Detail</string>
+    <string name="title_activity_add_calendar">Add Calendar</string>
+    <string name="title_activity_test">Test</string>
+
+    <string name="invalidDateSpecificationException_base">Invalid date specification: </string>
+    <string name="invalidDateSpecificationException_expected_full">expected a full date</string>
+    <string name="invalidDateSpecificationException_in_header">in header</string>
+    <string name="invalidDateSpecificationException_first">as first date</string>
+    <string name="invalidDateSpecificationException_format">format error.</string>
+    <string name="dateSpecificationRequiredException">A first date must be specified with "@d dd/mm/yy" before the first entry can be added.</string>
+
+    <string name="add_cal_title">Title (leave empty to load from calendar):</string>
+    <string name="add_cal_file">Calendar file (full path):</string>
+    <string name="add_cal_notifications">Enable notifications</string>
+    <string name="add_cal_file_button">Choose...</string>
+    <string name="add_cal_button">Add</string>
+
+
+</resources>
