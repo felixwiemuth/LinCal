@@ -39,9 +39,9 @@ import java.util.List;
  * An activity representing a list of Entries. This activity has different
  * presentations for handset and tablet-size devices. On handsets, the activity
  * presents a list of items, which when touched, lead to a
- * {@link CalendarDetailActivity} representing item details. On tablets, the
- * activity presents the list of items and item details side-by-side using two
- * vertical panes.
+ * {@link EntryListActivity} representing item details. On tablets, the activity
+ * presents the list of items and item details side-by-side using two vertical
+ * panes.
  */
 public class CalendarListActivity extends AppCompatActivity {
 
@@ -115,16 +115,16 @@ public class CalendarListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(CalendarDetailFragment.ARG_ITEM_ID, holder.calendar.getTitle());
-                        CalendarDetailFragment fragment = new CalendarDetailFragment();
+                        arguments.putString(EntryListFragment.ARG_ITEM_ID, holder.calendar.getTitle());
+                        EntryListFragment fragment = new EntryListFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.entry_detail_container, fragment)
                                 .commit();
                     } else {
                         Context context = v.getContext();
-                        Intent intent = new Intent(context, CalendarDetailActivity.class);
-                        intent.putExtra(CalendarDetailFragment.ARG_ITEM_ID, holder.calendar.getTitle());
+                        Intent intent = new Intent(context, EntryListActivity.class);
+                        intent.putExtra(EntryListFragment.ARG_ITEM_ID, holder.calendar.getTitle());
 
                         context.startActivity(intent);
                     }

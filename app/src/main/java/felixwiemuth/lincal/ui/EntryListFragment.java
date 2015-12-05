@@ -29,11 +29,11 @@ import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.LinCal;
 
 /**
- * A fragment representing a single Entry detail screen. This fragment is either
- * contained in a {@link CalendarListActivity} in two-pane mode (on tablets) or
- * a {@link CalendarDetailActivity} on handsets.
+ * A fragment representing a single Calendar screen with a list of its entries.
+ * This fragment is either contained in a {@link CalendarListActivity} in
+ * two-pane mode (on tablets) or a {@link EntryListActivity} on handsets.
  */
-public class CalendarDetailFragment extends Fragment {
+public class EntryListFragment extends Fragment {
 
     /**
      * The fragment argument representing the item ID that this fragment
@@ -47,7 +47,7 @@ public class CalendarDetailFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public CalendarDetailFragment() {
+    public EntryListFragment() {
     }
 
     @Override
@@ -66,7 +66,7 @@ public class CalendarDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.calendar_detail, container, false);
+        View rootView = inflater.inflate(R.layout.entry_list, container, false);
 
         // Show the dummy content as text in a TextView.
         if (cal != null) {

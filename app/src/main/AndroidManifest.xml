@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.CalendarDetailActivity"
+            android:name=".ui.EntryListActivity"
             android:label="@string/title_entry_detail"
             android:parentActivityName=".ui.CalendarListActivity"
             android:theme="@style/AppTheme.NoActionBar">

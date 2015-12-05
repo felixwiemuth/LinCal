@@ -15,12 +15,13 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/entry_detail"
-    style="?android:attr/textAppearanceLarge"
+    android:id="@+id/entry_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context=".ui.CalendarDetailFragment" />
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:layoutManager="LinearLayoutManager"
+    tools:listitem="@layout/calendar_list_content" />

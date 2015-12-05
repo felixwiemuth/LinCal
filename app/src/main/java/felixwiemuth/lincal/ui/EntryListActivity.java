@@ -29,16 +29,17 @@ import android.view.View;
 import felixwiemuth.lincal.R;
 
 /**
- * An activity representing a single Entry detail screen. This activity is only
- * used narrow width devices. On tablet-size devices, item details are presented
- * side-by-side with a list of items in a {@link CalendarListActivity}.
+ * An activity representing a single Calendar screen with a list of its entries.
+ * This activity is only used on narrow width devices. On tablet-size devices,
+ * item details are presented side-by-side with a list of items in a
+ * {@link CalendarListActivity}.
  */
-public class CalendarDetailActivity extends AppCompatActivity {
+public class EntryListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar_detail);
+        setContentView(R.layout.activity_entry_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,9 +71,9 @@ public class CalendarDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(CalendarDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(CalendarDetailFragment.ARG_ITEM_ID));
-            CalendarDetailFragment fragment = new CalendarDetailFragment();
+            arguments.putString(EntryListFragment.ARG_ITEM_ID,
+                    getIntent().getStringExtra(EntryListFragment.ARG_ITEM_ID));
+            EntryListFragment fragment = new EntryListFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.entry_detail_container, fragment)
