@@ -17,7 +17,9 @@
 
 package felixwiemuth.lincal.data;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -33,7 +35,7 @@ public class LinCal {
     private final String version;
     private final Calendar date;
 
-    private final SortedSet<CEntry> entries;
+    private final List<CEntry> entries; // simple list, ordering is constructed at creation, no adaptions to list allowed
 
     public static class Builder {
 
@@ -78,8 +80,12 @@ public class LinCal {
             return this;
         }
 
+        /**
+         * Entries will be sorted by date.
+         * @return
+         */
         public LinCal build() {
-            return new LinCal(title, author, description, version, date, entries);
+            return new LinCal(title, author, description, version, date, new ArrayList<>(entries));
         }
 
     }
@@ -88,7 +94,7 @@ public class LinCal {
         return new LinCal.Builder();
     }
 
-    private LinCal(final String title, final String author, final String description, final String version, final Calendar date, final SortedSet<CEntry> entries) {
+    private LinCal(final String title, final String author, final String description, final String version, final Calendar date, final List<CEntry> entries) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -116,5 +122,7 @@ public class LinCal {
     public Calendar getDate() {
         return date;
     }
+
+
 
 }
