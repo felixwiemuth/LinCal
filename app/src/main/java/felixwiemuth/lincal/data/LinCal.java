@@ -123,6 +123,11 @@ public class LinCal {
         return date;
     }
 
+    public CEntry get(int location) {
+        return entries.get(location);
+    }
 
-
+    public int size() {
+        return entries.size();
+    }
 }

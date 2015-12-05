@@ -76,4 +76,15 @@ public class CEntry implements Comparable<CEntry> {
         return date.compareTo(another.date);
     }
 
+    public Calendar getDate() {
+        return date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLink() {
+        return link;
+    }
 }

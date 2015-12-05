@@ -18,15 +18,19 @@
 package felixwiemuth.lincal.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.LinCal;
+import felixwiemuth.lincal.data.Main;
 
 /**
  * A fragment representing a single Calendar screen with a list of its entries.
@@ -41,7 +45,7 @@ public class EntryListFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
 
-    private LinCal cal;
+    private LinCal calendar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,6 +64,8 @@ public class EntryListFragment extends Fragment {
             if (appBarLayout != null) {
                 appBarLayout.setTitle("Toolbar title");
             }
+            int calendarIndex = getArguments().getInt(ARG_ITEM_ID);
+            calendar = Main.get().getCalendars().get(calendarIndex);
         }
     }
 
@@ -69,10 +75,69 @@ public class EntryListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.entry_list, container, false);
 
         // Show the dummy content as text in a TextView.
-        if (cal != null) {
-            ((TextView) rootView.findViewById(R.id.entry_detail)).setText(cal.getDescription());
+        if (calendar != null) {
+            ((TextView) rootView.findViewById(R.id.entry_list)).setText(calendar.getDescription()); //TODO correct? What's the purpose here?
         }
 
         return rootView;
+    }
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        SimpleItemRecyclerViewAdapter adapter = new SimpleItemRecyclerViewAdapter();
+        recyclerView.setAdapter(adapter);
+    }
+
+    public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+
+        public SimpleItemRecyclerViewAdapter() {
+
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.calendar_list_content, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            holder.dateView.setText(calendar.get(position).getDate().toString());
+            holder.descriptionView.setText(calendar.get(position).getDescription());
+
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO open dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
+                    builder.setTitle("Error").setMessage("Entry information here.");
+                    AlertDialog dialog = builder.show();
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return calendar.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            public final View view;
+            public final TextView dateView;
+            public final TextView descriptionView;
+
+            public ViewHolder(View view) {
+                super(view);
+                this.view = view;
+                dateView = (TextView) view.findViewById(R.id.date);
+                descriptionView = (TextView) view.findViewById(R.id.description);
+            }
+
+            @Override
+            public String toString() {
+                return super.toString() + " '" + descriptionView.getText() + "'";
+            }
+        }
     }
 }

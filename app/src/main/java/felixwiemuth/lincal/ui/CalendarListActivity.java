@@ -105,7 +105,7 @@ public class CalendarListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.calendar = calendars.get(position);
             holder.mIdView.setText(calendars.get(position).getTitle());
             holder.mContentView.setText(calendars.get(position).getDescription());
@@ -124,7 +124,7 @@ public class CalendarListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, EntryListActivity.class);
-                        intent.putExtra(EntryListFragment.ARG_ITEM_ID, holder.calendar.getTitle());
+                        intent.putExtra(EntryListFragment.ARG_ITEM_ID, position);
 
                         context.startActivity(intent);
                     }
