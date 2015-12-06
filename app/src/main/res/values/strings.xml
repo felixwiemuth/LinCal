@@ -28,11 +28,13 @@
     <string name="invalidDateSpecificationException_format">format error.</string>
     <string name="dateSpecificationRequiredException">A first date must be specified with "@d dd/mm/yy" before the first entry can be added.</string>
 
+    <string name="cal_title">Title:</string>
+    <string name="cal_author">Author:</string>
+    <string name="cal_description">Description:</string>
+
     <string name="add_cal_title">Title (leave empty to load from calendar):</string>
     <string name="add_cal_file">Calendar file (full path):</string>
     <string name="add_cal_notifications">Enable notifications</string>
     <string name="add_cal_file_button">Choose...</string>
     <string name="add_cal_button">Add</string>
-
-
 </resources>

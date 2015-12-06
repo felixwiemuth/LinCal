@@ -19,6 +19,9 @@ package felixwiemuth.lincal.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -29,8 +32,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import felixwiemuth.lincal.R;
+import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.Main;
+import java.text.DateFormat;
 
 /**
  * A fragment representing a single Calendar screen with a list of its entries.
@@ -73,11 +78,14 @@ public class EntryListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.entry_list, container, false);
+        //TODO maybe save and load data from savedInstanceState?
 
-        // Show the dummy content as text in a TextView.
-        if (calendar != null) {
-            ((TextView) rootView.findViewById(R.id.entry_list)).setText(calendar.getDescription()); //TODO correct? What's the purpose here?
-        }
+        setupRecyclerView((RecyclerView) rootView.findViewById(R.id.entry_list));
+        TextView titleView = (TextView) rootView.findViewById(R.id.cal_title);
+        titleView.setText(calendar.getTitle());
+        TextView authorView = (TextView) rootView.findViewById(R.id.cal_author);
+        authorView.setText(calendar.getAuthor());
+        ((TextView) rootView.findViewById(R.id.cal_descr)).setText(calendar.getDescription());
 
         return rootView;
     }
@@ -89,6 +97,8 @@ public class EntryListFragment extends Fragment {
 
     public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
+        private final DateFormat dfDay = DateFormat.getDateInstance();
+
         public SimpleItemRecyclerViewAdapter() {
 
         }
@@ -96,22 +106,48 @@ public class EntryListFragment extends Fragment {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.calendar_list_content, parent, false);
+                    .inflate(R.layout.entry_list_content, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.dateView.setText(calendar.get(position).getDate().toString());
-            holder.descriptionView.setText(calendar.get(position).getDescription());
+            final CEntry entry = calendar.get(position);
+            final String dateStr = dfDay.format(entry.getDate().getTime());
+            final String descr = entry.getDescription();
+            holder.dateView.setText(dateStr);
+            holder.descriptionView.setText(descr);
 
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //TODO open dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
-                    builder.setTitle("Error").setMessage("Entry information here.");
-                    AlertDialog dialog = builder.show();
+                    builder.setTitle(dateStr).setMessage(descr);
+                    final AlertDialog dialog = builder.create();
+                    dialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Show Link", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            dialog.setMessage(descr + "\n" + entry.getLink());
+                            dialog.hide();
+                            dialog.show();
+                        }
+                    });
+                    dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Open Link", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            dialogInterface.dismiss();
+                            Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(entry.getLink()));
+                            startActivity(intent);
+                        }
+                    });
+                    dialog.show();
                 }
             });
         }

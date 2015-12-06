@@ -65,8 +65,6 @@ public class CalendarListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CalendarListActivity.this, AddCalendarActivity.class));
-//                Snackbar.make(view, "Action @ EntryList", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
 
@@ -107,15 +105,14 @@ public class CalendarListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.calendar = calendars.get(position);
-            holder.mIdView.setText(calendars.get(position).getTitle());
-            holder.mContentView.setText(calendars.get(position).getDescription());
+            holder.titleView.setText(calendars.get(position).getTitle());
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(EntryListFragment.ARG_ITEM_ID, holder.calendar.getTitle());
+                        arguments.putInt(EntryListFragment.ARG_ITEM_ID, position);
                         EntryListFragment fragment = new EntryListFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -176,21 +173,14 @@ public class CalendarListActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
+            public final View view;
+            public final TextView titleView;
             public LinCal calendar;
 
             public ViewHolder(View view) {
                 super(view);
-                mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                this.view = view;
+                titleView = (TextView) view.findViewById(R.id.title);
             }
         }
     }
