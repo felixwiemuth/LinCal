@@ -119,12 +119,11 @@ public class LinCalParser extends LinearFileParser {
             public boolean run(String line, ListIterator<String> it) throws IllegalLineException, ParseException {
                 if (!firstDate) {
                     throw new DateSpecificationRequiredException(getCurrentLineNumber(), s(R.string.dateSpecificationRequiredException));
-
                 }
                 e.date(currentDate).link(line);
                 c.addCEntry(e.build());
                 e = CEntry.builder();
-                currentDate.roll(Calendar.DAY_OF_MONTH, 1);
+                currentDate.add(Calendar.DAY_OF_MONTH, 1);
                 return true;
             }
         });
@@ -178,7 +177,7 @@ public class LinCalParser extends LinearFileParser {
             currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[0]));
             changed++;
             if (split.length > 1) {
-                currentDate.set(Calendar.MONTH, Integer.parseInt(split[1]));
+                currentDate.set(Calendar.MONTH, Integer.parseInt(split[1]) - 1);
                 changed++;
                 if (split.length > 2) {
                     currentDate.set(Calendar.YEAR, Integer.parseInt(split[2]));
