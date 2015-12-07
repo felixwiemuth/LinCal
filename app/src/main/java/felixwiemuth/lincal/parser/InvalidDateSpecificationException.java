@@ -17,7 +17,6 @@
 
 package felixwiemuth.lincal.parser;
 
-import felixwiemuth.lincal.R;
 import linearfileparser.ParseException;
 
 /**
@@ -27,7 +26,7 @@ import linearfileparser.ParseException;
 public class InvalidDateSpecificationException extends ParseException {
 
     public InvalidDateSpecificationException(int line, String msg) {
-        super(line, R.string.invalidDateSpecificationException_base + msg);
+        super(line, msg);
     }
 
 }

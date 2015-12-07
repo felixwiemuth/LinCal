@@ -42,6 +42,8 @@ public class LinCalParser extends LinearFileParser {
 
     private final static Pattern DATE_PATTERN = Pattern.compile("/");
 
+    //TODO use string resources
+    // sections
     private final static String HEADER = "header";
     private final static String MAIN = "main";
 
@@ -150,11 +152,23 @@ public class LinCalParser extends LinearFileParser {
     }
 
     private void setDate(String changeSpec, int min, String minError) throws InvalidDateSpecificationException {
-        int changed = setDate(changeSpec);
-        if (changed == 0) {
-            throw new InvalidDateSpecificationException(getCurrentLineNumber(), s(R.string.invalidDateSpecificationException_format));
-        } else if (changed < min) {
-            throw new InvalidDateSpecificationException(getCurrentLineNumber(), s(R.string.invalidDateSpecificationException_expected_full) + minError + ".");
+        int changed;
+        try {
+            changed = setDate(changeSpec);
+        } catch (NumberFormatException ex) {
+            throw new InvalidDateSpecificationException(getCurrentLineNumber(), s(R.string.invalidDateSpecificationException_base) + " " + ex.getMessage());
+        }
+
+        if (changed == 0 || changed < min) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(s(R.string.invalidDateSpecificationException_base)).append(" ");
+            if (changed == 0) {
+                sb.append(s(R.string.invalidDateSpecificationException_format));
+            } else {
+                sb.append(s(R.string.invalidDateSpecificationException_expected_full)).append(" ").append(minError);
+            }
+            sb.append(".");
+            throw new InvalidDateSpecificationException(getCurrentLineNumber(), sb.toString());
         }
     }
 
@@ -166,27 +180,25 @@ public class LinCalParser extends LinearFileParser {
      * @param changeSpec
      * @return 0 if due to a wrong specification nothing was changed or 1,2,3 if
      * d,d+m,d+m+y was changed
+     * @throws NumberFormatException if the date specification matches the basic
+     * format (d/m/y) but one is not a number (fields may have been changed
+     * before)
      */
-    private int setDate(String changeSpec) {
+    private int setDate(String changeSpec) throws NumberFormatException {
         int changed = 0;
         String[] split = DATE_PATTERN.split(changeSpec);
         if (split.length == 0 || split.length > 3) {
             return 0;
         }
-        try {
-            currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[0]));
+        currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[0]));
+        changed++;
+        if (split.length > 1) {
+            currentDate.set(Calendar.MONTH, Integer.parseInt(split[1]) - 1);
             changed++;
-            if (split.length > 1) {
-                currentDate.set(Calendar.MONTH, Integer.parseInt(split[1]) - 1);
+            if (split.length > 2) {
+                currentDate.set(Calendar.YEAR, Integer.parseInt(split[2]));
                 changed++;
-                if (split.length > 2) {
-                    currentDate.set(Calendar.YEAR, Integer.parseInt(split[2]));
-                    changed++;
-                }
             }
-        } catch (NumberFormatException ex) {
-            // simply abort with changes done so far
-            return changed;
         }
         return changed;
     }
