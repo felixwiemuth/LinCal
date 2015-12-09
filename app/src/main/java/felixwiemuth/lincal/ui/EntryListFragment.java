@@ -34,7 +34,7 @@ import android.widget.TextView;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
-import felixwiemuth.lincal.data.Main;
+import felixwiemuth.lincal.Main;
 import java.text.DateFormat;
 
 /**

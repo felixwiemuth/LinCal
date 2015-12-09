@@ -15,20 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package felixwiemuth.lincal.data;
+package felixwiemuth.lincal;
 
+import android.app.Application;
+import felixwiemuth.lincal.data.LinCal;
+import felixwiemuth.lincal.data.ListChangeListener;
+import felixwiemuth.lincal.data.ListChangeListeners;
 import java.util.ArrayList;
 import java.util.List;
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 
-public class Main {
+@ReportsCrashes(
+        mailTo = "felixwiemuth@hotmail.de",
+        mode = ReportingInteractionMode.TOAST,
+        resToastText = R.string.crash_toast_text)
+public class Main extends Application {
 
-    private static Main instance = new Main();
+    private static final Main instance = new Main();
 
-    private List<LinCal> calendars = new ArrayList<>();
-    private ListChangeListeners listeners = new ListChangeListeners();
+    private final List<LinCal> calendars = new ArrayList<>();
+    private final ListChangeListeners listeners = new ListChangeListeners();
 
-    private Main() {
+    public Main() {
 
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ACRA.init(this);
     }
 
     public List<LinCal> getCalendars() {
@@ -53,6 +70,10 @@ public class Main {
 
     public void addListChangeListener(ListChangeListener listener) {
         listeners.add(listener);
+    }
+
+    public String s(int resId) {
+        return getApplicationContext().getString(resId);
     }
 
     public static Main get() {
