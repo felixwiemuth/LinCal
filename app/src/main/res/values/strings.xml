@@ -21,12 +21,14 @@
     <string name="title_activity_add_calendar">Add Calendar</string>
     <string name="title_activity_test">Test</string>
 
+    <string name="crash_toast_text">An unexcpeted error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You might add your comments about the problem.</string>
+
     <string name="invalidDateSpecificationException_base">Invalid date specification: </string>
-    <string name="invalidDateSpecificationException_expected_full">expected a full date</string>
-    <string name="invalidDateSpecificationException_in_header">in header</string>
+    <string name="invalidDateSpecificationException_expected_full">expected a full date specification (d/m/y)</string>
+    <string name="invalidDateSpecificationException_in_header">for the calendar’s date</string>
     <string name="invalidDateSpecificationException_first">as first date</string>
-    <string name="invalidDateSpecificationException_format">format error.</string>
-    <string name="dateSpecificationRequiredException">A first date must be specified with "@d dd/mm/yy" before the first entry can be added.</string>
+    <string name="invalidDateSpecificationException_format">format error (use d/m/y)</string>
+    <string name="dateSpecificationRequiredException">A first date must be specified with "@d d/m/y" before the first entry can be added.</string>
 
     <string name="cal_title">Title:</string>
     <string name="cal_author">Author:</string>
@@ -37,4 +39,6 @@
     <string name="add_cal_notifications">Enable notifications</string>
     <string name="add_cal_file_button">Choose...</string>
     <string name="add_cal_button">Add</string>
+    <string name="dialog_parsing_error_title">Parsing error</string>
+    <string name="dialog_parsing_error_dismiss">Close</string>
 </resources>
