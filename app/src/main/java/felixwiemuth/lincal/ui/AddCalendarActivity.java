@@ -18,6 +18,7 @@
 package felixwiemuth.lincal.ui;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -69,7 +70,12 @@ public class AddCalendarActivity extends AppCompatActivity {
                     AddCalendarActivity.this.finish();
                 } catch (IOException | ParseException ex) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddCalendarActivity.this);
-                    builder.setTitle("Error").setMessage(ex.getMessage());
+                    builder.setTitle(R.string.dialog_parsing_error_title).setMessage(ex.getMessage()).setPositiveButton(R.string.dialog_parsing_error_dismiss, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
                     AlertDialog dialog = builder.show();
                     Snackbar.make(getCurrentFocus(), ex.getMessage(), Snackbar.LENGTH_LONG);
                 }
