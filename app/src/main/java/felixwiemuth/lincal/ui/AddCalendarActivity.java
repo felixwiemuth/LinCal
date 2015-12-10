@@ -19,6 +19,7 @@ package felixwiemuth.lincal.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -37,6 +38,8 @@ import java.io.IOException;
 import linearfileparser.ParseException;
 
 public class AddCalendarActivity extends AppCompatActivity {
+
+    public static final String ARG_ADD_POSITION = "addPosition";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +68,11 @@ public class AddCalendarActivity extends AppCompatActivity {
                 String path = file.getText().toString();
                 try {
                     LinCal calendar = parser.parse(new File(path));
-                    Main.get().addCalendar(calendar);
+                    int pos = Main.get().addCalendar(calendar);
                     AddCalendarActivity.this.finish();
+                    Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
+                    intent.putExtra(ARG_ADD_POSITION, pos);
+                    startActivity(intent);
                 } catch (IOException | ParseException ex) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddCalendarActivity.this);
                     builder.setMessage(ex.getMessage()).setPositiveButton(R.string.dialog_error_dismiss, new DialogInterface.OnClickListener() {

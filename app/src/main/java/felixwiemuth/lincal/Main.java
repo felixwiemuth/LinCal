@@ -56,8 +56,9 @@ public class Main extends Application {
      * Adds calendar to end of list.
      *
      * @param calendar
+     * @return insert position
      */
-    public void addCalendar(final LinCal calendar) {
+    public int addCalendar(final LinCal calendar) {
         final int insert = calendars.size();
         calendars.add(calendar);
         listeners.notify(new ListChangeListeners.Notifier() {
@@ -66,6 +67,7 @@ public class Main extends Application {
                 listener.onItemInserted(insert);
             }
         });
+        return insert;
     }
 
     public void addListChangeListener(ListChangeListener listener) {

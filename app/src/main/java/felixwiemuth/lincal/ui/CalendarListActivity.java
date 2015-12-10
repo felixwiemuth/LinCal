@@ -68,9 +68,9 @@ public class CalendarListActivity extends AppCompatActivity {
             }
         });
 
-        View recyclerView = findViewById(R.id.calendar_list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.calendar_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        setupRecyclerView(recyclerView);
 
         if (findViewById(R.id.entry_detail_container) != null) {
             // The detail container view will be present only in the
@@ -79,6 +79,13 @@ public class CalendarListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        //TODO select entry after adding - does not find view holder because child list of recycler view seems to be empty at this point
+//        int insertPos = getIntent().getIntExtra(AddCalendarActivity.ARG_ADD_POSITION, -1);
+//        if (insertPos != -1) {
+//            recyclerView.findViewHolderForAdapterPosition(insertPos).itemView.performClick();
+//            recyclerView.scrollToPosition(insertPos);
+//        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
