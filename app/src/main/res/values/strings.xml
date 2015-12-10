@@ -39,6 +39,9 @@
     <string name="add_cal_notifications">Enable notifications</string>
     <string name="add_cal_file_button">Choose...</string>
     <string name="add_cal_button">Add</string>
+    <string name="dialog_file_not_found">File not found</string>
     <string name="dialog_parsing_error_title">Parsing error</string>
-    <string name="dialog_parsing_error_dismiss">Close</string>
+    <string name="dialog_io_error">Error</string>
+    <string name="dialog_error_dismiss">Close</string>
+    <string name="dialog_file_not_found_msg">The file \"%s\" does not exist.</string>
 </resources>

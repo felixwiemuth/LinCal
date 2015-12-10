@@ -19,11 +19,9 @@ package felixwiemuth.lincal.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -34,6 +32,7 @@ import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.parser.LinCalParser;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import linearfileparser.ParseException;
 
@@ -54,30 +53,37 @@ public class AddCalendarActivity extends AppCompatActivity {
         final EditText file = (EditText) findViewById(R.id.ce_file);
 
         // Set file if activity was opened by file
-        Intent fileIntent = getIntent();
-        Uri uri = fileIntent.getData();
+        Uri uri = getIntent().getData();
         if (uri != null) {
-            file.setText(uri.toString());
+            file.setText(uri.getPath());
         }
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LinCalParser parser = new LinCalParser(getApplicationContext());
+                String path = file.getText().toString();
                 try {
-                    LinCal calendar = parser.parse(new File(file.getText().toString()));
+                    LinCal calendar = parser.parse(new File(path));
                     Main.get().addCalendar(calendar);
                     AddCalendarActivity.this.finish();
                 } catch (IOException | ParseException ex) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddCalendarActivity.this);
-                    builder.setTitle(R.string.dialog_parsing_error_title).setMessage(ex.getMessage()).setPositiveButton(R.string.dialog_parsing_error_dismiss, new DialogInterface.OnClickListener() {
+                    builder.setMessage(ex.getMessage()).setPositiveButton(R.string.dialog_error_dismiss, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
                     });
+                    if (ex instanceof FileNotFoundException) {
+                        builder.setTitle(R.string.dialog_io_error);
+                        builder.setMessage(String.format(getApplicationContext().getString(R.string.dialog_file_not_found_msg), path));
+                    } else if (ex instanceof IOException) {
+                        builder.setTitle(R.string.dialog_file_not_found);
+                    } else {
+                        builder.setTitle(R.string.dialog_parsing_error_title);
+                    }
                     AlertDialog dialog = builder.show();
-                    Snackbar.make(getCurrentFocus(), ex.getMessage(), Snackbar.LENGTH_LONG);
                 }
             }
         });
