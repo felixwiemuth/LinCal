@@ -139,7 +139,6 @@ public class LinCalParser extends LinearFileParser {
                 } else {
                     setDate(arg);
                 }
-                c.date(currentDate);
             }
         });
 
