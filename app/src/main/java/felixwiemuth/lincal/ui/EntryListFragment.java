@@ -122,41 +122,57 @@ public class EntryListFragment extends Fragment {
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
-                    builder.setTitle(dateStr).setMessage(descr);
-                    final AlertDialog dialog = builder.create();
-                    dialog.setButton(AlertDialog.BUTTON_NEUTRAL, s(R.string.dialog_show_link), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            dialog.setMessage(descr + "\n" + entry.getLink());
-                            dialog.hide();
-                            dialog.show();
-                        }
-                    });
-                    dialog.setButton(AlertDialog.BUTTON_NEGATIVE, s(R.string.dialog_cancle), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    dialog.setButton(AlertDialog.BUTTON_POSITIVE, s(R.string.dialog_open_link), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            dialogInterface.dismiss();
-                            Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(entry.getLink()));
-                            try {
-                                startActivity(intent);
-                            } catch (ActivityNotFoundException ex) { // there is no activity to handle the link - show a dialog with it's content
-                                showLinkAsDialog(entry);
-                            }
-                        }
-                    });
-                    dialog.show();
+                    showEntryDialog(entry, false);
                 }
             });
         }
 
-        private void showLinkAsDialog(CEntry entry) {
+        private void showEntryDialog(final CEntry entry, boolean showLink) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
+            StringBuilder msg = new StringBuilder();
+            if (entry.getDescription() != null) {
+                msg.append(entry.getDescription());
+            }
+            if (showLink) {
+                if (msg.length() > 0) {
+                    msg.append("\n\n");
+
+                }
+                msg.append(entry.getLink());
+            }
+            builder.setTitle(dfDay.format(entry.getDate().getTime())).setMessage(msg.toString());
+            final AlertDialog dialog = builder.create();
+            if (!showLink) {
+                dialog.setButton(AlertDialog.BUTTON_NEUTRAL, s(R.string.dialog_show_link), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        dialog.dismiss();
+                        showEntryDialog(entry, true);
+                    }
+                });
+            }
+            dialog.setButton(AlertDialog.BUTTON_NEGATIVE, s(R.string.dialog_cancle), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    dialogInterface.dismiss();
+                }
+            });
+            dialog.setButton(AlertDialog.BUTTON_POSITIVE, s(R.string.dialog_open_link), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    dialogInterface.dismiss();
+                    Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(entry.getLink()));
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException ex) { // there is no activity to handle the link - show a dialog with the string
+                        showNonLinkEntryAsDialog(entry);
+                    }
+                }
+            });
+            dialog.show();
+        }
+
+        private void showNonLinkEntryAsDialog(CEntry entry) {
             AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
             builder.setTitle(dfDay.format(entry.getDate().getTime()))
                     .setMessage(entry.getLink())
