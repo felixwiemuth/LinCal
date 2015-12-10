@@ -17,6 +17,7 @@
 
 package felixwiemuth.lincal.data;
 
+import felixwiemuth.lincal.Main;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -82,6 +83,7 @@ public class LinCal {
 
         /**
          * Entries will be sorted by date.
+         *
          * @return
          */
         public LinCal build() {
@@ -121,6 +123,10 @@ public class LinCal {
 
     public Calendar getDate() {
         return date;
+    }
+
+    public String getDateStr() {
+        return Main.dfDay.format(date.getTime());
     }
 
     public CEntry get(int location) {

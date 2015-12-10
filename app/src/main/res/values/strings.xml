@@ -33,6 +33,8 @@
     <string name="cal_title">Title:</string>
     <string name="cal_author">Author:</string>
     <string name="cal_description">Description:</string>
+    <string name="cal_version">Version:</string>
+    <string name="cal_date">Date:</string>
 
     <string name="add_cal_title">Title (leave empty to load from calendar):</string>
     <string name="add_cal_file">Calendar file (full path):</string>

@@ -19,6 +19,8 @@ package felixwiemuth.lincal.data;
 
 import java.util.Calendar;
 
+import felixwiemuth.lincal.Main;
+
 /**
  * Represents one calendar in the list of calendars.
  *
@@ -78,6 +80,10 @@ public class CEntry implements Comparable<CEntry> {
 
     public Calendar getDate() {
         return date;
+    }
+
+    public String getDateStr() {
+        return Main.dfDay.format(date.getTime());
     }
 
     public String getDescription() {

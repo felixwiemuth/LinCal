@@ -36,7 +36,6 @@ import felixwiemuth.lincal.Main;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
-import java.text.DateFormat;
 
 /**
  * A fragment representing a single Calendar screen with a list of its entries.
@@ -87,6 +86,8 @@ public class EntryListFragment extends Fragment {
         TextView authorView = (TextView) rootView.findViewById(R.id.cal_author);
         authorView.setText(calendar.getAuthor());
         ((TextView) rootView.findViewById(R.id.cal_descr)).setText(calendar.getDescription());
+        ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
+        ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
 
         return rootView;
     }
@@ -97,8 +98,6 @@ public class EntryListFragment extends Fragment {
     }
 
     public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final DateFormat dfDay = DateFormat.getDateInstance();
 
         public SimpleItemRecyclerViewAdapter() {
 
@@ -114,7 +113,7 @@ public class EntryListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             final CEntry entry = calendar.get(position);
-            final String dateStr = dfDay.format(entry.getDate().getTime());
+            final String dateStr = entry.getDateStr();
             final String descr = entry.getDescription();
             holder.dateView.setText(dateStr);
             holder.descriptionView.setText(descr);
@@ -140,7 +139,7 @@ public class EntryListFragment extends Fragment {
                 }
                 msg.append(entry.getLink());
             }
-            builder.setTitle(dfDay.format(entry.getDate().getTime())).setMessage(msg.toString());
+            builder.setTitle(entry.getDateStr()).setMessage(msg.toString());
             final AlertDialog dialog = builder.create();
             if (!showLink) {
                 dialog.setButton(AlertDialog.BUTTON_NEUTRAL, s(R.string.dialog_show_link), new DialogInterface.OnClickListener() {
@@ -174,7 +173,7 @@ public class EntryListFragment extends Fragment {
 
         private void showNonLinkEntryAsDialog(CEntry entry) {
             AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
-            builder.setTitle(dfDay.format(entry.getDate().getTime()))
+            builder.setTitle(entry.getDateStr())
                     .setMessage(entry.getLink())
                     .setPositiveButton(R.string.dialog_dismiss, new DialogInterface.OnClickListener() {
                         @Override

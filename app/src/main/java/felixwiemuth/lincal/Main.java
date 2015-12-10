@@ -21,6 +21,8 @@ import android.app.Application;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.ListChangeListener;
 import felixwiemuth.lincal.data.ListChangeListeners;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.acra.ACRA;
@@ -32,6 +34,8 @@ import org.acra.annotation.ReportsCrashes;
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text)
 public class Main extends Application {
+
+    public static final DateFormat dfDay = DateFormat.getDateInstance();
 
     private static final Main instance = new Main();
 
