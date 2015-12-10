@@ -44,4 +44,8 @@
     <string name="dialog_io_error">Error</string>
     <string name="dialog_error_dismiss">Close</string>
     <string name="dialog_file_not_found_msg">The file \"%s\" does not exist.</string>
+    <string name="dialog_show_link">Show Link</string>
+    <string name="dialog_cancle">Cancel</string>
+    <string name="dialog_open_link">Open Link</string>
+    <string name="dialog_dismiss">Close</string>
 </resources>

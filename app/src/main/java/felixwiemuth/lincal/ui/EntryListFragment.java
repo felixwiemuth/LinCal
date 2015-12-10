@@ -19,6 +19,7 @@ package felixwiemuth.lincal.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,10 +32,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import felixwiemuth.lincal.Main;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
-import felixwiemuth.lincal.Main;
 import java.text.DateFormat;
 
 /**
@@ -121,11 +122,10 @@ public class EntryListFragment extends Fragment {
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO open dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
                     builder.setTitle(dateStr).setMessage(descr);
                     final AlertDialog dialog = builder.create();
-                    dialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Show Link", new DialogInterface.OnClickListener() {
+                    dialog.setButton(AlertDialog.BUTTON_NEUTRAL, s(R.string.dialog_show_link), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             dialog.setMessage(descr + "\n" + entry.getLink());
@@ -133,23 +133,40 @@ public class EntryListFragment extends Fragment {
                             dialog.show();
                         }
                     });
-                    dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    dialog.setButton(AlertDialog.BUTTON_NEGATIVE, s(R.string.dialog_cancle), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             dialogInterface.dismiss();
                         }
                     });
-                    dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Open Link", new DialogInterface.OnClickListener() {
+                    dialog.setButton(AlertDialog.BUTTON_POSITIVE, s(R.string.dialog_open_link), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             dialogInterface.dismiss();
                             Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(entry.getLink()));
-                            startActivity(intent);
+                            try {
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException ex) { // there is no activity to handle the link - show a dialog with it's content
+                                showLinkAsDialog(entry);
+                            }
                         }
                     });
                     dialog.show();
                 }
             });
+        }
+
+        private void showLinkAsDialog(CEntry entry) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
+            builder.setTitle(dfDay.format(entry.getDate().getTime()))
+                    .setMessage(entry.getLink())
+                    .setPositiveButton(R.string.dialog_dismiss, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
         }
 
         @Override
@@ -175,5 +192,9 @@ public class EntryListFragment extends Fragment {
                 return super.toString() + " '" + descriptionView.getText() + "'";
             }
         }
+    }
+
+    private String s(int resId) {
+        return getContext().getString(resId);
     }
 }
