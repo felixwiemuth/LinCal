@@ -68,6 +68,8 @@ public class AddCalendarActivity extends AppCompatActivity {
                 String path = file.getText().toString();
                 try {
                     LinCal calendar = parser.parse(new File(path));
+                    //TODO instead of adding the calendar, add entry to the configuration file and return "true" as result - then MainActivity knows that the last entry is the new calendar
+                    //TODO also lock configuration file and let main unlock it
                     int pos = Main.get().addCalendar(calendar);
                     AddCalendarActivity.this.finish();
                     Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);

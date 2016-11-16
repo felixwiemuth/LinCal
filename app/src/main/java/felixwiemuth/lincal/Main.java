@@ -37,7 +37,7 @@ public class Main extends Application {
 
     public static final DateFormat dfDay = DateFormat.getDateInstance();
 
-    private static final Main instance = new Main();
+    private static final Main instance = new Main(); //TODO is this save? //TODO create separate singleton class
 
     private final List<LinCal> calendars = new ArrayList<>();
     private final ListChangeListeners listeners = new ListChangeListeners();
