@@ -28,18 +28,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import felixwiemuth.lincal.Main;
-import felixwiemuth.lincal.R;
-import felixwiemuth.lincal.data.LinCal;
-import felixwiemuth.lincal.parser.LinCalParser;
-import java.io.File;
+
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import linearfileparser.ParseException;
+
+import felixwiemuth.lincal.Calendars;
+import felixwiemuth.lincal.R;
+import felixwiemuth.lincal.Util;
+import felixwiemuth.lincal.data.LinCal;
+import felixwiemuth.lincal.data.LinCalConfig;
 
 public class AddCalendarActivity extends AppCompatActivity {
 
-    public static final String ARG_ADD_POSITION = "addPosition";
+    private LinCalConfig config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,48 +53,74 @@ public class AddCalendarActivity extends AppCompatActivity {
 
         Button chooseFileButton = (Button) findViewById(R.id.cb_file);
         Button addButton = (Button) findViewById(R.id.cb_add);
-        final EditText file = (EditText) findViewById(R.id.ce_file);
+        final EditText fileEditText = (EditText) findViewById(R.id.ce_file);
 
         // Set file if activity was opened by file
         Uri uri = getIntent().getData();
         if (uri != null) {
-            file.setText(uri.getPath());
+            fileEditText.setText(uri.getPath());
         }
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinCalParser parser = new LinCalParser(getApplicationContext());
-                String path = file.getText().toString();
-                try {
-                    LinCal calendar = parser.parse(new File(path));
-                    //TODO instead of adding the calendar, add entry to the configuration file and return "true" as result - then MainActivity knows that the last entry is the new calendar
-                    //TODO also lock configuration file and let main unlock it
-                    int pos = Main.get().addCalendar(calendar);
-                    AddCalendarActivity.this.finish();
-                    Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
-                    intent.putExtra(ARG_ADD_POSITION, pos);
-                    startActivity(intent);
-                } catch (IOException | ParseException ex) {
+                final String path = fileEditText.getText().toString();
+                if (config.containsCalendarFile(path)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddCalendarActivity.this);
-                    builder.setMessage(ex.getMessage()).setPositiveButton(R.string.dialog_error_dismiss, new DialogInterface.OnClickListener() {
+                    builder.setMessage("The calendar has already been added. Do you want to add another, independent copy?").setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                        }
+                    }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            addCalendar(path); //NOTE: as this starts another activity, the dialog is still displayed when switching
                         }
                     });
-                    if (ex instanceof FileNotFoundException) {
-                        builder.setTitle(R.string.dialog_io_error);
-                        builder.setMessage(String.format(getApplicationContext().getString(R.string.dialog_file_not_found_msg), path));
-                    } else if (ex instanceof IOException) {
-                        builder.setTitle(R.string.dialog_file_not_found);
-                    } else {
-                        builder.setTitle(R.string.dialog_parsing_error_title);
-                    }
-                    AlertDialog dialog = builder.show();
+                    builder.show();
+                } else {
+                    addCalendar(path);
                 }
             }
         });
+
+        config = new LinCalConfig(getApplicationContext());
+    }
+
+    private void addCalendar(String file) {
+        EditText titleEditText = (EditText) findViewById(R.id.ce_title);
+        LinCal calendar = Calendars.loadCalendar(file, this);
+        if (calendar == null) {
+            return;
+        }
+
+        // Before adding a calendar, load it to check syntax and get information
+
+        String calendarTitle = titleEditText.getText().toString();
+        if (calendarTitle.equals("")) {
+            calendarTitle = calendar.getTitle();
+        }
+        if (calendarTitle.contains(LinCalConfig.SEPARATOR)) {
+            showErrorDialog(R.string.dialog_error_title, String.format(getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR));
+            return;
+        }
+        config.add(new LinCalConfig.Entry(file, calendarTitle, LinCalConfig.NotificationMode.GIVEN_TIME)); //TODO set notification mode from settings by a widget
+        try {
+            config.save();
+        } catch (FileNotFoundException ex) {
+            throw new RuntimeException(ex); //TODO show error dialog?
+        }
+        //Main.get().addCalendar(calendar);
+        AddCalendarActivity.this.finish();
+        Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
+        intent.putExtra(CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED, true);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); //NOTE this would prevent activity from restarting
+        startActivity(intent);
+    }
+
+    private void showErrorDialog(int title, String message) {
+        Util.showErrorDialog(title, message, this);
     }
 
     @Override

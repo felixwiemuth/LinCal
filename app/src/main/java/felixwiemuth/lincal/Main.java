@@ -37,53 +37,12 @@ public class Main extends Application {
 
     public static final DateFormat dfDay = DateFormat.getDateInstance();
 
-    private static final Main instance = new Main(); //TODO is this save? //TODO create separate singleton class
-
-    private final List<LinCal> calendars = new ArrayList<>();
-    private final ListChangeListeners listeners = new ListChangeListeners();
-
-    public Main() {
-
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        ACRA.init(this);
+        if (!BuildConfig.DEBUG) {
+            ACRA.init(this);
+        }
     }
-
-    public List<LinCal> getCalendars() {
-        return calendars;
-    }
-
-    /**
-     * Adds calendar to end of list.
-     *
-     * @param calendar
-     * @return insert position
-     */
-    public int addCalendar(final LinCal calendar) {
-        final int insert = calendars.size();
-        calendars.add(calendar);
-        listeners.notify(new ListChangeListeners.Notifier() {
-            @Override
-            public void notify(ListChangeListener listener) {
-                listener.onItemInserted(insert);
-            }
-        });
-        return insert;
-    }
-
-    public void addListChangeListener(ListChangeListener listener) {
-        listeners.add(listener);
-    }
-
-    public String s(int resId) {
-        return getApplicationContext().getString(resId);
-    }
-
-    public static Main get() {
-        return instance;
-    }
-
 }

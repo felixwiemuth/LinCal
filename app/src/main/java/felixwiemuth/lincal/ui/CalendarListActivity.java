@@ -29,25 +29,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
-import felixwiemuth.lincal.data.LinCal;
-import felixwiemuth.lincal.data.ListChangeListener;
-import felixwiemuth.lincal.Main;
-import java.util.List;
 
 /**
- * An activity representing a list of Entries. This activity has different
- * presentations for handset and tablet-size devices. On handsets, the activity
- * presents a list of items, which when touched, lead to a
- * {@link EntryListActivity} representing item details. On tablets, the activity
- * presents the list of items and item details side-by-side using two vertical
- * panes.
+ * An activity representing a list of calendars. Note that this activity does not update the
+ * calendar list while running but each time {@link #onCreate} is called. This activity has
+ * different presentations for handset and tablet-size devices. On handsets, the activity presents a
+ * list of items, which when touched, lead to a {@link EntryListActivity} representing item details.
+ * On tablets, the activity presents the list of items and item details side-by-side using two
+ * vertical panes.
  */
 public class CalendarListActivity extends AppCompatActivity {
 
     /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
+     * If this extra is given when starting the activity, all calendars are reloaded. If the value
+     * is "true", the last calendar in the list is selected.
+     */
+    public static final String EXTRA_ARG_CONFIG_CHANGED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED";
+
+    /**
+     * Whether or not the activity is in two-pane mode, i.e. running on a tablet device.
      */
     private boolean mTwoPane;
 
@@ -80,26 +83,25 @@ public class CalendarListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        //TODO select entry after adding - does not find view holder because child list of recycler view seems to be empty at this point
-//        int insertPos = getIntent().getIntExtra(AddCalendarActivity.ARG_ADD_POSITION, -1);
-//        if (insertPos != -1) {
-//            recyclerView.findViewHolderForAdapterPosition(insertPos).itemView.performClick();
-//            recyclerView.scrollToPosition(insertPos);
-//        }
+        if (getIntent().hasExtra(EXTRA_ARG_CONFIG_CHANGED)) {
+            if (getIntent().getBooleanExtra(EXTRA_ARG_CONFIG_CHANGED, false)) { // this means a calendar was added, so select the last entry
+                recyclerView.scrollToPosition(recyclerView.getChildCount()); //TODO this just scrolls, actually selecting the item is more tricky: http://stackoverflow.com/questions/27377830/what-is-the-equivalent-listview-setselection-in-case-of-recycler-view
+            }
+        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        SimpleItemRecyclerViewAdapter adapter = new SimpleItemRecyclerViewAdapter(Main.get().getCalendars());
+        SimpleItemRecyclerViewAdapter adapter = new SimpleItemRecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
-        Main.get().addListChangeListener(adapter);
+        //addListChangeListener(adapter);
     }
 
-    public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> implements ListChangeListener {
+    /**
+     * Adapter to represent calendar titles in a list.
+     */
+    public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<LinCal> calendars;
-
-        public SimpleItemRecyclerViewAdapter(List<LinCal> calendars) {
-            this.calendars = calendars;
+        public SimpleItemRecyclerViewAdapter() {
         }
 
         @Override
@@ -111,8 +113,8 @@ public class CalendarListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            holder.calendar = calendars.get(position);
-            holder.titleView.setText(calendars.get(position).getTitle());
+            holder.calendar = position;
+            holder.titleView.setText(Calendars.getConfig(position, getApplicationContext()).getCalendarTitle());
 
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,51 +140,14 @@ public class CalendarListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return calendars.size();
-        }
-
-        //TODO delegate notifiers
-        @Override
-        public void onItemChanged(int position) {
-
-        }
-
-        @Override
-        public void onItemInserted(int position) {
-            notifyItemInserted(position);
-
-        }
-
-        @Override
-        public void onItemRemoved(int position) {
-
-        }
-
-        @Override
-        public void onItemRangeChanged(int positionStart, int itemCount) {
-
-        }
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-
-        }
-
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-
-        }
-
-        @Override
-        public void onDataSetChanged() {
-
+            return Calendars.getCalendarCount(getApplicationContext());
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             public final View view;
             public final TextView titleView;
-            public LinCal calendar;
+            public int calendar;
 
             public ViewHolder(View view) {
                 super(view);

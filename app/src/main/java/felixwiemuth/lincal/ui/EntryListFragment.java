@@ -32,29 +32,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import felixwiemuth.lincal.Main;
+
+import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
 
 /**
- * A fragment representing a single Calendar screen with a list of its entries.
- * This fragment is either contained in a {@link CalendarListActivity} in
- * two-pane mode (on tablets) or a {@link EntryListActivity} on handsets.
+ * A fragment representing a single Calendar screen with a list of its entries. This fragment is
+ * either contained in a {@link CalendarListActivity} in two-pane mode (on tablets) or a {@link
+ * EntryListActivity} on handsets.
  */
 public class EntryListFragment extends Fragment {
 
     /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
+     * The fragment argument representing the item ID that this fragment represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
 
     private LinCal calendar;
 
     /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
+     * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
+     * screen orientation changes).
      */
     public EntryListFragment() {
     }
@@ -70,25 +70,26 @@ public class EntryListFragment extends Fragment {
                 appBarLayout.setTitle("Toolbar title");
             }
             int calendarIndex = getArguments().getInt(ARG_ITEM_ID);
-            calendar = Main.get().getCalendars().get(calendarIndex);
+            calendar = Calendars.getCalendar(calendarIndex, getContext());
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.entry_list, container, false);
         //TODO maybe save and load data from savedInstanceState?
-
-        setupRecyclerView((RecyclerView) rootView.findViewById(R.id.entry_list));
         TextView titleView = (TextView) rootView.findViewById(R.id.cal_title);
-        titleView.setText(calendar.getTitle());
         TextView authorView = (TextView) rootView.findViewById(R.id.cal_author);
-        authorView.setText(calendar.getAuthor());
-        ((TextView) rootView.findViewById(R.id.cal_descr)).setText(calendar.getDescription());
-        ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
-        ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
-
+        if (calendar == null) {
+            titleView.setText(R.string.cal_title_error_loading);
+        } else {
+            titleView.setText(calendar.getTitle());
+            authorView.setText(calendar.getAuthor());
+            setupRecyclerView((RecyclerView) rootView.findViewById(R.id.entry_list));
+            ((TextView) rootView.findViewById(R.id.cal_descr)).setText(calendar.getDescription());
+            ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
+            ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
+        }
         return rootView;
     }
 
