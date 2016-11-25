@@ -18,15 +18,18 @@
 package felixwiemuth.lincal.parser;
 
 import android.content.Context;
+
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.ListIterator;
 import java.util.regex.Pattern;
+
 import linearfileparser.ArgKeyProcessor;
 import linearfileparser.IllegalLineException;
 import linearfileparser.LinearFileParser;
@@ -35,7 +38,6 @@ import linearfileparser.UnknownKeyException;
 import linearfileparser.UnknownSectionException;
 
 /**
- *
  * @author Felix Wiemuth
  */
 public class LinCalParser extends LinearFileParser {
@@ -66,6 +68,9 @@ public class LinCalParser extends LinearFileParser {
     private final Calendar currentDate = Calendar.getInstance();
     private boolean firstDate = false; // indicates that in MAIN section a date was set
 
+    /**
+     * @param context application context needed to provide String resources
+     */
     public LinCalParser(Context context) {
         super("#", "@", null, HEADER);
         this.context = context;
@@ -151,13 +156,7 @@ public class LinCalParser extends LinearFileParser {
     }
 
     private void setDate(String changeSpec, int min, String minError) throws InvalidDateSpecificationException {
-        int changed;
-        try {
-            changed = setDate(changeSpec);
-        } catch (NumberFormatException ex) {
-            throw new InvalidDateSpecificationException(getCurrentLineNumber(), s(R.string.invalidDateSpecificationException_base) + " " + ex.getMessage());
-        }
-
+        int changed = setDate(changeSpec);
         if (changed == 0 || changed < min) {
             StringBuilder sb = new StringBuilder();
             sb.append(s(R.string.invalidDateSpecificationException_base)).append(" ");
@@ -172,53 +171,55 @@ public class LinCalParser extends LinearFileParser {
     }
 
     /**
-     * Change the current date according to one of the following patterns. "d",
-     * "d/m", "d/m/y" where d is {@link Calendar#DAY_OF_MONTH}, m is
-     * {@link Calendar#MONTH} and y is {@link Calendar#YEAR}.
+     * Change the current date according to one of the following patterns. "d", "d/m", "d/m/y" where
+     * d is {@link Calendar#DAY_OF_MONTH}, m is {@link Calendar#MONTH} and y is {@link
+     * Calendar#YEAR}.
      *
      * @param changeSpec
-     * @return 0 if due to a wrong specification nothing was changed or 1,2,3 if
-     * d,d+m,d+m+y was changed
-     * @throws NumberFormatException if the date specification matches the basic
-     * format (d/m/y) but one is not a number (fields may have been changed
-     * before)
+     * @return 0 if due to a wrong specification nothing was changed or 1,2,3 if d,d+m,d+m+y was
+     * changed
+     * @throws InvalidDateSpecificationException if the date specification matches the basic format
+     *                                           (d/m/y) but one of the strings for d,m,y is not a
+     *                                           number (fields may have been changed before)
      */
-    private int setDate(String changeSpec) throws NumberFormatException {
+    private int setDate(String changeSpec) throws InvalidDateSpecificationException {
         int changed = 0;
         String[] split = DATE_PATTERN.split(changeSpec);
         if (split.length == 0 || split.length > 3) {
             return 0;
         }
-        currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[0]));
-        changed++;
-        if (split.length > 1) {
-            currentDate.set(Calendar.MONTH, Integer.parseInt(split[1]) - 1);
+        try {
+            currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[0]));
             changed++;
-            if (split.length > 2) {
-                currentDate.set(Calendar.YEAR, Integer.parseInt(split[2]));
+            if (split.length > 1) {
+                currentDate.set(Calendar.MONTH, Integer.parseInt(split[1]) - 1);
                 changed++;
+                if (split.length > 2) {
+                    currentDate.set(Calendar.YEAR, Integer.parseInt(split[2]));
+                    changed++;
+                }
             }
+        } catch (NumberFormatException ex) {
+            throw new InvalidDateSpecificationException(getCurrentLineNumber(), s(R.string.invalidDateSpecificationException_base) + " " + ex.getMessage());
         }
         return changed;
     }
 
     /**
-     *
      * @param file
      * @return
      * @throws IOException
      * @throws FileNotFoundException
      * @throws UnknownKeyException
      * @throws UnknownSectionException
-     * @thorws MissingArgumentException
      * @throws ParseException
+     * @thorws MissingArgumentException
      */
     public LinCal parse(File file) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
         c = LinCal.builder();
         e = CEntry.builder();
         _parse(file);
         return c.build();
-
     }
 
     private String s(int i) {
