@@ -68,7 +68,7 @@ public class AddCalendarActivity extends AppCompatActivity {
                 final String path = fileEditText.getText().toString();
                 if (config.containsCalendarFile(path)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddCalendarActivity.this);
-                    builder.setMessage("The calendar has already been added. Do you want to add another, independent copy?").setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+                    builder.setMessage(R.string.dialog_cal_already_added).setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }

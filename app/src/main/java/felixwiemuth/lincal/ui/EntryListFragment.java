@@ -151,7 +151,7 @@ public class EntryListFragment extends Fragment {
                     }
                 });
             }
-            dialog.setButton(AlertDialog.BUTTON_NEGATIVE, s(R.string.dialog_cancle), new DialogInterface.OnClickListener() {
+            dialog.setButton(AlertDialog.BUTTON_NEGATIVE, s(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
                     dialogInterface.dismiss();
