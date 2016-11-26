@@ -1,0 +1,3 @@
+[submodule "app/libs/LinearFileParser"]
+	path = app/libs/LinearFileParser
+	url = https://github.com/felixwiemuth/LinearFileParser

@@ -34,6 +34,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'libs/LinearFileParser/src'
+    }
 }
 
 dependencies {
@@ -43,7 +46,6 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
-    compile files('libs/LinearFileParser.jar')
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'ch.acra:acra:4.7.0'
 }
