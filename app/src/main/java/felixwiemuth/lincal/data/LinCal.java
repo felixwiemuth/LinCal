@@ -17,14 +17,17 @@
 
 package felixwiemuth.lincal.data;
 
-import felixwiemuth.lincal.Main;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import felixwiemuth.lincal.Main;
+
 /**
+ * The representation of a calendar. All fields are guaranteed to be non-null (ensured with an
+ * exception while building an object if this is not the case).
  *
  * @author Felix Wiemuth
  */
@@ -39,6 +42,30 @@ public class LinCal {
     private final List<CEntry> entries; // simple list, ordering is constructed at creation, no adaptions to list allowed
 
     public static class Builder {
+
+        public enum Field {
+            TITLE, AUTHOR, DESCR, VERSION, DATE;
+        }
+
+        /**
+         * Indicates that one of the fields is not set to a non-null value.
+         */
+        public static class MissingFieldException extends Exception {
+            private Field field;
+
+            public MissingFieldException(Field field) {
+                this.field = field;
+            }
+
+            public Field getField() {
+                return field;
+            }
+
+            @Override
+            public String getMessage() {
+                return "Cannot build calendar: missing field: " + field;
+            }
+        }
 
         private String title;
         private String author;
@@ -82,11 +109,28 @@ public class LinCal {
         }
 
         /**
-         * Entries will be sorted by date.
+         * Build an instance of {@link LinCal} described by this builder. All properties must have
+         * been set to non-null values. Entries will be sorted by date.
          *
          * @return
+         * @throws MissingFieldException if one of the fields is not set
          */
-        public LinCal build() {
+        public LinCal build() throws MissingFieldException {
+            if (title == null) {
+                throw new MissingFieldException(Field.TITLE);
+            }
+            if (author == null) {
+                throw new MissingFieldException(Field.AUTHOR);
+            }
+            if (description == null) {
+                throw new MissingFieldException(Field.DESCR);
+            }
+            if (version == null) {
+                throw new MissingFieldException(Field.VERSION);
+            }
+            if (date == null) {
+                throw new MissingFieldException(Field.DATE);
+            }
             return new LinCal(title, author, description, version, date, new ArrayList<>(entries));
         }
 

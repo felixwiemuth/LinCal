@@ -219,7 +219,12 @@ public class LinCalParser extends LinearFileParser {
         c = LinCal.builder();
         e = CEntry.builder();
         _parse(file);
-        return c.build();
+        try {
+            return c.build();
+        } catch (LinCal.Builder.MissingFieldException ex) {
+            //NOTE: could do the check already with a "leave action" of the header section but that would require much more code
+            throw new ParseException(getCurrentLineNumber(), "Missing field in header section: " + ex.getField());
+        }
     }
 
     private String s(int i) {
