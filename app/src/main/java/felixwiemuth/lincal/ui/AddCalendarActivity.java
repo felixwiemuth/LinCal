@@ -29,17 +29,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.FileNotFoundException;
-
 import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.Util;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
+import felixwiemuth.lincal.data.LinCalConfigStore;
 
 public class AddCalendarActivity extends AppCompatActivity {
 
-    private LinCalConfig config;
+    private LinCalConfigStore config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +64,8 @@ public class AddCalendarActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String path = fileEditText.getText().toString();
-                if (config.containsCalendarFile(path)) {
+                final String file = fileEditText.getText().toString();
+                if (config.containsCalendarFile(file)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddCalendarActivity.this);
                     builder.setMessage(R.string.dialog_cal_already_added).setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
                         @Override
@@ -75,17 +74,17 @@ public class AddCalendarActivity extends AppCompatActivity {
                     }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            addCalendar(path); //NOTE: as this starts another activity, the dialog is still displayed when switching
+                            addCalendar(file); //NOTE: as this starts another activity, the dialog is still displayed when switching
                         }
                     });
                     builder.show();
                 } else {
-                    addCalendar(path);
+                    addCalendar(file);
                 }
             }
         });
 
-        config = new LinCalConfig(getApplicationContext());
+        config = new LinCalConfigStore(getApplicationContext());
     }
 
     private void addCalendar(String file) {
@@ -101,17 +100,12 @@ public class AddCalendarActivity extends AppCompatActivity {
         if (calendarTitle.equals("")) {
             calendarTitle = calendar.getTitle();
         }
-        if (calendarTitle.contains(LinCalConfig.SEPARATOR)) {
-            showErrorDialog(R.string.dialog_error_title, String.format(getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR));
+        if (calendarTitle.contains(LinCalConfigStore.SEPARATOR)) {
+            showErrorDialog(R.string.dialog_error_title, String.format(getString(R.string.dialog_symbol_not_allowed_message), LinCalConfigStore.SEPARATOR));
             return;
         }
-        config.add(new LinCalConfig.Entry(file, calendarTitle, LinCalConfig.NotificationMode.GIVEN_TIME)); //TODO set notification mode from settings by a widget
-        try {
-            config.save();
-        } catch (FileNotFoundException ex) {
-            throw new RuntimeException(ex); //TODO show error dialog?
-        }
-        //Main.get().addCalendar(calendar);
+        //TODO set notification mode and notification time from settings by a widget
+        Calendars.getInstance(this).addCalendar(file, calendarTitle, LinCalConfig.NotificationMode.GIVEN_TIME, LinCalConfig.DEFAULT_NOTIFICATION_TIME);
         AddCalendarActivity.this.finish();
         Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
         intent.putExtra(CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED, true);

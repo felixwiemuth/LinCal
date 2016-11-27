@@ -48,7 +48,7 @@ public class EntryListFragment extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_CALENDAR_POS = "felixwiemuth.lincal.CalendarListActivity.EXTRA_ARG_CALENDAR_POS";
 
     private LinCal calendar;
 
@@ -63,21 +63,20 @@ public class EntryListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        if (getArguments().containsKey(ARG_CALENDAR_POS)) {
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle("Toolbar title");
             }
-            int calendarIndex = getArguments().getInt(ARG_ITEM_ID);
-            calendar = Calendars.getCalendar(calendarIndex, getContext());
+            int calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
+            calendar = Calendars.getInstance(getContext()).getCalendarById(calendarPos);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.entry_list, container, false);
-        //TODO maybe save and load data from savedInstanceState?
         TextView titleView = (TextView) rootView.findViewById(R.id.cal_title);
         TextView authorView = (TextView) rootView.findViewById(R.id.cal_author);
         if (calendar == null) {

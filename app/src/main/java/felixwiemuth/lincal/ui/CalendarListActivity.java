@@ -113,15 +113,13 @@ public class CalendarListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            holder.calendar = position;
-            holder.titleView.setText(Calendars.getConfig(position, getApplicationContext()).getCalendarTitle());
-
+            holder.titleView.setText(Calendars.getInstance(CalendarListActivity.this).getConfigByPos(position).getCalendarTitle());
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putInt(EntryListFragment.ARG_ITEM_ID, position);
+                        arguments.putInt(EntryListFragment.ARG_CALENDAR_POS, position);
                         EntryListFragment fragment = new EntryListFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -130,8 +128,7 @@ public class CalendarListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, EntryListActivity.class);
-                        intent.putExtra(EntryListFragment.ARG_ITEM_ID, position);
-
+                        intent.putExtra(EntryListFragment.ARG_CALENDAR_POS, position);
                         context.startActivity(intent);
                     }
                 }
@@ -140,14 +137,13 @@ public class CalendarListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return Calendars.getCalendarCount(getApplicationContext());
+            return Calendars.getInstance(CalendarListActivity.this).getCalendarCount();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             public final View view;
             public final TextView titleView;
-            public int calendar;
 
             public ViewHolder(View view) {
                 super(view);
