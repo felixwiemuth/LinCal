@@ -99,6 +99,7 @@ public class LinCalConfigStore {
         } catch (FileNotFoundException ex) { // this should not occur, as if the file does not exist, it will be created
             throw new RuntimeException(ex);
         }
+        writer.println(nextId);
         for (LinCalConfig linCalConfig : entries) {
             writer.println(linCalConfig);
         }
@@ -115,9 +116,12 @@ public class LinCalConfigStore {
      * @param calendarTitle
      * @param notificationMode
      * @param notificationTime
+     * @return the id of the new calendar
      */
-    public void add(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Date notificationTime) {
-        entries.add(new LinCalConfig(nextId++, calendarFile, calendarTitle, notificationMode, notificationTime));
+    public int add(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Date notificationTime) {
+        int id = nextId++;
+        entries.add(new LinCalConfig(id, calendarFile, calendarTitle, notificationMode, notificationTime));
+        return id;
     }
 
 
