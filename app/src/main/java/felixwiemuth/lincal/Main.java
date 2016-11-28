@@ -36,6 +36,7 @@ import org.acra.annotation.ReportsCrashes;
 public class Main extends Application {
 
     public static final DateFormat dfDay = DateFormat.getDateInstance();
+    public static final DateFormat dfDayTime = DateFormat.getDateTimeInstance();
 
 
     @Override

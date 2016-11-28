@@ -47,6 +47,19 @@ public class CEntry implements Comparable<CEntry> {
             return this;
         }
 
+        /**
+         * Takes hour and minute from the given calendar and sets these for the date previously set
+         * with {@link #date}. (which must not be null).
+         *
+         * @param time
+         * @return
+         */
+        public Builder time(Calendar time) {
+            this.date.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
+            this.date.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
+            return this;
+        }
+
         public Builder description(final String value) {
             this.description = value;
             return this;
@@ -84,6 +97,10 @@ public class CEntry implements Comparable<CEntry> {
 
     public String getDateStr() {
         return Main.dfDay.format(date.getTime());
+    }
+
+    public String getDateTimeStr() {
+        return Main.dfDayTime.format(date.getTime());
     }
 
     public String getDescription() {

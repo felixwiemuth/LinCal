@@ -113,7 +113,7 @@ public class EntryListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             final CEntry entry = calendar.get(position);
-            final String dateStr = entry.getDateStr();
+            final String dateStr = entry.getDateTimeStr();
             final String descr = entry.getDescription();
             holder.dateView.setText(dateStr);
             holder.descriptionView.setText(descr);

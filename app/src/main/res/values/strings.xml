@@ -23,12 +23,15 @@
 
     <string name="crash_toast_text">An unexcpeted error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You might add your comments about the problem.</string>
 
-    <string name="invalidDateSpecificationException_base">Invalid date specification: </string>
+    <string name="invalidDateSpecificationException_base">Invalid date specification:</string>
     <string name="invalidDateSpecificationException_expected_full">expected a full date specification (d/m/y)</string>
     <string name="invalidDateSpecificationException_in_header">for the calendar’s date</string>
     <string name="invalidDateSpecificationException_first">as first date</string>
     <string name="invalidDateSpecificationException_format">format error (use d/m/y)</string>
     <string name="dateSpecificationRequiredException">A first date must be specified with "@d d/m/y" before the first entry can be added.</string>
+    <string name="invalidTimeSpecificationException_base">Invalid time specification:</string>
+    <string name="invalidTimeSpecificationException_format">(use hh:mm)</string>
+
 
     <string name="cal_title">Title:</string>
     <string name="cal_title_error_loading">(The calendar could not be loaded due to an error)</string>

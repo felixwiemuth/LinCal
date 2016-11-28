@@ -142,16 +142,20 @@ public class Calendars {
 
 
     /**
-     * Add a calendar to the configuration and save it. It is added in the last position.
+     * Add a calendar to the configuration and save it. It is added in the last position. Runs
+     * {@link NotificationService} for the new calendar.
      *
      * @param calendarFile
      * @param calendarTitle
      * @param notificationMode
      * @param notificationTime
+     * @return the id of the new calendar
      */
-    public void addCalendar(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Date notificationTime) {
-        configStore.add(calendarFile, calendarTitle, notificationMode, notificationTime);
+    public int addCalendar(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Date notificationTime) {
+        int id = configStore.add(calendarFile, calendarTitle, notificationMode, notificationTime);
         configStore.save();
+        //NotificationService.runWithCalendar(context, id); //TODO activate
+        return id;
     }
 
     public void removeCalendarByPos(int pos) {
