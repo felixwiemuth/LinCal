@@ -75,7 +75,7 @@ public class LinCalParser extends LinearFileParser {
     private final Calendar currentDate = Calendar.getInstance();
     private final Calendar defaultTime = Calendar.getInstance();
     private final Calendar currentTime = Calendar.getInstance();
-    private boolean firstDate = false; // indicates that in MAIN section a date was set
+    private boolean firstDateSet = false; // indicates that in MAIN section a date was set
 
     /**
      * @param context application context needed to provide String resources
@@ -133,7 +133,7 @@ public class LinCalParser extends LinearFileParser {
         setDefaultProcessor(new DefaultProcessor() {
             @Override
             public boolean run(String line, ListIterator<String> it) throws IllegalLineException, ParseException {
-                if (!firstDate) {
+                if (!firstDateSet) {
                     throw new DateSpecificationRequiredException(getCurrentLineNumber(), s(R.string.dateSpecificationRequiredException));
                 }
                 e.date(currentDate).time(currentTime).link(line);
@@ -147,9 +147,9 @@ public class LinCalParser extends LinearFileParser {
         addKeyProcessor(MAIN, new ArgKeyProcessor(SWITCH_DATE) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
-                if (!firstDate) { // this is the first date specification
+                if (!firstDateSet) { // this is the first date specification
                     setDate(arg, 3, s(R.string.invalidDateSpecificationException_first));
-                    firstDate = true;
+                    firstDateSet = true;
                 } else {
                     setDate(arg);
                 }
@@ -247,6 +247,7 @@ public class LinCalParser extends LinearFileParser {
      * @throws ParseException
      */
     public LinCal parse(File file) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
+        currentDate.setTimeInMillis(0);
         defaultTime.setTime(LinCalConfig.DEFAULT_NOTIFICATION_TIME); //TODO might want to choose different default
         currentTime.setTime(defaultTime.getTime());
         c = LinCal.builder();
