@@ -19,10 +19,7 @@ package felixwiemuth.lincal.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -160,29 +157,12 @@ public class EntryListFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
                     dialogInterface.dismiss();
-                    Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(entry.getLink()));
-                    try {
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException ex) { // there is no activity to handle the link - show a dialog with the string
-                        showNonLinkEntryAsDialog(entry);
-                    }
+                    entry.open(getContext());
                 }
             });
             dialog.show();
         }
 
-        private void showNonLinkEntryAsDialog(CEntry entry) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
-            builder.setTitle(entry.getDateStr())
-                    .setMessage(entry.getLink())
-                    .setPositiveButton(R.string.dialog_dismiss, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
-        }
 
         @Override
         public int getItemCount() {

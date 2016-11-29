@@ -17,9 +17,17 @@
 
 package felixwiemuth.lincal.data;
 
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+
 import java.util.Calendar;
 
 import felixwiemuth.lincal.Main;
+import felixwiemuth.lincal.R;
 
 /**
  * Represents one calendar in the list of calendars.
@@ -109,5 +117,27 @@ public class CEntry implements Comparable<CEntry> {
 
     public String getLink() {
         return link;
+    }
+
+    public void open(Context context) {
+        Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(getLink()));
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException ex) { // there is no activity to handle the link - show a dialog with the string
+            showNonLinkEntryAsDialog(context);
+        }
+    }
+
+    private void showNonLinkEntryAsDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(getDateStr())
+                .setMessage(getLink())
+                .setPositiveButton(R.string.dialog_dismiss, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 }
