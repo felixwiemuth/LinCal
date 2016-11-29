@@ -75,7 +75,8 @@ public class LinCalParser extends LinearFileParser {
     private final Calendar currentDate = Calendar.getInstance();
     private final Calendar defaultTime = Calendar.getInstance();
     private final Calendar currentTime = Calendar.getInstance();
-    private boolean firstDateSet = false; // indicates that in MAIN section a date was set
+    private boolean firstDateSet; // indicates that in MAIN section a date was set
+    private boolean timeSet; // indicated whether a time has been set explicitely for the current entry
 
     /**
      * @param context application context needed to provide String resources
@@ -136,6 +137,10 @@ public class LinCalParser extends LinearFileParser {
                 if (!firstDateSet) {
                     throw new DateSpecificationRequiredException(getCurrentLineNumber(), s(R.string.dateSpecificationRequiredException));
                 }
+                if (!timeSet) {
+                    currentTime.setTime(defaultTime.getTime());
+                }
+                timeSet = false;
                 e.date(currentDate).time(currentTime).link(line);
                 c.addCEntry(e.build());
                 e = CEntry.builder();
@@ -160,6 +165,7 @@ public class LinCalParser extends LinearFileParser {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 setTime(arg, currentTime);
+                timeSet = true;
             }
         });
 
@@ -247,11 +253,14 @@ public class LinCalParser extends LinearFileParser {
      * @throws ParseException
      */
     public LinCal parse(File file) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
+        // Initialize parser
         currentDate.setTimeInMillis(0);
         defaultTime.setTime(LinCalConfig.DEFAULT_NOTIFICATION_TIME); //TODO might want to choose different default
-        currentTime.setTime(defaultTime.getTime());
+        firstDateSet = false;
+        timeSet = false;
         c = LinCal.builder();
         e = CEntry.builder();
+        // Run parser
         _parse(file);
         try {
             return c.build();
