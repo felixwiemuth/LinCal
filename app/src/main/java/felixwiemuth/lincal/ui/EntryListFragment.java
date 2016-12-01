@@ -67,7 +67,7 @@ public class EntryListFragment extends Fragment {
                 appBarLayout.setTitle("Toolbar title");
             }
             int calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
-            calendar = Calendars.getInstance(getContext()).getCalendarById(calendarPos);
+            calendar = Calendars.getInstance(getContext()).getCalendarByPos(calendarPos);
         }
     }
 
