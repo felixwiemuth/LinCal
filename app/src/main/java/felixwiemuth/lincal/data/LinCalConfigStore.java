@@ -21,6 +21,7 @@ import android.content.Context;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,7 +45,8 @@ public class LinCalConfigStore {
 
     public static final String NOTIFICATION_MODE_GIVEN_TIME = "GIVEN_TIME";
     public static final String NOTIFICATION_MODE_SCREEN_ON = "SCREEN_ON";
-    public static final String CONFIG_FILE_NAME = "config.txt";
+    public static final String CONFIG_FILE = "config.txt";
+    public static final String CONFIG_FILE_OPENED = CONFIG_FILE + ".locked"; // name of the file while reading or writing from/to it
 
     private final Context context;
     private int nextId;
@@ -59,8 +61,9 @@ public class LinCalConfigStore {
     public LinCalConfigStore(Context context) {
         this.context = context;
         //TODO check correct handling of exceptions
+        lockConfigFile(); //TODO this won't work if the file doesn't exist
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(context.openFileInput(CONFIG_FILE_NAME)));
+            BufferedReader in = new BufferedReader(new InputStreamReader(context.openFileInput(CONFIG_FILE_OPENED)));
             try {
                 String line = in.readLine();
                 try {
@@ -76,6 +79,7 @@ public class LinCalConfigStore {
             } finally {
                 try {
                     in.close();
+                    unlockConfigFile(); //TODO how to deal with exceptions, unlock file?
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -91,12 +95,13 @@ public class LinCalConfigStore {
      * is not present, it is created.
      */
     public void save() {
+        lockConfigFile();
         FileOutputStream outputStream;
         PrintWriter writer = null;
         try {
             //TODO check how to allow file to be public (other modes deprecated)
-            writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(context.openFileOutput(CONFIG_FILE_NAME, Context.MODE_PRIVATE))));
-        } catch (FileNotFoundException ex) { // this should not occur, as if the file does not exist, it will be created
+            writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(context.openFileOutput(CONFIG_FILE_OPENED, Context.MODE_PRIVATE))));
+        } catch (FileNotFoundException ex) { // this should not occur, as when locking the file succeeds, it should exist
             throw new RuntimeException(ex);
         }
         writer.println(nextId);
@@ -104,6 +109,7 @@ public class LinCalConfigStore {
             writer.println(linCalConfig);
         }
         writer.close();
+        unlockConfigFile(); //TODO if this throws an exception: ignoring error check at writer
         if (writer.checkError()) {
             throw new RuntimeException("Error while writing to configuration file.");
         }
@@ -136,5 +142,29 @@ public class LinCalConfigStore {
 
     public List<LinCalConfig> getEntries() {
         return entries;
+    }
+
+    private void lockConfigFile() {
+        File dir = context.getFilesDir();
+        // in increasing time intervals of up to ~15s try to lock file (6 times)
+        for (int t = 5; t <= 15625; t *= 5) {
+            // renaming should fail if it was already renamed
+            if (new File(dir, CONFIG_FILE).renameTo(new File(dir, CONFIG_FILE_OPENED))) {
+                return;
+            }
+            try {
+                Thread.sleep(t, 0);
+            } catch (InterruptedException ex) {
+                // just try again
+            }
+        }
+        throw new RuntimeException("Error: Could not lock config file to read/write.");
+    }
+
+    private void unlockConfigFile() {
+        File dir = context.getFilesDir();
+        if (!new File(dir, CONFIG_FILE_OPENED).renameTo(new File(dir, CONFIG_FILE))) {
+            throw new RuntimeException("Error: Could not unlock config file.");
+        }
     }
 }
