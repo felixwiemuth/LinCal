@@ -154,7 +154,7 @@ public class Calendars {
     public int addCalendar(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Date notificationTime) {
         int id = configStore.add(calendarFile, calendarTitle, notificationMode, notificationTime);
         configStore.save();
-        //NotificationService.runWithCalendar(context, id); //TODO activate
+        NotificationService.runWithCalendar(context, id);
         return id;
     }
 
