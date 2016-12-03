@@ -62,14 +62,18 @@ public class AddCalendarActivity extends AppCompatActivity {
                 final String file = fileEditText.getText().toString();
                 EditText titleEditText = (EditText) findViewById(R.id.ce_title);
                 //TODO set notification mode and notification time from settings by a widget
-                Calendars.addCalendarChecked(file, titleEditText.getText().toString(), LinCalConfig.NotificationMode.GIVEN_TIME, DEFAULT_EARLIEST_NOTIFICATION_TIME, AddCalendarActivity.this);
+                Calendars.addCalendarChecked(file, titleEditText.getText().toString(), LinCalConfig.NotificationMode.GIVEN_TIME, DEFAULT_EARLIEST_NOTIFICATION_TIME, AddCalendarActivity.this, new Runnable() {
+                    @Override
+                    public void run() {
+                        // Return to CalendarListActivity
+                        AddCalendarActivity.this.finish();
+                        Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
+                        intent.putExtra(CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED, true);
+                        //intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); //NOTE this would prevent activity from restarting
+                        startActivity(intent);
+                    }
+                });
 
-                // Return to CalendarListActivity
-                AddCalendarActivity.this.finish();
-                Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
-                intent.putExtra(CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED, true);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); //NOTE this would prevent activity from restarting
-                startActivity(intent);
             }
         });
     }

@@ -31,7 +31,6 @@ import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.parser.LinCalParser;
-import felixwiemuth.lincal.ui.AddCalendarActivity;
 import felixwiemuth.lincal.util.Time;
 import linearfileparser.ParseException;
 
@@ -171,13 +170,17 @@ public class Calendars {
      * position. Runs {@link NotificationService} for the new calendar.
      *
      * @param calendarFile
-     * @param title intended title for the calendar or "" to use the calendars title
+     * @param title                    intended title for the calendar or "" to use the calendars
+     *                                 title
      * @param notificationMode
      * @param earliestNotificationTime
      * @param context
-     * @return the id of the new calendar or -1 if aborted due to an error or the user's decision not to add the calendar
+     * @param finish                   action to be performed when the calendar has been added (and
+     *                                 not otherwise)
+     * @return the id of the new calendar or -1 if aborted due to an error or the user's decision
+     * not to add the calendar
      */
-    public static void addCalendarChecked(final String calendarFile, final String title, final LinCalConfig.NotificationMode notificationMode, final Time earliestNotificationTime, Context context) {
+    public static void addCalendarChecked(final String calendarFile, final String title, final LinCalConfig.NotificationMode notificationMode, final Time earliestNotificationTime, Context context, final Runnable finish) {
         final Calendars instance = getInstance(context);
         // First load calendar to check syntax and get information (title)
         LinCal calendar = loadCalendar(calendarFile, context);
@@ -198,12 +201,14 @@ public class Calendars {
             }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    instance.addCalendar(calendarFile, title, notificationMode, earliestNotificationTime); //NOTE: as this starts another activity, the dialog is still displayed when switching
+                    instance.addCalendar(calendarFile, title, notificationMode, earliestNotificationTime);
+                    finish.run();
                 }
             });
             builder.show();
         } else {
             instance.addCalendar(calendarFile, title, notificationMode, earliestNotificationTime);
+            finish.run();
         }
     }
 
