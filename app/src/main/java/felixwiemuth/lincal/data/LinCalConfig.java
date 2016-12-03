@@ -90,6 +90,7 @@ public class LinCalConfig {
         calendarFile = values.next();
         calendarTitle = values.next();
         notificationMode = NotificationMode.valueOf(values.next());
+        earliestNotificationTime = new Time(0, 0);
         if (!earliestNotificationTime.set(values.next())) {
             throw new FormatException("Invalid time specification.");
         }
