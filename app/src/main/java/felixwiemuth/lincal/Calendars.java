@@ -22,7 +22,6 @@ import android.content.Context;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +29,7 @@ import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.parser.LinCalParser;
+import felixwiemuth.lincal.util.Time;
 import linearfileparser.ParseException;
 
 import static felixwiemuth.lincal.util.Util.showErrorDialog;
@@ -148,11 +148,11 @@ public class Calendars {
      * @param calendarFile
      * @param calendarTitle
      * @param notificationMode
-     * @param notificationTime
+     * @param earliestNotificationTime
      * @return the id of the new calendar
      */
-    public int addCalendar(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Date notificationTime) {
-        int id = configStore.add(calendarFile, calendarTitle, notificationMode, notificationTime);
+    public int addCalendar(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
+        int id = configStore.add(calendarFile, calendarTitle, notificationMode, earliestNotificationTime);
         configStore.save();
         NotificationService.runWithCalendar(context, id);
         return id;
@@ -165,7 +165,7 @@ public class Calendars {
 
     /**
      * Write the current configuration to the configuration file. This is automatically called by
-     * {@link #addCalendar(String, String, LinCalConfig.NotificationMode, Date)} and {@link
+     * {@link #addCalendar(String, String, LinCalConfig.NotificationMode, Time)} and {@link
      * #removeCalendarByPos(int)} but has to be called manually when changing a configuration
      * obtained by {@link #getConfigByPos(int)} or {@link #getConfigById(int)}.
      */

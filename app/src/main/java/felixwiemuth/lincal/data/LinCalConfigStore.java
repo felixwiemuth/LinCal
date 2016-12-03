@@ -29,8 +29,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import felixwiemuth.lincal.util.Time;
 
 /**
  * Holds configurations of all added calendars. Ensures that if an entry is added to the file also
@@ -40,8 +41,6 @@ import java.util.List;
  * @author Felix Wiemuth
  */
 public class LinCalConfigStore {
-
-    public static final String SEPARATOR = ";"; // separator for config values in a line of the configuration file
 
     public static final String NOTIFICATION_MODE_GIVEN_TIME = "GIVEN_TIME";
     public static final String NOTIFICATION_MODE_SCREEN_ON = "SCREEN_ON";
@@ -121,12 +120,12 @@ public class LinCalConfigStore {
      * @param calendarFile
      * @param calendarTitle
      * @param notificationMode
-     * @param notificationTime
+     * @param earliestNotificationTime
      * @return the id of the new calendar
      */
-    public int add(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Date notificationTime) {
+    public int add(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
         int id = nextId++;
-        entries.add(new LinCalConfig(id, calendarFile, calendarTitle, notificationMode, notificationTime));
+        entries.add(new LinCalConfig(id, calendarFile, calendarTitle, notificationMode, earliestNotificationTime));
         return id;
     }
 

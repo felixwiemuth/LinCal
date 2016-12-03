@@ -31,12 +31,15 @@ import android.widget.EditText;
 
 import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
-import felixwiemuth.lincal.util.Util;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;
+import felixwiemuth.lincal.util.Time;
+import felixwiemuth.lincal.util.Util;
 
 public class AddCalendarActivity extends AppCompatActivity {
+
+    public static final Time DEFAULT_EARLIEST_NOTIFICATION_TIME = new Time(12, 0);
 
     private LinCalConfigStore config;
 
@@ -100,12 +103,12 @@ public class AddCalendarActivity extends AppCompatActivity {
         if (calendarTitle.equals("")) {
             calendarTitle = calendar.getTitle();
         }
-        if (calendarTitle.contains(LinCalConfigStore.SEPARATOR)) {
-            showErrorDialog(R.string.dialog_error_title, String.format(getString(R.string.dialog_symbol_not_allowed_message), LinCalConfigStore.SEPARATOR));
+        if (calendarTitle.contains(LinCalConfig.SEPARATOR)) {
+            showErrorDialog(R.string.dialog_error_title, String.format(getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR));
             return;
         }
         //TODO set notification mode and notification time from settings by a widget
-        Calendars.getInstance(this).addCalendar(file, calendarTitle, LinCalConfig.NotificationMode.GIVEN_TIME, LinCalConfig.DEFAULT_NOTIFICATION_TIME);
+        Calendars.getInstance(this).addCalendar(file, calendarTitle, LinCalConfig.NotificationMode.GIVEN_TIME, DEFAULT_EARLIEST_NOTIFICATION_TIME);
         AddCalendarActivity.this.finish();
         Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
         intent.putExtra(CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED, true);

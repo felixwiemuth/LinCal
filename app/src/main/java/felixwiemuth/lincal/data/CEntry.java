@@ -119,13 +119,11 @@ public class CEntry implements Comparable<CEntry> {
      * Based on the user's settings, decides whether an entry is due.
      *
      * @param config the configuration to consider
-     * @param now the time to compare to
+     * @param now    the time to compare to
      * @return
      */
     public boolean isDue(LinCalConfig config, Calendar now) {
-        //TODO consider in addition user settings
-        //TODO check whether all calendars are initialized correctly (same locale etc.)
-        return (!getDate().after(now) && !config.getNotificationTime().after(now.getTime()));
+        return (!getDate().after(now) && !config.getEarliestNotificationTime().after(now));
     }
 
     private void showNonLinkEntryAsDialog(Context context) {

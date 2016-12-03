@@ -17,38 +17,33 @@
 
 package felixwiemuth.lincal.data;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
+
+import felixwiemuth.lincal.util.Time;
 
 /**
  * Represents the configuration of a calendar.
  */
 public class LinCalConfig {
+    public static final String SEPARATOR = ";"; // separator for config values in a line of the configuration file
+
     public enum NotificationMode {
         GIVEN_TIME,
         SCREEN_ON
     }
 
     /**
-     * Indicated that the entry to be parsed is not well-formatted.
+     * Indicates that the entry to be parsed is not well-formatted.
      */
     public static class FormatException extends Exception {
+
+        public FormatException(String detailMessage) {
+            super(detailMessage);
+        }
+
         public FormatException(Throwable throwable) {
             super(throwable);
-        }
-    }
-
-    public static final SimpleDateFormat SDF = new SimpleDateFormat("H:mm");
-    public static final Date DEFAULT_NOTIFICATION_TIME;
-
-    static {
-        try {
-            DEFAULT_NOTIFICATION_TIME = SDF.parse("12:00");
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -56,7 +51,8 @@ public class LinCalConfig {
     private String calendarFile;
     private String calendarTitle;
     private NotificationMode notificationMode;
-    private Date notificationTime;
+    private Time earliestNotificationTime;
+    private boolean active;
     private int pos;
 
     /**
@@ -66,14 +62,15 @@ public class LinCalConfig {
      * @param calendarFile
      * @param calendarTitle
      * @param notificationMode
-     * @param notificationTime
+     * @param earliestNotificationTime
      */
-    public LinCalConfig(int id, String calendarFile, String calendarTitle, NotificationMode notificationMode, Date notificationTime) {
+    public LinCalConfig(int id, String calendarFile, String calendarTitle, NotificationMode notificationMode, Time earliestNotificationTime) {
         this.id = id;
         this.calendarFile = calendarFile;
         this.calendarTitle = calendarTitle;
         this.notificationMode = notificationMode;
-        this.notificationTime = notificationTime;
+        this.earliestNotificationTime = earliestNotificationTime;
+        this.active = true;
         this.pos = 0;
     }
 
@@ -83,7 +80,7 @@ public class LinCalConfig {
      * @param line
      */
     public LinCalConfig(String line) throws FormatException {
-        String[] split = line.split(LinCalConfigStore.SEPARATOR);
+        String[] split = line.split(SEPARATOR);
         Iterator<String> values = Arrays.asList(split).iterator();
         try {
             id = Integer.parseInt(values.next());
@@ -93,11 +90,10 @@ public class LinCalConfig {
         calendarFile = values.next();
         calendarTitle = values.next();
         notificationMode = NotificationMode.valueOf(values.next());
-        try {
-            notificationTime = SDF.parse(values.next());
-        } catch (ParseException ex) {
-            throw new FormatException(ex);
+        if (!earliestNotificationTime.set(values.next())) {
+            throw new FormatException("Invalid time specification.");
         }
+        active = Boolean.parseBoolean(values.next());
         try {
             pos = Integer.parseInt(values.next());
         } catch (NumberFormatException ex) {
@@ -117,8 +113,12 @@ public class LinCalConfig {
         return notificationMode;
     }
 
-    public Date getNotificationTime() {
-        return notificationTime;
+    public Time getEarliestNotificationTime() {
+        return earliestNotificationTime;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public int getPos() {
@@ -137,8 +137,12 @@ public class LinCalConfig {
         this.notificationMode = notificationMode;
     }
 
-    public void setNotificationTime(Date notificationTime) {
-        this.notificationTime = notificationTime;
+    public void setEarliestNotificationTime(Time earliestNotificationTime) {
+        this.earliestNotificationTime = earliestNotificationTime;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setPos(int pos) {
@@ -156,6 +160,12 @@ public class LinCalConfig {
      */
     @Override
     public String toString() {
-        return id + LinCalConfigStore.SEPARATOR + calendarFile + LinCalConfigStore.SEPARATOR + calendarTitle + LinCalConfigStore.SEPARATOR + notificationMode + LinCalConfigStore.SEPARATOR + SDF.format(notificationTime) + LinCalConfigStore.SEPARATOR + pos;
+        return id + SEPARATOR
+                + calendarFile + SEPARATOR
+                + calendarTitle + SEPARATOR
+                + notificationMode + SEPARATOR
+                + earliestNotificationTime + SEPARATOR
+                + active + SEPARATOR
+                + pos;
     }
 }

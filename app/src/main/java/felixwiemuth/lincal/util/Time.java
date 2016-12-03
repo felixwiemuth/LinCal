@@ -44,6 +44,14 @@ public class Time {
         return minute;
     }
 
+    public boolean before(Calendar calendar) {
+        return (hour < calendar.get(Calendar.HOUR_OF_DAY) || hour == calendar.get(Calendar.HOUR_OF_DAY) && minute < calendar.get(Calendar.MINUTE));
+    }
+
+    public boolean after(Calendar calendar) {
+        return (hour > calendar.get(Calendar.HOUR_OF_DAY) || hour == calendar.get(Calendar.HOUR_OF_DAY) && minute > calendar.get(Calendar.MINUTE));
+    }
+
     /**
      * @param minute
      * @return true, if 0 <= minute <= 59
@@ -97,5 +105,10 @@ public class Time {
     public void setAtCalendar(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
+    }
+
+    @Override
+    public String toString() {
+        return hour + TIME_PATTERN.pattern() + minute;
     }
 }
