@@ -28,6 +28,7 @@ import java.io.File;
 import java.text.DateFormat;
 
 import felixwiemuth.lincal.data.LinCalConfigStore;
+import felixwiemuth.lincal.util.Util;
 
 @ReportsCrashes(
         mailTo = "felixwiemuth@hotmail.de",
@@ -61,5 +62,9 @@ public class Main extends Application {
             }
             LinCalConfigStore.createInitialConfigurationFile(context);
         }
+    }
+
+    public static void showWelcomeMessage(Context context) {
+        Util.showMessageDialog(R.string.dialog_welcome_title, context.getString(R.string.welcome_message), context);
     }
 }

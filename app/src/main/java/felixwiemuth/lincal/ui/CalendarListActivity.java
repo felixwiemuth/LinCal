@@ -19,6 +19,7 @@ package felixwiemuth.lincal.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import felixwiemuth.lincal.Calendars;
+import felixwiemuth.lincal.Main;
 import felixwiemuth.lincal.R;
 
 /**
@@ -87,6 +89,13 @@ public class CalendarListActivity extends AppCompatActivity {
             if (getIntent().getBooleanExtra(EXTRA_ARG_CONFIG_CHANGED, false)) { // this means a calendar was added, so select the last entry
                 recyclerView.scrollToPosition(recyclerView.getChildCount()); //TODO this just scrolls, actually selecting the item is more tricky: http://stackoverflow.com/questions/27377830/what-is-the-equivalent-listview-setselection-in-case-of-recycler-view
             }
+        }
+
+        // Show welcome message on first launch and remember this in shared preferences
+        SharedPreferences preferences = getPreferences(0);
+        if (!preferences.contains("welcomeMessageShown")) {
+            Main.showWelcomeMessage(this);
+            preferences.edit().putBoolean("welcomeMessageShown", true).apply();
         }
     }
 

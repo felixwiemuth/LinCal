@@ -30,6 +30,17 @@ import felixwiemuth.lincal.R;
  */
 public class Util {
 
+    public static void showMessageDialog(int title, String message, Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setPositiveButton(R.string.dialog_general_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setTitle(title).setMessage(message);
+        builder.show();
+    }
+
     public static void showErrorDialog(int title, String message, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(R.string.dialog_error_dismiss, new DialogInterface.OnClickListener() {

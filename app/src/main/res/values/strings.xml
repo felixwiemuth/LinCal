@@ -21,7 +21,11 @@
     <string name="title_activity_add_calendar">Add Calendar</string>
     <string name="title_activity_test">Test</string>
 
-    <string name="crash_toast_text">An unexcpeted error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You might add your comments about the problem.</string>
+    <string name="dialog_general_ok">Ok</string>
+    <string name="dialog_welcome_title">Welcome</string>
+    <string name="welcome_message">Welcome to LinCal! This is a pre-release version which is incomplete and probably contains a lot of errors - please report them.</string>
+
+    <string name="crash_toast_text">An unexpected error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You might add your comments about the problem.</string>
 
     <string name="invalidDateSpecificationException_base">Invalid date specification:</string>
     <string name="invalidDateSpecificationException_expected_full">expected a full date specification (d/m/y)</string>
