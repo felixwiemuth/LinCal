@@ -31,7 +31,7 @@ import android.widget.EditText;
 
 import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
-import felixwiemuth.lincal.Util;
+import felixwiemuth.lincal.util.Util;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;

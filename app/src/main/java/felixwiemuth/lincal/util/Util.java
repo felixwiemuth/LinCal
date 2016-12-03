@@ -15,11 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package felixwiemuth.lincal;
+package felixwiemuth.lincal.util;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+
+import felixwiemuth.lincal.R;
 
 /**
  * Utility methods.

@@ -32,7 +32,7 @@ import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.parser.LinCalParser;
 import linearfileparser.ParseException;
 
-import static felixwiemuth.lincal.Util.showErrorDialog;
+import static felixwiemuth.lincal.util.Util.showErrorDialog;
 
 /**
  * This is the single way calendars should be retrieved from, added to and removed from the
