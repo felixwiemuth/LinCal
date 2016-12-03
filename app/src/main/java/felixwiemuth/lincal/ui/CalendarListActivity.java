@@ -47,7 +47,7 @@ public class CalendarListActivity extends AppCompatActivity {
      * If this extra is given when starting the activity, all calendars are reloaded. If the value
      * is "true", the last calendar in the list is selected.
      */
-    public static final String EXTRA_ARG_CONFIG_CHANGED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED";
+    public static final String EXTRA_ARG_CONFIG_CHANGED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED"; //TODO update this to "calendar added"
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet device.

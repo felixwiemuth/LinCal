@@ -17,7 +17,9 @@
 
 package felixwiemuth.lincal;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,6 +31,7 @@ import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.parser.LinCalParser;
+import felixwiemuth.lincal.ui.AddCalendarActivity;
 import felixwiemuth.lincal.util.Time;
 import linearfileparser.ParseException;
 
@@ -44,7 +47,7 @@ import static felixwiemuth.lincal.util.Util.showErrorDialog;
  */
 public class Calendars {
     private static final Calendars instance = new Calendars();
-    private Context context; //NOTE: a context has to be provided when obtaining the instance
+    private Context context; //NOTE: a context has to be provided when obtaining the instance //TODO consider warning about memory leak
     private LinCalConfigStore configStore;
     /**
      * NOTE: It would be enough to load every calendar file once but as adding the same calendar
@@ -66,7 +69,7 @@ public class Calendars {
      */
     public static Calendars getInstance(Context context) {
         instance.context = context;
-        instance.loadConfig();
+        instance.loadConfig(); //TODO this should not be necessary when config is already loaded
         return instance;
     }
 
@@ -140,6 +143,9 @@ public class Calendars {
         return configsById.get(id);
     }
 
+    public boolean calendarFromFileExists(String file) {
+        return configStore.containsCalendarFile(file);
+    }
 
     /**
      * Add a calendar to the configuration and save it. It is added in the last position. Runs
@@ -156,6 +162,49 @@ public class Calendars {
         configStore.save();
         NotificationService.runWithCalendar(context, id);
         return id;
+    }
+
+    /**
+     * Add a calendar to the configuration and save it. First checks whether a calendar with the
+     * given file is already present in the configuration and if so shows a confirmation dialog to
+     * ask whether to proceed. Also checks whether the title is valid. It is added in the last
+     * position. Runs {@link NotificationService} for the new calendar.
+     *
+     * @param calendarFile
+     * @param title intended title for the calendar or "" to use the calendars title
+     * @param notificationMode
+     * @param earliestNotificationTime
+     * @param context
+     * @return the id of the new calendar or -1 if aborted due to an error or the user's decision not to add the calendar
+     */
+    public static void addCalendarChecked(final String calendarFile, final String title, final LinCalConfig.NotificationMode notificationMode, final Time earliestNotificationTime, Context context) {
+        final Calendars instance = getInstance(context);
+        // First load calendar to check syntax and get information (title)
+        LinCal calendar = loadCalendar(calendarFile, context);
+        if (calendar == null) {
+            return;
+        }
+        final String calendarTitle = title.equals("") ? calendar.getTitle() : title;
+        if (title.contains(LinCalConfig.SEPARATOR)) {
+            showErrorDialog(R.string.dialog_error_title, String.format(context.getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR), context);
+            return;
+        }
+        if (instance.configStore.containsCalendarFile(calendarFile)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(R.string.dialog_cal_already_added).setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    instance.addCalendar(calendarFile, title, notificationMode, earliestNotificationTime); //NOTE: as this starts another activity, the dialog is still displayed when switching
+                }
+            });
+            builder.show();
+        } else {
+            instance.addCalendar(calendarFile, title, notificationMode, earliestNotificationTime);
+        }
     }
 
     public void removeCalendarByPos(int pos) {

@@ -17,8 +17,6 @@
 
 package felixwiemuth.lincal.ui;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,17 +29,12 @@ import android.widget.EditText;
 
 import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
-import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
-import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.util.Time;
-import felixwiemuth.lincal.util.Util;
 
 public class AddCalendarActivity extends AppCompatActivity {
 
     public static final Time DEFAULT_EARLIEST_NOTIFICATION_TIME = new Time(12, 0);
-
-    private LinCalConfigStore config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,61 +56,22 @@ public class AddCalendarActivity extends AppCompatActivity {
             fileEditText.setText(uri.getPath());
         }
 
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String file = fileEditText.getText().toString();
-                if (config.containsCalendarFile(file)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AddCalendarActivity.this);
-                    builder.setMessage(R.string.dialog_cal_already_added).setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            addCalendar(file); //NOTE: as this starts another activity, the dialog is still displayed when switching
-                        }
-                    });
-                    builder.show();
-                } else {
-                    addCalendar(file);
-                }
+                EditText titleEditText = (EditText) findViewById(R.id.ce_title);
+                //TODO set notification mode and notification time from settings by a widget
+                Calendars.addCalendarChecked(file, titleEditText.getText().toString(), LinCalConfig.NotificationMode.GIVEN_TIME, DEFAULT_EARLIEST_NOTIFICATION_TIME, AddCalendarActivity.this);
+
+                // Return to CalendarListActivity
+                AddCalendarActivity.this.finish();
+                Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
+                intent.putExtra(CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED, true);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); //NOTE this would prevent activity from restarting
+                startActivity(intent);
             }
         });
-
-        config = new LinCalConfigStore(getApplicationContext());
-    }
-
-    private void addCalendar(String file) {
-        EditText titleEditText = (EditText) findViewById(R.id.ce_title);
-        LinCal calendar = Calendars.loadCalendar(file, this);
-        if (calendar == null) {
-            return;
-        }
-
-        // Before adding a calendar, load it to check syntax and get information
-
-        String calendarTitle = titleEditText.getText().toString();
-        if (calendarTitle.equals("")) {
-            calendarTitle = calendar.getTitle();
-        }
-        if (calendarTitle.contains(LinCalConfig.SEPARATOR)) {
-            showErrorDialog(R.string.dialog_error_title, String.format(getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR));
-            return;
-        }
-        //TODO set notification mode and notification time from settings by a widget
-        Calendars.getInstance(this).addCalendar(file, calendarTitle, LinCalConfig.NotificationMode.GIVEN_TIME, DEFAULT_EARLIEST_NOTIFICATION_TIME);
-        AddCalendarActivity.this.finish();
-        Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
-        intent.putExtra(CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED, true);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); //NOTE this would prevent activity from restarting
-        startActivity(intent);
-    }
-
-    private void showErrorDialog(int title, String message) {
-        Util.showErrorDialog(title, message, this);
     }
 
     @Override
