@@ -60,7 +60,7 @@ public class Main extends Application {
             if (!configDir.mkdir()) {
                 throw new RuntimeException("Could not create configuration directory.");
             }
-            LinCalConfigStore.createInitialConfigurationFile(context);
+            LinCalConfigStore.createInitialConfigurationFile(context); //TODO is this guaranteed to finish before AddCalendarActivity loads and tries to access file?
         }
     }
 

@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -50,11 +49,6 @@ public class LinCalConfigStore {
     private final Context context;
     private int nextId;
     private final List<LinCalConfig> entries = new ArrayList<>();
-
-    private LinCalConfigStore(Context context, int nextId) {
-        this.context = context;
-        this.nextId = nextId;
-    }
 
     /**
      * Creates an instance and loads all entries from the configuration file. If the file is not
@@ -100,7 +94,6 @@ public class LinCalConfigStore {
      */
     public void save() {
         lockConfigFile();
-        FileOutputStream outputStream;
         PrintWriter writer = null;
         try {
             //TODO check how to allow file to be public (other modes deprecated)
@@ -125,8 +118,8 @@ public class LinCalConfigStore {
      * @param calendarFile
      * @param calendarTitle
      * @param entryDisplayMode
-     *@param notificationMode
-     * @param earliestNotificationTime   @return the id of the new calendar
+     * @param notificationMode
+     * @param earliestNotificationTime @return the id of the new calendar
      */
     public int add(String calendarFile, String calendarTitle, LinCalConfig.EntryDisplayMode entryDisplayMode, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
         int id = nextId++;
@@ -172,7 +165,23 @@ public class LinCalConfigStore {
         }
     }
 
+    /**
+     * Creates the configuration file in an initialized state and overwrites it if already
+     * existing.
+     *
+     * @param context
+     */
     public static void createInitialConfigurationFile(Context context) {
-        new LinCalConfigStore(context, 0).save();
+        PrintWriter writer = null;
+        try {
+            //TODO check how to allow file to be public (other modes deprecated)
+            writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(context.openFileOutput(CONFIG_FILE, Context.MODE_PRIVATE))));
+        } catch (FileNotFoundException ex) { // this should not occur, as when locking the file succeeds, it should exist
+            throw new RuntimeException(ex);
+        }
+        writer.println(0);
+        if (writer.checkError()) {
+            throw new RuntimeException("Error while creating initial configuration file.");
+        }
     }
 }
