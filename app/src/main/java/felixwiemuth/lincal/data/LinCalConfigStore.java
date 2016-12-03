@@ -65,7 +65,7 @@ public class LinCalConfigStore {
     public LinCalConfigStore(Context context) {
         this.context = context;
         //TODO check correct handling of exceptions
-        lockConfigFile(); //TODO this won't work if the file doesn't exist
+        lockConfigFile(); //NOTE: this assumes that file exists
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(context.openFileInput(CONFIG_FILE_OPENED)));
             try {
