@@ -51,6 +51,11 @@ public class LinCalConfigStore {
     private int nextId;
     private final List<LinCalConfig> entries = new ArrayList<>();
 
+    private LinCalConfigStore(Context context, int nextId) {
+        this.context = context;
+        this.nextId = nextId;
+    }
+
     /**
      * Creates an instance and loads all entries from the configuration file. If the file is not
      * present, the list of entries will be empty.
@@ -165,5 +170,9 @@ public class LinCalConfigStore {
         if (!new File(dir, CONFIG_FILE_OPENED).renameTo(new File(dir, CONFIG_FILE))) {
             throw new RuntimeException("Error: Could not unlock config file.");
         }
+    }
+
+    public static void createInitialConfigurationFile(Context context) {
+        new LinCalConfigStore(context, 0).save();
     }
 }

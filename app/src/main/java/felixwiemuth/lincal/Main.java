@@ -18,16 +18,16 @@
 package felixwiemuth.lincal;
 
 import android.app.Application;
-import felixwiemuth.lincal.data.LinCal;
-import felixwiemuth.lincal.data.ListChangeListener;
-import felixwiemuth.lincal.data.ListChangeListeners;
+import android.content.Context;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+
+import java.io.File;
+import java.text.DateFormat;
+
+import felixwiemuth.lincal.data.LinCalConfigStore;
 
 @ReportsCrashes(
         mailTo = "felixwiemuth@hotmail.de",
@@ -44,6 +44,22 @@ public class Main extends Application {
         super.onCreate();
         if (!BuildConfig.DEBUG) {
             ACRA.init(this);
+        }
+        update(this);
+    }
+
+    /**
+     * Checks whether the configuration has to be updated to a new format and performs updates if
+     * necessary. Also initializes the configuration on first launch.
+     */
+    public static void update(Context context) {
+        File dir = context.getFilesDir();
+        File configDir = new File(dir, "config-0");
+        if (!configDir.exists()) {
+            if (!configDir.mkdir()) {
+                throw new RuntimeException("Could not create configuration directory.");
+            }
+            LinCalConfigStore.createInitialConfigurationFile(context);
         }
     }
 }
