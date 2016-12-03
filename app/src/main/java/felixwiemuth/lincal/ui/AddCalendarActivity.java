@@ -61,8 +61,8 @@ public class AddCalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String file = fileEditText.getText().toString();
                 EditText titleEditText = (EditText) findViewById(R.id.ce_title);
-                //TODO set notification mode and notification time from settings by a widget
-                Calendars.addCalendarChecked(file, titleEditText.getText().toString(), LinCalConfig.NotificationMode.GIVEN_TIME, DEFAULT_EARLIEST_NOTIFICATION_TIME, AddCalendarActivity.this, new Runnable() {
+                //TODO set entry display mode, notification mode and notification time from UI widgets
+                Calendars.addCalendarChecked(file, titleEditText.getText().toString(), LinCalConfig.EntryDisplayMode.SHOW_ALL , LinCalConfig.NotificationMode.GIVEN_TIME, DEFAULT_EARLIEST_NOTIFICATION_TIME, AddCalendarActivity.this, new Runnable() {
                     @Override
                     public void run() {
                         // Return to CalendarListActivity

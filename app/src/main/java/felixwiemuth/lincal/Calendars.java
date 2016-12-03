@@ -152,12 +152,12 @@ public class Calendars {
      *
      * @param calendarFile
      * @param calendarTitle
-     * @param notificationMode
-     * @param earliestNotificationTime
-     * @return the id of the new calendar
+     * @param entryDisplayMode
+     *@param notificationMode
+     * @param earliestNotificationTime   @return the id of the new calendar
      */
-    public int addCalendar(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
-        int id = configStore.add(calendarFile, calendarTitle, notificationMode, earliestNotificationTime);
+    public int addCalendar(String calendarFile, String calendarTitle, LinCalConfig.EntryDisplayMode entryDisplayMode, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
+        int id = configStore.add(calendarFile, calendarTitle, entryDisplayMode, notificationMode, earliestNotificationTime);
         configStore.save();
         NotificationService.runWithCalendar(context, id);
         return id;
@@ -172,15 +172,15 @@ public class Calendars {
      * @param calendarFile
      * @param title                    intended title for the calendar or "" to use the calendars
      *                                 title
-     * @param notificationMode
+     * @param entryDisplayMode
+     *@param notificationMode
      * @param earliestNotificationTime
      * @param context
      * @param finish                   action to be performed when the calendar has been added (and
-     *                                 not otherwise)
-     * @return the id of the new calendar or -1 if aborted due to an error or the user's decision
+*                                 not otherwise)     @return the id of the new calendar or -1 if aborted due to an error or the user's decision
      * not to add the calendar
      */
-    public static void addCalendarChecked(final String calendarFile, final String title, final LinCalConfig.NotificationMode notificationMode, final Time earliestNotificationTime, Context context, final Runnable finish) {
+    public static void addCalendarChecked(final String calendarFile, final String title, final LinCalConfig.EntryDisplayMode entryDisplayMode, final LinCalConfig.NotificationMode notificationMode, final Time earliestNotificationTime, Context context, final Runnable finish) {
         final Calendars instance = getInstance(context);
         // First load calendar to check syntax and get information (title)
         LinCal calendar = loadCalendar(calendarFile, context);
@@ -201,13 +201,13 @@ public class Calendars {
             }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    instance.addCalendar(calendarFile, calendarTitle, notificationMode, earliestNotificationTime);
+                    instance.addCalendar(calendarFile, calendarTitle, entryDisplayMode, notificationMode, earliestNotificationTime);
                     finish.run();
                 }
             });
             builder.show();
         } else {
-            instance.addCalendar(calendarFile, calendarTitle, notificationMode, earliestNotificationTime);
+            instance.addCalendar(calendarFile, calendarTitle, entryDisplayMode, notificationMode, earliestNotificationTime);
             finish.run();
         }
     }
@@ -219,7 +219,7 @@ public class Calendars {
 
     /**
      * Write the current configuration to the configuration file. This is automatically called by
-     * {@link #addCalendar(String, String, LinCalConfig.NotificationMode, Time)} and {@link
+     * {@link #addCalendar(String, String, LinCalConfig.EntryDisplayMode, LinCalConfig.NotificationMode, Time)} and {@link
      * #removeCalendarByPos(int)} but has to be called manually when changing a configuration
      * obtained by {@link #getConfigByPos(int)} or {@link #getConfigById(int)}.
      */

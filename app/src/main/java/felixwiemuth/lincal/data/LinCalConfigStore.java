@@ -119,13 +119,13 @@ public class LinCalConfigStore {
      *
      * @param calendarFile
      * @param calendarTitle
-     * @param notificationMode
-     * @param earliestNotificationTime
-     * @return the id of the new calendar
+     * @param entryDisplayMode
+     *@param notificationMode
+     * @param earliestNotificationTime   @return the id of the new calendar
      */
-    public int add(String calendarFile, String calendarTitle, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
+    public int add(String calendarFile, String calendarTitle, LinCalConfig.EntryDisplayMode entryDisplayMode, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
         int id = nextId++;
-        entries.add(new LinCalConfig(id, calendarFile, calendarTitle, notificationMode, earliestNotificationTime));
+        entries.add(new LinCalConfig(id, calendarFile, calendarTitle, entryDisplayMode, notificationMode, earliestNotificationTime));
         return id;
     }
 

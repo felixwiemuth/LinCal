@@ -19,6 +19,7 @@ package felixwiemuth.lincal.data;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import felixwiemuth.lincal.util.Time;
 
@@ -31,6 +32,12 @@ public class LinCalConfig {
     public enum NotificationMode {
         GIVEN_TIME,
         SCREEN_ON
+    }
+
+    public enum EntryDisplayMode {
+        HIDE_ALL,
+        HIDE_FUTURE,
+        SHOW_ALL
     }
 
     /**
@@ -50,6 +57,7 @@ public class LinCalConfig {
     private final int id;
     private String calendarFile;
     private String calendarTitle;
+    private EntryDisplayMode entryDisplayMode;
     private NotificationMode notificationMode;
     private Time earliestNotificationTime;
     private boolean active;
@@ -57,17 +65,18 @@ public class LinCalConfig {
 
     /**
      * Create a new entry. The position is always initialized with 0.
-     *
-     * @param id
+     *  @param id
      * @param calendarFile
      * @param calendarTitle
+     * @param entryDisplayMode
      * @param notificationMode
      * @param earliestNotificationTime
      */
-    public LinCalConfig(int id, String calendarFile, String calendarTitle, NotificationMode notificationMode, Time earliestNotificationTime) {
+    public LinCalConfig(int id, String calendarFile, String calendarTitle, EntryDisplayMode entryDisplayMode, NotificationMode notificationMode, Time earliestNotificationTime) {
         this.id = id;
         this.calendarFile = calendarFile;
         this.calendarTitle = calendarTitle;
+        this.entryDisplayMode = entryDisplayMode;
         this.notificationMode = notificationMode;
         this.earliestNotificationTime = earliestNotificationTime;
         this.active = true;
@@ -84,20 +93,17 @@ public class LinCalConfig {
         Iterator<String> values = Arrays.asList(split).iterator();
         try {
             id = Integer.parseInt(values.next());
-        } catch (NumberFormatException ex) {
-            throw new FormatException(ex);
-        }
-        calendarFile = values.next();
-        calendarTitle = values.next();
-        notificationMode = NotificationMode.valueOf(values.next());
-        earliestNotificationTime = new Time(0, 0);
-        if (!earliestNotificationTime.set(values.next())) {
-            throw new FormatException("Invalid time specification.");
-        }
-        active = Boolean.parseBoolean(values.next());
-        try {
+            calendarFile = values.next();
+            calendarTitle = values.next();
+            entryDisplayMode = EntryDisplayMode.valueOf(values.next());
+            notificationMode = NotificationMode.valueOf(values.next());
+            earliestNotificationTime = new Time(0, 0);
+            if (!earliestNotificationTime.set(values.next())) {
+                throw new FormatException("Invalid time specification.");
+            }
+            active = Boolean.parseBoolean(values.next());
             pos = Integer.parseInt(values.next());
-        } catch (NumberFormatException ex) {
+        } catch (NoSuchElementException | IllegalArgumentException ex) {
             throw new FormatException(ex);
         }
     }
@@ -108,6 +114,14 @@ public class LinCalConfig {
 
     public String getCalendarFile() {
         return calendarFile;
+    }
+
+    public String getCalendarTitle() {
+        return calendarTitle;
+    }
+
+    public EntryDisplayMode getEntryDisplayMode() {
+        return entryDisplayMode;
     }
 
     public NotificationMode getNotificationMode() {
@@ -126,12 +140,16 @@ public class LinCalConfig {
         return pos;
     }
 
-    public String getCalendarTitle() {
-        return calendarTitle;
-    }
-
     public void setCalendarFile(String calendarFile) {
         this.calendarFile = calendarFile;
+    }
+
+    public void setCalendarTitle(String calendarTitle) {
+        this.calendarTitle = calendarTitle;
+    }
+
+    public void setEntryDisplayMode(EntryDisplayMode entryDisplayMode) {
+        this.entryDisplayMode = entryDisplayMode;
     }
 
     public void setNotificationMode(NotificationMode notificationMode) {
@@ -150,10 +168,6 @@ public class LinCalConfig {
         this.pos = pos;
     }
 
-    public void setCalendarTitle(String calendarTitle) {
-        this.calendarTitle = calendarTitle;
-    }
-
     /**
      * Create a formatted line representing this entry.
      *
@@ -164,6 +178,7 @@ public class LinCalConfig {
         return id + SEPARATOR
                 + calendarFile + SEPARATOR
                 + calendarTitle + SEPARATOR
+                + entryDisplayMode + SEPARATOR
                 + notificationMode + SEPARATOR
                 + earliestNotificationTime + SEPARATOR
                 + active + SEPARATOR
