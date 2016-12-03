@@ -188,7 +188,7 @@ public class Calendars {
             return;
         }
         final String calendarTitle = title.equals("") ? calendar.getTitle() : title;
-        if (title.contains(LinCalConfig.SEPARATOR)) {
+        if (calendarTitle.contains(LinCalConfig.SEPARATOR)) {
             showErrorDialog(R.string.dialog_error_title, String.format(context.getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR), context);
             return;
         }
@@ -201,13 +201,13 @@ public class Calendars {
             }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    instance.addCalendar(calendarFile, title, notificationMode, earliestNotificationTime);
+                    instance.addCalendar(calendarFile, calendarTitle, notificationMode, earliestNotificationTime);
                     finish.run();
                 }
             });
             builder.show();
         } else {
-            instance.addCalendar(calendarFile, title, notificationMode, earliestNotificationTime);
+            instance.addCalendar(calendarFile, calendarTitle, notificationMode, earliestNotificationTime);
             finish.run();
         }
     }
