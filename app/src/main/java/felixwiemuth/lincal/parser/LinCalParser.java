@@ -22,16 +22,14 @@ import android.content.Context;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.ListIterator;
 import java.util.regex.Pattern;
 
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
-import felixwiemuth.lincal.data.LinCalConfig;
+import felixwiemuth.lincal.util.Time;
 import linearfileparser.ArgKeyProcessor;
 import linearfileparser.IllegalLineException;
 import linearfileparser.LinearFileParser;
@@ -47,7 +45,6 @@ import linearfileparser.UnknownSectionException;
 public class LinCalParser extends LinearFileParser {
 
     private final static Pattern DATE_PATTERN = Pattern.compile("/");
-    private final static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("hh:mm");
 
     //TODO use string resources
     // sections
@@ -73,10 +70,9 @@ public class LinCalParser extends LinearFileParser {
 
     // parsing state
     private final Calendar currentDate = Calendar.getInstance();
-    private final Calendar defaultTime = Calendar.getInstance();
-    private final Calendar currentTime = Calendar.getInstance();
+    private Time defaultTime;
+    private Time currentTime; // the time set for the current entry - null if not set
     private boolean firstDateSet; // indicates that in MAIN section a date was set
-    private boolean timeSet; // indicated whether a time has been set explicitely for the current entry
 
     /**
      * @param context application context needed to provide String resources
@@ -137,13 +133,15 @@ public class LinCalParser extends LinearFileParser {
                 if (!firstDateSet) {
                     throw new DateSpecificationRequiredException(getCurrentLineNumber(), s(R.string.dateSpecificationRequiredException));
                 }
-                if (!timeSet) {
-                    currentTime.setTime(defaultTime.getTime());
+                if (currentTime != null) {
+                    currentTime.setAtCalendar(currentDate);
+                } else {
+                    defaultTime.setAtCalendar(currentDate);
                 }
-                timeSet = false;
-                e.date(currentDate).time(currentTime).link(line);
+                currentTime = null;
+                e.date(currentDate).link(line);
                 c.addCEntry(e.build());
-                e = CEntry.builder();
+                e = CEntry.builder(); //reset builder for next entry
                 currentDate.add(Calendar.DAY_OF_MONTH, 1);
                 return true;
             }
@@ -164,8 +162,8 @@ public class LinCalParser extends LinearFileParser {
         addKeyProcessor(MAIN, new ArgKeyProcessor(SET_TIME) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
+                currentTime = new Time(0, 0);
                 setTime(arg, currentTime);
-                timeSet = true;
             }
         });
 
@@ -234,12 +232,9 @@ public class LinCalParser extends LinearFileParser {
         return changed;
     }
 
-    private void setTime(String arg, Calendar calendar) throws InvalidTimeSpecificationException {
-        try {
-            Date time = TIME_FORMAT.parse(arg); //TODO make format more strict? for now accepts any number before and after colon
-            calendar.setTime(time);
-        } catch (java.text.ParseException ex) {
-            throw new InvalidTimeSpecificationException(getCurrentLineNumber(), s(R.string.invalidTimeSpecificationException_base) + " " + arg + " " + s(R.string.invalidTimeSpecificationException_format));
+    private void setTime(String timeSpec, Time time) throws InvalidTimeSpecificationException {
+        if (!time.set(timeSpec)) {
+            throw new InvalidTimeSpecificationException(getCurrentLineNumber(), s(R.string.invalidTimeSpecificationException_base) + " " + timeSpec + " " + s(R.string.invalidTimeSpecificationException_format));
         }
     }
 
@@ -255,9 +250,9 @@ public class LinCalParser extends LinearFileParser {
     public LinCal parse(File file) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
         // Initialize parser
         currentDate.setTimeInMillis(0);
-        defaultTime.setTime(LinCalConfig.DEFAULT_NOTIFICATION_TIME); //TODO might want to choose different default
+        defaultTime = new Time(0, 0);
+        currentTime = null;
         firstDateSet = false;
-        timeSet = false;
         c = LinCal.builder();
         e = CEntry.builder();
         // Run parser
