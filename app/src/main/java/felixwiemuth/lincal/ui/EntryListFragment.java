@@ -60,15 +60,16 @@ public class EntryListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_CALENDAR_POS)) {
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle("Toolbar title");
-            }
-            int calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
-            calendar = Calendars.getInstance(getContext()).getCalendarByPos(calendarPos);
+        if (!getArguments().containsKey(ARG_CALENDAR_POS)) {
+            throw new RuntimeException("Missing argument: EntryListFragment.ARG_CALENDAR_POS");
         }
+        Activity activity = this.getActivity();
+        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+        if (appBarLayout != null) {
+            appBarLayout.setTitle("Toolbar title");
+        }
+        int calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
+        calendar = Calendars.getInstance(getContext()).getCalendarByPos(calendarPos);
     }
 
     @Override

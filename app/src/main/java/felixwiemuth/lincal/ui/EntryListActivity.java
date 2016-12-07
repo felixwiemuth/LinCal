@@ -67,12 +67,15 @@ public class EntryListActivity extends AppCompatActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null) { //TODO check whether to use saved instance at all
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(EntryListFragment.ARG_CALENDAR_POS,
-                    getIntent().getStringExtra(EntryListFragment.ARG_CALENDAR_POS));
+            if (!getIntent().hasExtra(EntryListFragment.ARG_CALENDAR_POS)) {
+                throw new RuntimeException("Missing argument: EntryListFragment.ARG_CALENDAR_POS");
+            }
+            int pos = getIntent().getIntExtra(EntryListFragment.ARG_CALENDAR_POS, -1);
+            arguments.putInt(EntryListFragment.ARG_CALENDAR_POS, pos);
             EntryListFragment fragment = new EntryListFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
