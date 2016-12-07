@@ -77,7 +77,7 @@ public class CalendarListActivity extends AppCompatActivity {
         assert recyclerView != null;
         setupRecyclerView(recyclerView);
 
-        if (findViewById(R.id.entry_detail_container) != null) {
+        if (findViewById(R.id.entry_list_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -116,7 +116,7 @@ public class CalendarListActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.calendar_list_content, parent, false);
+                    .inflate(R.layout.calendar_list_item, parent, false);
             return new ViewHolder(view);
         }
 
@@ -132,7 +132,7 @@ public class CalendarListActivity extends AppCompatActivity {
                         EntryListFragment fragment = new EntryListFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.entry_detail_container, fragment)
+                                .replace(R.id.entry_list_container, fragment)
                                 .commit();
                     } else {
                         Context context = v.getContext();

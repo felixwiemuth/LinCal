@@ -28,4 +28,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.CalendarListActivity"
-    tools:listitem="@layout/calendar_list_content"/>
+    tools:listitem="@layout/calendar_list_item"/>

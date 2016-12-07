@@ -67,7 +67,7 @@ public class EntryListActivity extends AppCompatActivity {
             EntryListFragment fragment = new EntryListFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.entry_detail_container, fragment)
+                    .add(R.id.entry_list_container, fragment)
                     .commit();
         }
     }

@@ -84,7 +84,7 @@ public class EntryListFragment extends Fragment {
         } else {
             titleView.setText(calendar.getTitle());
             authorView.setText(calendar.getAuthor());
-            setupRecyclerView((RecyclerView) rootView.findViewById(R.id.entry_list));
+            setupRecyclerView((RecyclerView) rootView.findViewById(R.id.entry_list_recycler_view));
             ((TextView) rootView.findViewById(R.id.cal_descr)).setText(calendar.getDescription());
             ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
             ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
@@ -106,7 +106,7 @@ public class EntryListFragment extends Fragment {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.entry_list_content, parent, false);
+                    .inflate(R.layout.entry_list_item, parent, false);
             return new ViewHolder(view);
         }
 
