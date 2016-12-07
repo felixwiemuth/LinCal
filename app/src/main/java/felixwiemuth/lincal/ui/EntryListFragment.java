@@ -64,12 +64,14 @@ public class EntryListFragment extends Fragment {
             throw new RuntimeException("Missing argument: EntryListFragment.ARG_CALENDAR_POS");
         }
         Activity activity = this.getActivity();
+        int calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
+        Calendars calendars = Calendars.getInstance(getContext());
+        calendar = calendars.getCalendarByPos(calendarPos);
+        // If toolbar is present (handset mode), set title to calendar title
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null) {
-            appBarLayout.setTitle("Toolbar title");
+            appBarLayout.setTitle(calendars.getConfigByPos(calendarPos).getCalendarTitle());
         }
-        int calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
-        calendar = Calendars.getInstance(getContext()).getCalendarByPos(calendarPos);
     }
 
     @Override
