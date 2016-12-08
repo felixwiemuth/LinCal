@@ -22,7 +22,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,10 +67,11 @@ public class EntryListFragment extends Fragment {
         Calendars calendars = Calendars.getInstance(getContext());
         calendar = calendars.getCalendarByPos(calendarPos);
         // If toolbar is present (handset mode), set title to calendar title
-        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-        if (appBarLayout != null) {
-            appBarLayout.setTitle(calendars.getConfigByPos(calendarPos).getCalendarTitle());
-        }
+        //TODO add toolbar again
+        //        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+        //        if (appBarLayout != null) {
+        //            appBarLayout.setTitle(calendars.getConfigByPos(calendarPos).getCalendarTitle());
+        //        }
     }
 
     @Override

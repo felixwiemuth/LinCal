@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import felixwiemuth.lincal.R;
@@ -37,8 +36,9 @@ public class EntryListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+        //TODO activate toolbar again
+        //        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        //        setSupportActionBar(toolbar);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -67,7 +67,7 @@ public class EntryListActivity extends AppCompatActivity {
             EntryListFragment fragment = new EntryListFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.entry_list_container, fragment)
+                    .replace(R.id.entry_list_container, fragment)
                     .commit();
         }
     }
