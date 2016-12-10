@@ -37,9 +37,9 @@ import felixwiemuth.lincal.data.LinCal;
 /**
  * A fragment representing a single Calendar screen with a list of its entries. This fragment is
  * either contained in a {@link CalendarListActivity} in two-pane mode (on tablets) or a {@link
- * EntryListActivity} on handsets.
+ * CalendarViewActivity} on handsets.
  */
-public class EntryListFragment extends Fragment {
+public class CalendarViewFragment extends Fragment {
 
     /**
      * The fragment argument representing the item ID that this fragment represents.
@@ -52,7 +52,7 @@ public class EntryListFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
      * screen orientation changes).
      */
-    public EntryListFragment() {
+    public CalendarViewFragment() {
     }
 
     @Override
@@ -60,7 +60,7 @@ public class EntryListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (!getArguments().containsKey(ARG_CALENDAR_POS)) {
-            throw new RuntimeException("Missing argument: EntryListFragment.ARG_CALENDAR_POS");
+            throw new RuntimeException("Missing argument: CalendarViewFragment.ARG_CALENDAR_POS");
         }
         Activity activity = this.getActivity();
         int calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
@@ -76,7 +76,7 @@ public class EntryListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.entry_list, container, false);
+        View rootView = inflater.inflate(R.layout.calendar_view, container, false);
         TextView titleView = (TextView) rootView.findViewById(R.id.cal_title);
         TextView authorView = (TextView) rootView.findViewById(R.id.cal_author);
         if (calendar == null) {
@@ -127,7 +127,7 @@ public class EntryListFragment extends Fragment {
         }
 
         private void showEntryDialog(final CEntry entry, boolean showLink) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(EntryListFragment.this.getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(CalendarViewFragment.this.getActivity());
             StringBuilder msg = new StringBuilder();
             if (entry.getDescription() != null) {
                 msg.append(entry.getDescription());

@@ -30,7 +30,7 @@ import felixwiemuth.lincal.R;
  * only used on narrow width devices. On tablet-size devices, item details are presented
  * side-by-side with a list of items in a {@link CalendarListActivity}.
  */
-public class EntryListActivity extends AppCompatActivity {
+public class CalendarViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +59,12 @@ public class EntryListActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            if (!getIntent().hasExtra(EntryListFragment.ARG_CALENDAR_POS)) {
-                throw new RuntimeException("Missing argument: EntryListFragment.ARG_CALENDAR_POS");
+            if (!getIntent().hasExtra(CalendarViewFragment.ARG_CALENDAR_POS)) {
+                throw new RuntimeException("Missing argument: CalendarViewFragment.ARG_CALENDAR_POS");
             }
-            int pos = getIntent().getIntExtra(EntryListFragment.ARG_CALENDAR_POS, -1);
-            arguments.putInt(EntryListFragment.ARG_CALENDAR_POS, pos);
-            EntryListFragment fragment = new EntryListFragment();
+            int pos = getIntent().getIntExtra(CalendarViewFragment.ARG_CALENDAR_POS, -1);
+            arguments.putInt(CalendarViewFragment.ARG_CALENDAR_POS, pos);
+            CalendarViewFragment fragment = new CalendarViewFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.entry_list_container, fragment)

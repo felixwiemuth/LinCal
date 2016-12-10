@@ -39,7 +39,7 @@ import felixwiemuth.lincal.R;
  * An activity representing a list of calendars. Note that this activity does not update the
  * calendar list while running but each time {@link #onCreate} is called. This activity has
  * different presentations for handset and tablet-size devices. On handsets, the activity presents a
- * list of items, which when touched, lead to a {@link EntryListActivity} representing item details.
+ * list of items, which when touched, lead to a {@link CalendarViewActivity} representing item details.
  * On tablets, the activity presents the list of items and item details side-by-side using two
  * vertical panes.
  */
@@ -128,16 +128,16 @@ public class CalendarListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putInt(EntryListFragment.ARG_CALENDAR_POS, position);
-                        EntryListFragment fragment = new EntryListFragment();
+                        arguments.putInt(CalendarViewFragment.ARG_CALENDAR_POS, position);
+                        CalendarViewFragment fragment = new CalendarViewFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.entry_list_container, fragment)
                                 .commit();
                     } else {
                         Context context = v.getContext();
-                        Intent intent = new Intent(context, EntryListActivity.class);
-                        intent.putExtra(EntryListFragment.ARG_CALENDAR_POS, position);
+                        Intent intent = new Intent(context, CalendarViewActivity.class);
+                        intent.putExtra(CalendarViewFragment.ARG_CALENDAR_POS, position);
                         context.startActivity(intent);
                     }
                 }
