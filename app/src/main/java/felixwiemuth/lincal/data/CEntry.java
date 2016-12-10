@@ -115,6 +115,7 @@ public class CEntry implements Comparable<CEntry> {
         }
     }
 
+    //TODO might be obsolete
     /**
      * Based on the user's settings, decides whether an entry is due.
      *

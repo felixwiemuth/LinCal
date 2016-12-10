@@ -37,6 +37,7 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import felixwiemuth.lincal.Calendars;
+import felixwiemuth.lincal.NotificationService;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
@@ -83,10 +84,10 @@ public class CalendarViewFragment extends Fragment {
             LinCalConfig config = calendars.getConfigByPos(calendarPos);
             Time time = new Time(hourOfDay, minute);
             config.setEarliestNotificationTime(time);
-            //TODO also have to update text view!
             TextView textViewEarliestNotificationTime = (TextView) getActivity().findViewById(R.id.setting_earliest_notification_time);
             textViewEarliestNotificationTime.setText(time.toString());
             calendars.save();
+            NotificationService.runWithCalendar(getContext(), config.getId()); //TODO reconsider when to call
         }
     }
 
@@ -135,6 +136,7 @@ public class CalendarViewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveSettings();
+                NotificationService.runWithCalendar(getContext(), Calendars.getInstance(getContext()).getConfigByPos(calendarPos).getId()); //TODO reconsider when to call
             }
         };
         notificationsEnabled = (CheckBox) rootView.findViewById(R.id.notifications_enabled);

@@ -61,9 +61,7 @@ public class NotificationService extends IntentService {
         Calendar nextAlarm = null;
         for (int i = 0; i < calendars.getCalendarCount(); i++) {
             Calendar nextTime = processCalendar(calendars.getCalendarByPos(i), calendars.getConfigByPos(i), now);
-            if (nextAlarm == null) {
-                nextAlarm = nextTime;
-            } else if (nextTime != null && nextTime.before(nextAlarm)) {
+            if (nextAlarm == null || (nextTime != null && nextTime.before(nextAlarm))) {
                 nextAlarm = nextTime;
             }
         }
@@ -83,14 +81,17 @@ public class NotificationService extends IntentService {
     }
 
     private Calendar processCalendar(LinCal cal, LinCalConfig config, Calendar now) {
+        if (!config.isNotificationsEnabled()) {
+            return null;
+        }
         int pos = config.getPos();
-        while (pos < cal.size() && cal.get(pos).isDue(config, now)) {
+        while (pos < cal.size() && (!calcNotificationTime(cal.get(pos), config).after(now))) {
             sendNotification(cal.get(pos), pos, config);
             pos++;
         }
         config.setPos(pos);
         if (pos < cal.size()) {
-            return cal.get(pos).getDate();
+            return calcNotificationTime(cal.get(pos), config);
         } else {
             return null;
         }
@@ -114,5 +115,16 @@ public class NotificationService extends IntentService {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra(EXTRA_CALENDAR_ID, calendarId);
         context.startService(intent);
+    }
+
+    //TODO consider default configuration
+    public static Calendar calcNotificationTime(CEntry entry, LinCalConfig config) {
+        Calendar notificationTime = Calendar.getInstance();
+        notificationTime.setTime(entry.getDate().getTime());
+        if (config.isEarliestNotificationTimeEnabled() && config.getEarliestNotificationTime().after(notificationTime)) {
+            notificationTime.set(Calendar.HOUR_OF_DAY, config.getEarliestNotificationTime().getHour());
+            notificationTime.set(Calendar.MINUTE, config.getEarliestNotificationTime().getMinute());
+        }
+        return notificationTime;
     }
 }
