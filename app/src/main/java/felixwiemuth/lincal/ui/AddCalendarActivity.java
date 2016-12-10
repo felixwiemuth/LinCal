@@ -62,7 +62,15 @@ public class AddCalendarActivity extends AppCompatActivity {
                 final String file = fileEditText.getText().toString();
                 EditText titleEditText = (EditText) findViewById(R.id.ce_title);
                 //TODO set entry display mode, notification mode and notification time from UI widgets
-                Calendars.addCalendarChecked(file, titleEditText.getText().toString(), LinCalConfig.EntryDisplayMode.SHOW_ALL , LinCalConfig.NotificationMode.GIVEN_TIME, DEFAULT_EARLIEST_NOTIFICATION_TIME, AddCalendarActivity.this, new Runnable() {
+                LinCalConfig config = new LinCalConfig();
+                config.setCalendarFile(file);
+                config.setCalendarTitle(titleEditText.getText().toString());
+                config.setEntryDisplayMode(LinCalConfig.EntryDisplayMode.SHOW_ALL);
+                config.setNotificationsEnabled(true);
+                config.setEarliestNotificationTimeEnabled(true);
+                config.setEarliestNotificationTime(DEFAULT_EARLIEST_NOTIFICATION_TIME);
+                config.setOnScreenOn(false);
+                Calendars.addCalendarChecked(config, AddCalendarActivity.this, new Runnable() {
                     @Override
                     public void run() {
                         // Return to CalendarListActivity
@@ -73,7 +81,6 @@ public class AddCalendarActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-
             }
         });
     }

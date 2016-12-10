@@ -29,11 +29,6 @@ import felixwiemuth.lincal.util.Time;
 public class LinCalConfig {
     public static final String SEPARATOR = ";"; // separator for config values in a line of the configuration file
 
-    public enum NotificationMode {
-        GIVEN_TIME,
-        SCREEN_ON
-    }
-
     public enum EntryDisplayMode {
         HIDE_ALL,
         HIDE_FUTURE,
@@ -54,33 +49,40 @@ public class LinCalConfig {
         }
     }
 
-    private final int id;
+    private int id;
     private String calendarFile;
     private String calendarTitle;
     private EntryDisplayMode entryDisplayMode;
-    private NotificationMode notificationMode;
+    private boolean notificationsEnabled;
+    private boolean earliestNotificationTimeEnabled;
     private Time earliestNotificationTime;
-    private boolean active;
+    private boolean onScreenOn;
     private int pos;
 
     /**
-     * Create a new entry. The position is always initialized with 0.
-     *  @param id
+     * Create a new calendar configuration. The position is initialized with 0.
+     *
+     * @param id
      * @param calendarFile
      * @param calendarTitle
      * @param entryDisplayMode
-     * @param notificationMode
+     * @param notificationsEnabled
+     * @param earliestNotificationTimeEnabled
      * @param earliestNotificationTime
+     * @param onScreenOn
      */
-    public LinCalConfig(int id, String calendarFile, String calendarTitle, EntryDisplayMode entryDisplayMode, NotificationMode notificationMode, Time earliestNotificationTime) {
+    public LinCalConfig(int id, String calendarFile, String calendarTitle, EntryDisplayMode entryDisplayMode, boolean notificationsEnabled, boolean earliestNotificationTimeEnabled, Time earliestNotificationTime, boolean onScreenOn) {
         this.id = id;
         this.calendarFile = calendarFile;
         this.calendarTitle = calendarTitle;
         this.entryDisplayMode = entryDisplayMode;
-        this.notificationMode = notificationMode;
+        this.notificationsEnabled = notificationsEnabled;
+        this.earliestNotificationTimeEnabled = earliestNotificationTimeEnabled;
         this.earliestNotificationTime = earliestNotificationTime;
-        this.active = true;
-        this.pos = 0;
+        this.onScreenOn = onScreenOn;
+    }
+
+    public LinCalConfig() {
     }
 
     /**
@@ -96,12 +98,13 @@ public class LinCalConfig {
             calendarFile = values.next();
             calendarTitle = values.next();
             entryDisplayMode = EntryDisplayMode.valueOf(values.next());
-            notificationMode = NotificationMode.valueOf(values.next());
+            notificationsEnabled = Boolean.valueOf(values.next());
+            earliestNotificationTimeEnabled = Boolean.valueOf(values.next());
             earliestNotificationTime = new Time(0, 0);
             if (!earliestNotificationTime.set(values.next())) {
                 throw new FormatException("Invalid time specification.");
             }
-            active = Boolean.parseBoolean(values.next());
+            onScreenOn = Boolean.parseBoolean(values.next());
             pos = Integer.parseInt(values.next());
         } catch (NoSuchElementException | IllegalArgumentException ex) {
             throw new FormatException(ex);
@@ -124,20 +127,28 @@ public class LinCalConfig {
         return entryDisplayMode;
     }
 
-    public NotificationMode getNotificationMode() {
-        return notificationMode;
+    public boolean isNotificationsEnabled() {
+        return notificationsEnabled;
+    }
+
+    public boolean isEarliestNotificationTimeEnabled() {
+        return earliestNotificationTimeEnabled;
     }
 
     public Time getEarliestNotificationTime() {
         return earliestNotificationTime;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isOnScreenOn() {
+        return onScreenOn;
     }
 
     public int getPos() {
         return pos;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCalendarFile(String calendarFile) {
@@ -152,16 +163,20 @@ public class LinCalConfig {
         this.entryDisplayMode = entryDisplayMode;
     }
 
-    public void setNotificationMode(NotificationMode notificationMode) {
-        this.notificationMode = notificationMode;
+    public void setNotificationsEnabled(boolean notificationsEnabled) {
+        this.notificationsEnabled = notificationsEnabled;
+    }
+
+    public void setEarliestNotificationTimeEnabled(boolean earliestNotificationTimeEnabled) {
+        this.earliestNotificationTimeEnabled = earliestNotificationTimeEnabled;
     }
 
     public void setEarliestNotificationTime(Time earliestNotificationTime) {
         this.earliestNotificationTime = earliestNotificationTime;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setOnScreenOn(boolean onScreenOn) {
+        this.onScreenOn = onScreenOn;
     }
 
     public void setPos(int pos) {
@@ -179,9 +194,10 @@ public class LinCalConfig {
                 + calendarFile + SEPARATOR
                 + calendarTitle + SEPARATOR
                 + entryDisplayMode + SEPARATOR
-                + notificationMode + SEPARATOR
+                + notificationsEnabled + SEPARATOR
+                + earliestNotificationTimeEnabled + SEPARATOR
                 + earliestNotificationTime + SEPARATOR
-                + active + SEPARATOR
+                + onScreenOn + SEPARATOR
                 + pos;
     }
 }

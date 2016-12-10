@@ -30,8 +30,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import felixwiemuth.lincal.util.Time;
-
 /**
  * Holds configurations of all added calendars. Ensures that if an entry is added to the file also
  * the next ID in the first line of the file is updated such that no entries with the same id can
@@ -115,15 +113,13 @@ public class LinCalConfigStore {
     /**
      * Add an entry to this loaded configuration (call{@link #save()} to persist).
      *
-     * @param calendarFile
-     * @param calendarTitle
-     * @param entryDisplayMode
-     * @param notificationMode
-     * @param earliestNotificationTime @return the id of the new calendar
+     * @param config the configuration for the new calendar (the id will be overwritten).
+     * @return the id of the new calendar
      */
-    public int add(String calendarFile, String calendarTitle, LinCalConfig.EntryDisplayMode entryDisplayMode, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
+    public int add(LinCalConfig config) {
         int id = nextId++;
-        entries.add(new LinCalConfig(id, calendarFile, calendarTitle, entryDisplayMode, notificationMode, earliestNotificationTime));
+        config.setId(id);
+        entries.add(config);
         return id;
     }
 

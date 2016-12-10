@@ -31,7 +31,6 @@ import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.parser.LinCalParser;
-import felixwiemuth.lincal.util.Time;
 import linearfileparser.ParseException;
 
 import static felixwiemuth.lincal.util.Util.showErrorDialog;
@@ -150,14 +149,11 @@ public class Calendars {
      * Add a calendar to the configuration and save it. It is added in the last position. Runs
      * {@link NotificationService} for the new calendar.
      *
-     * @param calendarFile
-     * @param calendarTitle
-     * @param entryDisplayMode
-     *@param notificationMode
-     * @param earliestNotificationTime   @return the id of the new calendar
+     * @param config the configuration for the new calendar (the id will be overwritten).
+     * @return the id of the new calendar
      */
-    public int addCalendar(String calendarFile, String calendarTitle, LinCalConfig.EntryDisplayMode entryDisplayMode, LinCalConfig.NotificationMode notificationMode, Time earliestNotificationTime) {
-        int id = configStore.add(calendarFile, calendarTitle, entryDisplayMode, notificationMode, earliestNotificationTime);
+    public int addCalendar(LinCalConfig config) {
+        int id = configStore.add(config);
         configStore.save();
         NotificationService.runWithCalendar(context, id);
         return id;
@@ -169,30 +165,26 @@ public class Calendars {
      * ask whether to proceed. Also checks whether the title is valid. It is added in the last
      * position. Runs {@link NotificationService} for the new calendar.
      *
-     * @param calendarFile
-     * @param title                    intended title for the calendar or "" to use the calendars
-     *                                 title
-     * @param entryDisplayMode
-     *@param notificationMode
-     * @param earliestNotificationTime
+     * @param config  the configuration for the new calendar (if the title is "", the calendar's
+     *                title will be used; the id will be overwritten).
      * @param context
-     * @param finish                   action to be performed when the calendar has been added (and
-*                                 not otherwise)     @return the id of the new calendar or -1 if aborted due to an error or the user's decision
-     * not to add the calendar
+     * @param finish  action to be performed when the calendar has been added (and not otherwise)
      */
-    public static void addCalendarChecked(final String calendarFile, final String title, final LinCalConfig.EntryDisplayMode entryDisplayMode, final LinCalConfig.NotificationMode notificationMode, final Time earliestNotificationTime, Context context, final Runnable finish) {
+    public static void addCalendarChecked(final LinCalConfig config, Context context, final Runnable finish) {
         final Calendars instance = getInstance(context);
         // First load calendar to check syntax and get information (title)
-        LinCal calendar = loadCalendar(calendarFile, context);
+        LinCal calendar = loadCalendar(config.getCalendarFile(), context);
         if (calendar == null) {
             return;
         }
-        final String calendarTitle = title.equals("") ? calendar.getTitle() : title;
-        if (calendarTitle.contains(LinCalConfig.SEPARATOR)) {
+        if (config.getCalendarTitle().equals("")) {
+            config.setCalendarTitle(calendar.getTitle());
+        }
+        if (config.getCalendarTitle().contains(LinCalConfig.SEPARATOR)) {
             showErrorDialog(R.string.dialog_error_title, String.format(context.getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR), context);
             return;
         }
-        if (instance.configStore.containsCalendarFile(calendarFile)) {
+        if (instance.configStore.containsCalendarFile(config.getCalendarFile())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(R.string.dialog_cal_already_added).setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
                 @Override
@@ -201,13 +193,13 @@ public class Calendars {
             }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    instance.addCalendar(calendarFile, calendarTitle, entryDisplayMode, notificationMode, earliestNotificationTime);
+                    instance.addCalendar(config);
                     finish.run();
                 }
             });
             builder.show();
         } else {
-            instance.addCalendar(calendarFile, calendarTitle, entryDisplayMode, notificationMode, earliestNotificationTime);
+            instance.addCalendar(config);
             finish.run();
         }
     }
@@ -219,9 +211,8 @@ public class Calendars {
 
     /**
      * Write the current configuration to the configuration file. This is automatically called by
-     * {@link #addCalendar(String, String, LinCalConfig.EntryDisplayMode, LinCalConfig.NotificationMode, Time)} and {@link
-     * #removeCalendarByPos(int)} but has to be called manually when changing a configuration
-     * obtained by {@link #getConfigByPos(int)} or {@link #getConfigById(int)}.
+     * {@link #addCalendar(LinCalConfig)}  but has to be called manually when changing a
+     * configuration obtained by {@link #getConfigByPos(int)} or {@link #getConfigById(int)}.
      */
     public void save() {
         configStore.save();
