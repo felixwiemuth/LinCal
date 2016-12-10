@@ -109,6 +109,6 @@ public class Time {
 
     @Override
     public String toString() {
-        return hour + TIME_PATTERN.pattern() + minute;
+        return String.format("%02d", hour) + TIME_PATTERN.pattern() + String.format("%02d", minute);
     }
 }
