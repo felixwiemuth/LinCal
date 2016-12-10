@@ -43,6 +43,9 @@
     <string name="cal_description">Description:</string>
     <string name="cal_version">Version:</string>
     <string name="cal_date">Date:</string>
+    <string name="setting_notifications_enabled">Enable notifications</string>
+    <string name="setting_show_notifications_earliest">Show notifications earliest:</string>
+    <string name="setting_show_notifications_on_screen_on">Show notifications only after screen turned on</string>
 
     <string name="add_cal_title">Custom title (leave empty to load from calendar):</string>
     <string name="add_cal_file">Calendar file (full path):</string>

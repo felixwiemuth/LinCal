@@ -19,20 +19,29 @@ package felixwiemuth.lincal.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
+import felixwiemuth.lincal.data.LinCalConfig;
+import felixwiemuth.lincal.util.Time;
 
 /**
  * A fragment representing a single Calendar screen with a list of its entries. This fragment is
@@ -47,6 +56,39 @@ public class CalendarViewFragment extends Fragment {
     public static final String ARG_CALENDAR_POS = "felixwiemuth.lincal.CalendarListActivity.EXTRA_ARG_CALENDAR_POS";
 
     private LinCal calendar;
+    private int calendarPos;
+    private CheckBox notificationsEnabled;
+    private Time earliestNotificationTime;
+    private TextView textViewEarliestNotificationTime;
+    private CheckBox earliestNotificationTimeEnabled;
+    private CheckBox onScreenOnEnabled;
+
+    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+        private int calendarPos;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = getArguments().getInt("hour");
+            int minute = getArguments().getInt("minute");
+            calendarPos = getArguments().getInt("calendarPos");
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute, true);
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            Calendars calendars = Calendars.getInstance(getContext());
+            LinCalConfig config = calendars.getConfigByPos(calendarPos);
+            Time time = new Time(hourOfDay, minute);
+            config.setEarliestNotificationTime(time);
+            //TODO also have to update text view!
+            TextView textViewEarliestNotificationTime = (TextView) getActivity().findViewById(R.id.setting_earliest_notification_time);
+            textViewEarliestNotificationTime.setText(time.toString());
+            calendars.save();
+        }
+    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
@@ -63,7 +105,7 @@ public class CalendarViewFragment extends Fragment {
             throw new RuntimeException("Missing argument: CalendarViewFragment.ARG_CALENDAR_POS");
         }
         Activity activity = this.getActivity();
-        int calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
+        calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
         Calendars calendars = Calendars.getInstance(getContext());
         calendar = calendars.getCalendarByPos(calendarPos);
         // If toolbar is present (handset mode), set title to calendar title
@@ -89,6 +131,33 @@ public class CalendarViewFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
             ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
         }
+        final View.OnClickListener saveSettingsListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveSettings();
+            }
+        };
+        notificationsEnabled = (CheckBox) rootView.findViewById(R.id.notifications_enabled);
+        notificationsEnabled.setOnClickListener(saveSettingsListener);
+        textViewEarliestNotificationTime = (TextView) rootView.findViewById(R.id.setting_earliest_notification_time);
+        textViewEarliestNotificationTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadSettings(); // update earliestNotificationTime
+                DialogFragment dialogFragment = new TimePickerFragment();
+                Bundle arguments = new Bundle();
+                arguments.putInt("hour", earliestNotificationTime.getHour());
+                arguments.putInt("minute", earliestNotificationTime.getMinute());
+                arguments.putInt("calendarPos", calendarPos);
+                dialogFragment.setArguments(arguments);
+                dialogFragment.show(getFragmentManager(), "timePicker");
+            }
+        });
+        earliestNotificationTimeEnabled = (CheckBox) rootView.findViewById(R.id.setting_earliest_notification_time_enabled);
+        earliestNotificationTimeEnabled.setOnClickListener(saveSettingsListener);
+        onScreenOnEnabled = (CheckBox) rootView.findViewById(R.id.setting_show_notification_on_screen_on);
+        onScreenOnEnabled.setOnClickListener(saveSettingsListener);
+        loadSettings();
         return rootView;
     }
 
@@ -190,6 +259,26 @@ public class CalendarViewFragment extends Fragment {
                 return super.toString() + " '" + descriptionView.getText() + "'";
             }
         }
+    }
+
+    //NOTE it does not matter to save everything at each single change as the whole file is rewritten anyway
+    private void saveSettings() {
+        Calendars calendars = Calendars.getInstance(getContext());
+        LinCalConfig config = calendars.getConfigByPos(calendarPos);
+        config.setNotificationsEnabled(notificationsEnabled.isChecked());
+        config.setEarliestNotificationTimeEnabled(earliestNotificationTimeEnabled.isChecked());
+        config.setOnScreenOn(onScreenOnEnabled.isChecked());
+        calendars.save();
+    }
+
+    private void loadSettings() {
+        Calendars calendars = Calendars.getInstance(getContext());
+        LinCalConfig config = calendars.getConfigByPos(calendarPos);
+        notificationsEnabled.setChecked(config.isNotificationsEnabled());
+        earliestNotificationTimeEnabled.setChecked(config.isEarliestNotificationTimeEnabled());
+        earliestNotificationTime = config.getEarliestNotificationTime();
+        textViewEarliestNotificationTime.setText(earliestNotificationTime.toString());
+        onScreenOnEnabled.setChecked(config.isOnScreenOn());
     }
 
     private String s(int resId) {
