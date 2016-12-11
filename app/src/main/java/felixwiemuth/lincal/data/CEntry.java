@@ -80,7 +80,6 @@ public class CEntry implements Comparable<CEntry> {
         this.link = link;
     }
 
-    //TODO maybe want entries with same date to be equal - for now it compares the exact dates
     @Override
     public int compareTo(CEntry another) {
         return date.compareTo(another.date);

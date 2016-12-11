@@ -19,9 +19,8 @@ package felixwiemuth.lincal.data;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import felixwiemuth.lincal.Main;
 
@@ -39,7 +38,7 @@ public class LinCal {
     private final String version;
     private final Calendar date;
 
-    private final List<CEntry> entries; // simple list, ordering is constructed at creation, no adaptions to list allowed
+    private final List<CEntry> entries; // simple list, ordering is constructed at creation, no adaptation of list allowed
 
     public static class Builder {
 
@@ -72,7 +71,7 @@ public class LinCal {
         private String description;
         private String version;
         private Calendar date;
-        private final SortedSet<CEntry> entries = new TreeSet<>();
+        private final List<CEntry> entries = new ArrayList<>();
 
         private Builder() {
         }
@@ -110,7 +109,8 @@ public class LinCal {
 
         /**
          * Build an instance of {@link LinCal} described by this builder. All properties must have
-         * been set to non-null values. Entries will be sorted by date.
+         * been set to non-null values. Entries will be sorted by date, entries with the same date
+         * stay in the order added.
          *
          * @return
          * @throws MissingFieldException if one of the fields is not set
@@ -131,7 +131,9 @@ public class LinCal {
             if (date == null) {
                 throw new MissingFieldException(Field.DATE);
             }
-            return new LinCal(title, author, description, version, date, new ArrayList<>(entries));
+            List<CEntry> sortedEntries = new ArrayList<>(entries); // make a copy to keep builder valid
+            Collections.sort(sortedEntries);
+            return new LinCal(title, author, description, version, date, sortedEntries);
         }
 
     }
