@@ -21,9 +21,10 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <!--TODO find a more generic way to determine required width (have different date formats and font sizes)-->
     <TextView
         android:id="@+id/date"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem" />

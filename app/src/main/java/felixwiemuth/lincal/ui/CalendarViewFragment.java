@@ -23,7 +23,6 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +36,7 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import felixwiemuth.lincal.Calendars;
+import felixwiemuth.lincal.Main;
 import felixwiemuth.lincal.NotificationService;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
@@ -63,6 +63,7 @@ public class CalendarViewFragment extends Fragment {
     private TextView textViewEarliestNotificationTime;
     private CheckBox earliestNotificationTimeEnabled;
     private CheckBox onScreenOnEnabled;
+    private RecyclerView entryList;
 
     public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
         private int calendarPos;
@@ -87,6 +88,9 @@ public class CalendarViewFragment extends Fragment {
             TextView textViewEarliestNotificationTime = (TextView) getActivity().findViewById(R.id.setting_earliest_notification_time);
             textViewEarliestNotificationTime.setText(time.toString());
             calendars.save();
+            // have to update the displayed notification times (times might have changed)
+            RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.entry_list_recycler_view);
+            recyclerView.getAdapter().notifyDataSetChanged();
             NotificationService.runWithCalendar(getContext(), config.getId()); //TODO reconsider when to call
         }
     }
@@ -127,7 +131,9 @@ public class CalendarViewFragment extends Fragment {
         } else {
             titleView.setText(calendar.getTitle());
             authorView.setText(calendar.getAuthor());
-            setupRecyclerView((RecyclerView) rootView.findViewById(R.id.entry_list_recycler_view));
+            entryList = (RecyclerView) rootView.findViewById(R.id.entry_list_recycler_view);
+            SimpleItemRecyclerViewAdapter adapter = new SimpleItemRecyclerViewAdapter();
+            entryList.setAdapter(adapter);
             ((TextView) rootView.findViewById(R.id.cal_descr)).setText(calendar.getDescription());
             ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
             ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
@@ -156,16 +162,18 @@ public class CalendarViewFragment extends Fragment {
             }
         });
         earliestNotificationTimeEnabled = (CheckBox) rootView.findViewById(R.id.setting_earliest_notification_time_enabled);
-        earliestNotificationTimeEnabled.setOnClickListener(saveSettingsListener);
+        earliestNotificationTimeEnabled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveSettingsListener.onClick(v);
+                // have to update the displayed notification times (only show when enabled)
+                entryList.getAdapter().notifyDataSetChanged();
+            }
+        });
         onScreenOnEnabled = (CheckBox) rootView.findViewById(R.id.setting_show_notification_on_screen_on);
         onScreenOnEnabled.setOnClickListener(saveSettingsListener);
         loadSettings();
         return rootView;
-    }
-
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        SimpleItemRecyclerViewAdapter adapter = new SimpleItemRecyclerViewAdapter();
-        recyclerView.setAdapter(adapter);
     }
 
     public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
@@ -184,11 +192,17 @@ public class CalendarViewFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             final CEntry entry = calendar.get(position);
-            final String dateStr = entry.getDateTimeStr();
+            String dateStr = entry.getDateTimeStr(); //NOTE if changing expected length, adapt TextView size
+            Calendars calendars = Calendars.getInstance(getContext());
+            LinCalConfig config = calendars.getConfigByPos(calendarPos);
+            Calendar notificationTime = Calendars.calcNotificationTime(entry, config);
+            String notificationTimeStr = Main.dfTime.format(notificationTime.getTime());
+            if (config.isEarliestNotificationTimeEnabled() && notificationTime.after(entry.getDate())) {
+                dateStr += " (" + notificationTimeStr + ")";
+            }
             final String descr = entry.getDescription();
             holder.dateView.setText(dateStr);
             holder.descriptionView.setText(descr);
-
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

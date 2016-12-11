@@ -37,6 +37,7 @@ import felixwiemuth.lincal.util.Util;
 public class Main extends Application {
 
     public static final DateFormat dfDay = DateFormat.getDateInstance();
+    public static final DateFormat dfTime = DateFormat.getTimeInstance();
     public static final DateFormat dfDayTime = DateFormat.getDateTimeInstance();
 
 
