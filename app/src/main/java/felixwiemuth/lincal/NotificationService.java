@@ -85,13 +85,13 @@ public class NotificationService extends IntentService {
             return null;
         }
         int pos = config.getPos();
-        while (pos < cal.size() && (!calcNotificationTime(cal.get(pos), config).after(now))) {
+        while (pos < cal.size() && (!Calendars.calcNotificationTime(cal.get(pos), config).after(now))) {
             sendNotification(cal.get(pos), pos, config);
             pos++;
         }
         config.setPos(pos);
         if (pos < cal.size()) {
-            return calcNotificationTime(cal.get(pos), config);
+            return Calendars.calcNotificationTime(cal.get(pos), config);
         } else {
             return null;
         }
@@ -115,16 +115,5 @@ public class NotificationService extends IntentService {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra(EXTRA_CALENDAR_ID, calendarId);
         context.startService(intent);
-    }
-
-    //TODO consider default configuration
-    public static Calendar calcNotificationTime(CEntry entry, LinCalConfig config) {
-        Calendar notificationTime = Calendar.getInstance();
-        notificationTime.setTime(entry.getDate().getTime());
-        if (config.isEarliestNotificationTimeEnabled() && config.getEarliestNotificationTime().after(notificationTime)) {
-            notificationTime.set(Calendar.HOUR_OF_DAY, config.getEarliestNotificationTime().getHour());
-            notificationTime.set(Calendar.MINUTE, config.getEarliestNotificationTime().getMinute());
-        }
-        return notificationTime;
     }
 }

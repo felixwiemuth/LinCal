@@ -24,9 +24,11 @@ import android.content.DialogInterface;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;
@@ -245,5 +247,20 @@ public class Calendars {
             showErrorDialog(R.string.dialog_parsing_error_title, ex.getMessage(), context);
         }
         return null;
+    }
+
+    //TODO consider default configuration
+    public static Calendar calcNotificationTime(CEntry entry, LinCalConfig config) {
+        Calendar notificationTime = Calendar.getInstance();
+        notificationTime.setTime(entry.getDate().getTime());
+        if (config.isEarliestNotificationTimeEnabled() && config.getEarliestNotificationTime().after(notificationTime)) {
+            notificationTime.set(Calendar.HOUR_OF_DAY, config.getEarliestNotificationTime().getHour());
+            notificationTime.set(Calendar.MINUTE, config.getEarliestNotificationTime().getMinute());
+        }
+        return notificationTime;
+    }
+
+    public Calendar calcNotificationTime(CEntry entry, int calendarPos) {
+        return calcNotificationTime(entry, getConfigByPos(calendarPos));
     }
 }
