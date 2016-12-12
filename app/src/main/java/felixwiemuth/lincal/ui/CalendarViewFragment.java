@@ -29,7 +29,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -63,6 +66,7 @@ public class CalendarViewFragment extends Fragment {
     private TextView textViewEarliestNotificationTime;
     private CheckBox earliestNotificationTimeEnabled;
     private CheckBox onScreenOnEnabled;
+    private Spinner entryDisplayMode;
     private RecyclerView entryList;
 
     public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
@@ -172,6 +176,23 @@ public class CalendarViewFragment extends Fragment {
         });
         onScreenOnEnabled = (CheckBox) rootView.findViewById(R.id.setting_show_notification_on_screen_on);
         onScreenOnEnabled.setOnClickListener(saveSettingsListener);
+        entryDisplayMode = (Spinner) rootView.findViewById(R.id.setting_entry_display_mode);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.setting_entry_display_mode_options, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        entryDisplayMode.setAdapter(spinnerAdapter);
+        entryDisplayMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                saveSettingsListener.onClick(view);
+                // have to update the displayed entries
+                entryList.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         loadSettings();
         return rootView;
     }
@@ -202,7 +223,12 @@ public class CalendarViewFragment extends Fragment {
             }
             final String descr = entry.getDescription();
             holder.dateView.setText(dateStr);
-            holder.descriptionView.setText(descr);
+            if (config.getEntryDisplayMode() == LinCalConfig.EntryDisplayMode.SHOW_ALL
+                    || config.getEntryDisplayMode() == LinCalConfig.EntryDisplayMode.HIDE_FUTURE && entry.getDate().getTime().getTime() <= System.currentTimeMillis()) {
+                holder.descriptionView.setText(descr);
+            } else {
+                holder.descriptionView.setText(getString(R.string.entry_hide_text));
+            }
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -220,7 +246,6 @@ public class CalendarViewFragment extends Fragment {
             if (showLink) {
                 if (msg.length() > 0) {
                     msg.append("\n\n");
-
                 }
                 msg.append(entry.getLink());
             }
@@ -284,6 +309,7 @@ public class CalendarViewFragment extends Fragment {
         config.setNotificationsEnabled(notificationsEnabled.isChecked());
         config.setEarliestNotificationTimeEnabled(earliestNotificationTimeEnabled.isChecked());
         config.setOnScreenOn(onScreenOnEnabled.isChecked());
+        config.setEntryDisplayMode(LinCalConfig.EntryDisplayMode.values()[entryDisplayMode.getSelectedItemPosition()]);
         calendars.save();
     }
 
@@ -295,6 +321,7 @@ public class CalendarViewFragment extends Fragment {
         earliestNotificationTime = config.getEarliestNotificationTime();
         textViewEarliestNotificationTime.setText(earliestNotificationTime.toString());
         onScreenOnEnabled.setChecked(config.isOnScreenOn());
+        entryDisplayMode.setSelection(config.getEntryDisplayMode().ordinal());
     }
 
     private String s(int resId) {

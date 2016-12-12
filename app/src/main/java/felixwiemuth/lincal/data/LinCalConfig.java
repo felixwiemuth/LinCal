@@ -29,6 +29,7 @@ import felixwiemuth.lincal.util.Time;
 public class LinCalConfig {
     public static final String SEPARATOR = ";"; // separator for config values in a line of the configuration file
 
+    //NOTE order of constants must correspond to order of strings in spinner for UI
     public enum EntryDisplayMode {
         HIDE_ALL,
         HIDE_FUTURE,
