@@ -23,4 +23,8 @@
         android:id="@+id/menu_about"
         android:title="@string/menu_about"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_open_source_licenses"
+        android:title="@string/menu_open_source_licenses"
+        app:showAsAction="never"/>
 </menu>
