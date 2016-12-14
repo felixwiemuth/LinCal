@@ -27,7 +27,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-//TODO If you don't support Android 2.x, you should use the non-support version!
+//If you don't support Android 2.x, you should use the non-support version!
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,6 +36,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
+
+import felixwiemuth.lincal.R;
 
 /**
  * Created by Adam Speakman on 24/09/13.
