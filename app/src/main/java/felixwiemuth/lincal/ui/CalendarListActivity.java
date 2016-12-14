@@ -27,6 +27,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -39,9 +41,9 @@ import felixwiemuth.lincal.R;
  * An activity representing a list of calendars. Note that this activity does not update the
  * calendar list while running but each time {@link #onCreate} is called. This activity has
  * different presentations for handset and tablet-size devices. On handsets, the activity presents a
- * list of items, which when touched, lead to a {@link CalendarViewActivity} representing item details.
- * On tablets, the activity presents the list of items and item details side-by-side using two
- * vertical panes.
+ * list of items, which when touched, lead to a {@link CalendarViewActivity} representing item
+ * details. On tablets, the activity presents the list of items and item details side-by-side using
+ * two vertical panes.
  */
 public class CalendarListActivity extends AppCompatActivity {
 
@@ -97,6 +99,13 @@ public class CalendarListActivity extends AppCompatActivity {
             Main.showWelcomeMessage(this);
             preferences.edit().putBoolean("welcomeMessageShown", true).apply();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

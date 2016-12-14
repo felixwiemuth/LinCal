@@ -21,6 +21,8 @@
     <string name="title_activity_add_calendar">Add Calendar</string>
     <string name="title_activity_test">Test</string>
 
+    <string name="menu_about">About</string>
+
     <string name="dialog_general_ok">Ok</string>
     <string name="dialog_welcome_title">Welcome</string>
     <string name="welcome_message">Welcome to LinCal! This is a pre-release version which is incomplete and probably contains a lot of errors - please report them.</string>
