@@ -16,23 +16,23 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
 
     <!--TODO find a more generic way to determine required width (have different date formats and font sizes)-->
     <TextView
         android:id="@+id/date"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_margin="@dimen/item_margin"
+        android:textAppearance="?attr/textAppearanceListItem"/>
 
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_margin="@dimen/item_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         />
 </LinearLayout>
