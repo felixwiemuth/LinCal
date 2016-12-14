@@ -65,7 +65,7 @@ public class CalendarViewFragment extends Fragment {
     private Time earliestNotificationTime;
     private TextView textViewEarliestNotificationTime;
     private CheckBox earliestNotificationTimeEnabled;
-    private CheckBox onScreenOnEnabled;
+    //private CheckBox onScreenOnEnabled; //TODO implement
     private Spinner entryDisplayMode;
     private RecyclerView entryList;
 
@@ -174,8 +174,9 @@ public class CalendarViewFragment extends Fragment {
                 entryList.getAdapter().notifyDataSetChanged();
             }
         });
-        onScreenOnEnabled = (CheckBox) rootView.findViewById(R.id.setting_show_notification_on_screen_on);
-        onScreenOnEnabled.setOnClickListener(saveSettingsListener);
+        //TODO implement
+        //        onScreenOnEnabled = (CheckBox) rootView.findViewById(R.id.setting_show_notification_on_screen_on);
+        //        onScreenOnEnabled.setOnClickListener(saveSettingsListener);
         entryDisplayMode = (Spinner) rootView.findViewById(R.id.setting_entry_display_mode);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.setting_entry_display_mode_options, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -308,7 +309,7 @@ public class CalendarViewFragment extends Fragment {
         LinCalConfig config = calendars.getConfigByPos(calendarPos);
         config.setNotificationsEnabled(notificationsEnabled.isChecked());
         config.setEarliestNotificationTimeEnabled(earliestNotificationTimeEnabled.isChecked());
-        config.setOnScreenOn(onScreenOnEnabled.isChecked());
+        //config.setOnScreenOn(onScreenOnEnabled.isChecked()); //TODO implement
         config.setEntryDisplayMode(LinCalConfig.EntryDisplayMode.values()[entryDisplayMode.getSelectedItemPosition()]);
         calendars.save();
     }
@@ -320,7 +321,7 @@ public class CalendarViewFragment extends Fragment {
         earliestNotificationTimeEnabled.setChecked(config.isEarliestNotificationTimeEnabled());
         earliestNotificationTime = config.getEarliestNotificationTime();
         textViewEarliestNotificationTime.setText(earliestNotificationTime.toString());
-        onScreenOnEnabled.setChecked(config.isOnScreenOn());
+        //onScreenOnEnabled.setChecked(config.isOnScreenOn()); //TODO implement
         entryDisplayMode.setSelection(config.getEntryDisplayMode().ordinal());
     }
 
