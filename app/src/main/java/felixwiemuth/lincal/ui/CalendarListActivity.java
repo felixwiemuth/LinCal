@@ -116,7 +116,7 @@ public class CalendarListActivity extends AppCompatActivity {
                 //TODO create about dialog
                 return true;
             case R.id.menu_open_source_licenses:
-                LicensesFragment.displayLicensesFragment(getSupportFragmentManager());
+                HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), R.string.menu_open_source_licenses, R.raw.licenses);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -41,21 +41,28 @@ import felixwiemuth.lincal.R;
 
 /**
  * Created by Adam Speakman on 24/09/13. http://speakman.net.nz
+ * <p>
+ * Edited by Felix Wiemuth 12/2016.
  */
-public class LicensesFragment extends DialogFragment {
+
+/**
+ * Displays an HTML document in a dialog fragment.
+ */
+public class HtmlDialogFragment extends DialogFragment {
 
     private AsyncTask<Void, Void, String> mLicenseLoader;
 
-    private static final String FRAGMENT_TAG = "nz.net.speakman.androidlicensespage.LicensesFragment";
-
+    private static final String FRAGMENT_TAG = "nz.net.speakman.androidlicensespage.HtmlDialogFragment";
+    private static final String ARG_RES_TITLE = "felixwiemuth.lincal.ARG_RES_TITLE";
+    private static final String ARG_RES_HTML_FILE = "felixwiemuth.lincal.ARG_RES_HTML_FILE";
 
     /**
      * Builds and displays a licenses fragment with no Close button. Requires
-     * "/res/raw/licenses.html" and "/res/layout/licenses_fragment.xml" to be present.
+     * "/res/raw/licenses.html" and "/res/layout/html_dialog_fragment.xml" to be present.
      *
-     * @param fm A fragment manager instance used to display this LicensesFragment.
+     * @param fm A fragment manager instance used to display this HtmlDialogFragment.
      */
-    public static void displayLicensesFragment(FragmentManager fm) {
+    public static void displayHtmlDialogFragment(FragmentManager fm, int resTitle, int resHtmlFile) {
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag(FRAGMENT_TAG);
         if (prev != null) {
@@ -64,7 +71,11 @@ public class LicensesFragment extends DialogFragment {
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        DialogFragment newFragment = new LicensesFragment();
+        DialogFragment newFragment = new HtmlDialogFragment();
+        Bundle arguments = new Bundle();
+        arguments.putInt(ARG_RES_TITLE, resTitle);
+        arguments.putInt(ARG_RES_HTML_FILE, resHtmlFile);
+        newFragment.setArguments(arguments);
         newFragment.show(ft, FRAGMENT_TAG);
     }
 
@@ -88,12 +99,12 @@ public class LicensesFragment extends DialogFragment {
     @SuppressLint("InflateParams")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View content = LayoutInflater.from(getActivity()).inflate(R.layout.licenses_fragment, null);
-        mWebView = (WebView) content.findViewById(R.id.licensesFragmentWebView);
-        mIndeterminateProgress = (ProgressBar) content.findViewById(R.id.licensesFragmentIndeterminateProgress);
+        View content = LayoutInflater.from(getActivity()).inflate(R.layout.html_dialog_fragment, null);
+        mWebView = (WebView) content.findViewById(R.id.html_dialog_fragment_web_view);
+        mIndeterminateProgress = (ProgressBar) content.findViewById(R.id.html_dialog_fragment_indeterminate_progress);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.menu_open_source_licenses);
+        builder.setTitle(getArguments().getInt(ARG_RES_TITLE)); //TODO error handling
         builder.setView(content);
         return builder.create();
     }
@@ -104,7 +115,7 @@ public class LicensesFragment extends DialogFragment {
 
             @Override
             protected String doInBackground(Void... params) {
-                InputStream rawResource = getActivity().getResources().openRawResource(R.raw.licenses);
+                InputStream rawResource = getActivity().getResources().openRawResource(getArguments().getInt(ARG_RES_HTML_FILE)); //TODO error handling
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(rawResource));
 
                 String line;
