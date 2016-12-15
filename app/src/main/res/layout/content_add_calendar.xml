@@ -94,7 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/ct_notifications"
-            android:checked="true" />
+            android:checked="true"
+            android:enabled="false"/>
     </LinearLayout>
 
     <Button
