@@ -114,6 +114,9 @@ public class CalendarListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_help:
+                HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), R.string.menu_help, R.raw.help);
+                return true;
             case R.id.menu_about:
                 try {
                     PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
