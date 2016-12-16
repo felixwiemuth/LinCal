@@ -17,7 +17,6 @@
 
 package felixwiemuth.lincal.ui;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -75,10 +74,6 @@ public class AddCalendarActivity extends AppCompatActivity {
                     public void run() {
                         // Return to CalendarListActivity
                         AddCalendarActivity.this.finish();
-                        Intent intent = new Intent(AddCalendarActivity.this, CalendarListActivity.class);
-                        intent.putExtra(CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED, true);
-                        //intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); //NOTE this would prevent activity from restarting
-                        startActivity(intent);
                     }
                 });
             }
