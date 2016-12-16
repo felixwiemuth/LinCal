@@ -123,9 +123,6 @@ public class CalendarListActivity extends AppCompatActivity {
                 } catch (PackageManager.NameNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
-            case R.id.menu_open_source_licenses:
-                HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), R.string.menu_open_source_licenses, R.raw.licenses);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
