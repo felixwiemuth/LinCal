@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 
@@ -81,7 +82,7 @@ public class CEntry implements Comparable<CEntry> {
     }
 
     @Override
-    public int compareTo(CEntry another) {
+    public int compareTo(@NonNull CEntry another) {
         return date.compareTo(another.date);
     }
 
