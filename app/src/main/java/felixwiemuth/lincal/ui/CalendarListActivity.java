@@ -147,12 +147,13 @@ public class CalendarListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.titleView.setText(Calendars.getInstance(CalendarListActivity.this).getConfigByPos(position).getCalendarTitle());
+            // Note that the position of this view holder in the list can change and therefore 'position' is only valid at initialization
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putInt(CalendarViewFragment.ARG_CALENDAR_POS, position);
+                        arguments.putInt(CalendarViewFragment.ARG_CALENDAR_POS, holder.getAdapterPosition());
                         CalendarViewFragment fragment = new CalendarViewFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -161,7 +162,7 @@ public class CalendarListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, CalendarViewActivity.class);
-                        intent.putExtra(CalendarViewFragment.ARG_CALENDAR_POS, position);
+                        intent.putExtra(CalendarViewFragment.ARG_CALENDAR_POS, holder.getAdapterPosition());
                         context.startActivity(intent);
                     }
                 }
