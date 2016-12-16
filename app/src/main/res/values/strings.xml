@@ -69,7 +69,8 @@
     <string name="dialog_error_dismiss">Close</string>
     <string name="dialog_file_not_found_msg">The file \"%s\" does not exist.</string>
     <string name="dialog_symbol_not_allowed_message">"The symbol \"%s\" is not allowed in a title."</string>
-    <string name="dialog_cal_already_added">The calendar has already been added. Do you want to add another, independent copy?</string>
+    <string name="dialog_cal_already_added_title">Calendar already added</string>
+    <string name="dialog_cal_already_added_msg">The calendar has already been added. Do you want to add another, independent copy?</string>
     <string name="dialog_show_link">Show Link</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_open_link">Open Link</string>

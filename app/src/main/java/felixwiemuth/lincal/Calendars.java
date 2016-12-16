@@ -188,7 +188,7 @@ public class Calendars {
         }
         if (instance.configStore.containsCalendarFile(config.getCalendarFile())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(R.string.dialog_cal_already_added).setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.dialog_cal_already_added_title).setMessage(R.string.dialog_cal_already_added_msg).setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                 }
