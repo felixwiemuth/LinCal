@@ -210,8 +210,13 @@ public class CalendarViewFragment extends Fragment {
                         }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // First remove this fragment, so that it cannot be used anymore
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(CalendarViewFragment.this).commit();
                         Calendars calendars = Calendars.getInstance(getContext());
                         calendars.removeCalendarByPos(calendarPos);
+                        // Notify calendar list that the calendar with the given position was removed
+                        RecyclerView calendarList = (RecyclerView) getActivity().findViewById(R.id.calendar_list);
+                        calendarList.getAdapter().notifyItemRemoved(calendarPos);
                     }
                 });
                 builder.show();
