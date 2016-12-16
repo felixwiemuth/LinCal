@@ -20,6 +20,8 @@ package felixwiemuth.lincal.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -113,8 +115,14 @@ public class CalendarListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_about:
-                //TODO create about dialog
-                return true;
+                try {
+                    PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String title = getString(R.string.app_name) + " " + packageInfo.versionName;
+                    HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), title, R.raw.about);
+                    return true;
+                } catch (PackageManager.NameNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             case R.id.menu_open_source_licenses:
                 HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), R.string.menu_open_source_licenses, R.raw.licenses);
                 return true;
