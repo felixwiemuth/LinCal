@@ -21,7 +21,7 @@
     <string name="title_activity_add_calendar">Add Calendar</string>
 
     <string name="menu_about">About</string>
-    
+
     <string name="dialog_welcome_title">Welcome</string>
     <string name="welcome_message">Welcome to LinCal! This is a pre-release version which is incomplete and probably contains a lot of errors - please report them.</string>
 
@@ -58,7 +58,7 @@
     <string name="add_cal_title">Custom title (leave empty to load from calendar):</string>
     <string name="add_cal_file">Calendar file (full path):</string>
     <string name="add_cal_notifications">Enable notifications</string>
-    <string name="add_cal_file_button">Choose...</string>
+    <string name="add_cal_file_button">Choose…</string>
     <string name="add_cal_button">Add</string>
     <string name="dialog_file_not_found">File not found</string>
     <string name="dialog_parsing_error_title">Parsing error</string>
