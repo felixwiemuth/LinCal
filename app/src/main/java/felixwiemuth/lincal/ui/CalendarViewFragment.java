@@ -214,9 +214,12 @@ public class CalendarViewFragment extends Fragment {
                         getActivity().getSupportFragmentManager().beginTransaction().remove(CalendarViewFragment.this).commit();
                         Calendars calendars = Calendars.getInstance(getContext());
                         calendars.removeCalendarByPos(calendarPos);
-                        // Notify calendar list that the calendar with the given position was removed
-                        RecyclerView calendarList = (RecyclerView) getActivity().findViewById(R.id.calendar_list);
-                        calendarList.getAdapter().notifyItemRemoved(calendarPos);
+                        // If displayed in a {@link CalendarListActivity}, notify calendar list that the calendar with the given position was removed
+                        try {
+                            CalendarListActivity calendarListActivity = (CalendarListActivity) getActivity();
+                            calendarListActivity.getCalendarListRecyclerView().getAdapter().notifyItemRemoved(calendarPos);
+                        } catch (ClassCastException ex) {
+                        }
                     }
                 });
                 builder.show();

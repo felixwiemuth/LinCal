@@ -78,7 +78,7 @@ public class CalendarListActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.calendar_list);
+        RecyclerView recyclerView = getCalendarListRecyclerView();
         assert recyclerView != null;
         setupRecyclerView(recyclerView);
 
@@ -190,5 +190,15 @@ public class CalendarListActivity extends AppCompatActivity {
                 titleView = (TextView) view.findViewById(R.id.title);
             }
         }
+    }
+
+    /**
+     * Get the {@link RecyclerView} representing the list of all calendars in the configuration.
+     * Should be used by other activities to notify of changes.
+     *
+     * @return
+     */
+    public RecyclerView getCalendarListRecyclerView() {
+        return (RecyclerView) findViewById(R.id.calendar_list);
     }
 }
