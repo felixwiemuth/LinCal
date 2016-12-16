@@ -144,6 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="2dp"
+            android:paddingRight="2dp"
             android:text="@string/setting_show_notifications_earliest"/>
 
         <TextView
@@ -151,7 +152,8 @@
             style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="2dp"/>
+            android:paddingEnd="2dp"
+            android:paddingRight="2dp"/>
 
         <CheckBox
             android:id="@+id/setting_earliest_notification_time_enabled"
