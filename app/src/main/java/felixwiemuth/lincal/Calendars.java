@@ -109,12 +109,8 @@ public class Calendars {
      */
     public LinCal getCalendarById(Context context, int id) {
         if (calendarsById.get(id) == null) {
-            LinCalConfig config = configsById.get(id);
-            if (config == null) {
-                throw new RuntimeException("Illegal calendar id used.");
-            }
             // load (parse) the calendar
-            calendarsById.put(id, loadCalendar(context, config.getCalendarFile())); //NOTE if the returned calendar is null it will be loaded again on next request
+            calendarsById.put(id, loadCalendar(context, getConfigById(id).getCalendarFile())); //NOTE if the returned calendar is null it will be loaded again on next request
         }
         return calendarsById.get(id);
     }
@@ -164,6 +160,7 @@ public class Calendars {
      */
     public int addCalendar(Context context, LinCalConfig config) {
         int id = configStore.add(config);
+        configsById.put(id, configStore.getEntries().get(configStore.getEntries().size() - 1));
         configStore.save(context);
         NotificationService.runWithCalendar(context, id);
         return id;
