@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -67,6 +68,7 @@ public class CalendarViewFragment extends Fragment {
     private CheckBox earliestNotificationTimeEnabled;
     //private CheckBox onScreenOnEnabled; //TODO implement
     private Spinner entryDisplayMode;
+    private Button buttonRemoveCalendar;
     private RecyclerView entryList;
 
     public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
@@ -192,6 +194,27 @@ public class CalendarViewFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+        buttonRemoveCalendar = (Button) rootView.findViewById(R.id.button_remove_cal);
+        buttonRemoveCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.dialog_remove_cal_title)
+                        .setMessage(R.string.dialog_remove_cal_msg)
+                        .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Calendars calendars = Calendars.getInstance(getContext());
+                        calendars.removeCalendarByPos(calendarPos);
+                    }
+                });
+                builder.show();
             }
         });
         loadSettings();

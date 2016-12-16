@@ -55,6 +55,7 @@
         <item>Hide future</item>
         <item>Show all</item>
     </string-array>
+    <string name="action_remove_cal">Remove calendar</string>
     <string name="entry_hide_text">***</string>
 
     <string name="add_cal_title">Custom title (leave empty to load from calendar):</string>
@@ -75,4 +76,6 @@
     <string name="dialog_dismiss">Close</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
+    <string name="dialog_remove_cal_title">Remove calendar</string>
+    <string name="dialog_remove_cal_msg">Remove calendar with settings and current progress? The calendar file itself will not be removed.</string>
 </resources>
