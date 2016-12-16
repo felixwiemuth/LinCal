@@ -55,30 +55,52 @@ public class HtmlDialogFragment extends DialogFragment {
     private AsyncTask<Void, Void, String> mLicenseLoader;
 
     private static final String FRAGMENT_TAG = "nz.net.speakman.androidlicensespage.HtmlDialogFragment";
-    private static final String ARG_RES_TITLE = "felixwiemuth.lincal.ARG_RES_TITLE";
+    private static final String ARG_TITLE = "felixwiemuth.lincal.ARG_TITLE";
     private static final String ARG_RES_HTML_FILE = "felixwiemuth.lincal.ARG_RES_HTML_FILE";
 
     /**
-     * Builds and displays a licenses fragment with no Close button. Requires
-     * "/res/raw/licenses.html" and "/res/layout/html_dialog_fragment.xml" to be present.
+     * Builds and displays a HTML dialog fragment.
      *
-     * @param fm A fragment manager instance used to display this HtmlDialogFragment.
+     * @param fm          A fragment manager instance used to display this HtmlDialogFragment.
+     * @param resTitle    The title for the dialog, as string resource
+     * @param resHtmlFile
      */
     public static void displayHtmlDialogFragment(FragmentManager fm, @StringRes int resTitle, @RawRes int resHtmlFile) {
+        Bundle arguments = new Bundle();
+        arguments.putInt(ARG_TITLE, resTitle);
+        arguments.putInt(ARG_RES_HTML_FILE, resHtmlFile);
+        constructFragment(arguments).displayFragment(fm);
+    }
+
+    /**
+     * Builds and displays a HTML dialog fragment.
+     *
+     * @param fm          A fragment manager instance used to display this HtmlDialogFragment.
+     * @param title       The title for the dialog, as string
+     * @param resHtmlFile
+     */
+    public static void displayHtmlDialogFragment(FragmentManager fm, String title, @RawRes int resHtmlFile) {
+        Bundle arguments = new Bundle();
+        arguments.putString(ARG_TITLE, title);
+        arguments.putInt(ARG_RES_HTML_FILE, resHtmlFile);
+        constructFragment(arguments).displayFragment(fm);
+    }
+
+    private static HtmlDialogFragment constructFragment(Bundle arguments) {
+        // Create and show the dialog.
+        HtmlDialogFragment newFragment = new HtmlDialogFragment();
+        newFragment.setArguments(arguments);
+        return newFragment;
+    }
+
+    private void displayFragment(FragmentManager fm) {
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag(FRAGMENT_TAG);
         if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-
-        // Create and show the dialog.
-        DialogFragment newFragment = new HtmlDialogFragment();
-        Bundle arguments = new Bundle();
-        arguments.putInt(ARG_RES_TITLE, resTitle);
-        arguments.putInt(ARG_RES_HTML_FILE, resHtmlFile);
-        newFragment.setArguments(arguments);
-        newFragment.show(ft, FRAGMENT_TAG);
+        show(ft, FRAGMENT_TAG);
     }
 
     @Override
@@ -106,7 +128,13 @@ public class HtmlDialogFragment extends DialogFragment {
         mIndeterminateProgress = (ProgressBar) content.findViewById(R.id.html_dialog_fragment_indeterminate_progress);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getArguments().getInt(ARG_RES_TITLE)); //TODO error handling
+        Bundle arguments = getArguments();
+        // if argument for title is given (string or int referencing a string resource) set the title
+        if (arguments.getString(ARG_TITLE) != null) {
+            builder.setTitle(arguments.getString(ARG_TITLE));
+        } else {
+            builder.setTitle(getArguments().getInt(ARG_TITLE)); //TODO error handling
+        }
         builder.setView(content);
         return builder.create();
     }
