@@ -92,7 +92,7 @@ public class LinCalConfigStore {
      */
     public void save(Context context) {
         lockConfigFile(context);
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             //TODO check how to allow file to be public (other modes deprecated)
             writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(context.openFileOutput(CONFIG_FILE_OPENED, Context.MODE_PRIVATE))));
@@ -175,7 +175,7 @@ public class LinCalConfigStore {
      * @param context
      */
     public static void createInitialConfigurationFile(Context context) {
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             //TODO check how to allow file to be public (other modes deprecated)
             writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(context.openFileOutput(CONFIG_FILE, Context.MODE_PRIVATE))));
