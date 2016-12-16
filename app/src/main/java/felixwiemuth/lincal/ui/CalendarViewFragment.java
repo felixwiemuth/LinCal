@@ -79,7 +79,6 @@ public class CalendarViewFragment extends Fragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
             int hour = getArguments().getInt("hour");
             int minute = getArguments().getInt("minute");
             calendarPos = getArguments().getInt("calendarPos");
