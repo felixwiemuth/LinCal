@@ -206,9 +206,17 @@ public class Calendars {
         }
     }
 
+    /**
+     * Remove a calendar from the configuration and save it.
+     *
+     * @param pos
+     */
     public void removeCalendarByPos(int pos) {
-        configsById.remove(configStore.getEntries().get(pos).getId());
+        int id = configStore.getEntries().get(pos).getId();
+        configsById.remove(id);
+        calendarsById.remove(id);
         configStore.getEntries().remove(pos);
+        save();
     }
 
     /**
