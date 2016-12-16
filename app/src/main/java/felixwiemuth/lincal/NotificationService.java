@@ -60,12 +60,12 @@ public class NotificationService extends IntentService {
         Calendar now = Calendar.getInstance();
         Calendar nextAlarm = null;
         for (int i = 0; i < calendars.getCalendarCount(); i++) {
-            Calendar nextTime = processCalendar(calendars.getCalendarByPos(i), calendars.getConfigByPos(i), now);
+            Calendar nextTime = processCalendar(calendars.getCalendarByPos(this, i), calendars.getConfigByPos(i), now);
             if (nextAlarm == null || (nextTime != null && nextTime.before(nextAlarm))) {
                 nextAlarm = nextTime;
             }
         }
-        calendars.save();
+        calendars.save(this);
         // Schedule next processing if there are further entries
         if (nextAlarm != null) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);

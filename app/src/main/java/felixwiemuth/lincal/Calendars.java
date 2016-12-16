@@ -46,8 +46,7 @@ import static felixwiemuth.lincal.util.Util.showErrorDialog;
  * @author Felix Wiemuth
  */
 public class Calendars {
-    private static final Calendars instance = new Calendars();
-    private Context context; //NOTE: a context has to be provided when obtaining the instance //TODO consider warning about memory leak
+    private static Calendars instance;
     private LinCalConfigStore configStore;
     /**
      * NOTE: It would be enough to load every calendar file once but as adding the same calendar
@@ -56,30 +55,32 @@ public class Calendars {
     private final Map<Integer, LinCal> calendarsById = new HashMap<>();
     private final Map<Integer, LinCalConfig> configsById = new HashMap<>();
 
-    private Calendars() {
-    }
-
-    /**
-     * Obtain an instance to access calendars. Note that subsequent calls to this method may return
-     * different instances as the runtime system may unload classed. If you want to save changes
-     * made to an instance make sure to call {@link #save()} on the same instance as obtained by
-     * calling this method.
-     *
-     * @return
-     */
-    public static Calendars getInstance(Context context) {
-        instance.context = context;
-        instance.loadConfig(); //TODO this should not be necessary when config is already loaded
-        return instance;
-    }
-
-    private void loadConfig() {
+    private Calendars(Context context) {
         configStore = new LinCalConfigStore(context);
         for (LinCalConfig linCalConfig : configStore.getEntries()) {
             configsById.put(linCalConfig.getId(), linCalConfig);
         }
     }
 
+    /**
+     * Obtain an instance to access calendars. Note that subsequent calls to this method may return
+     * different instances as the runtime system may unload classed. If you want to save changes
+     * made to an instance make sure to call {@link #save(Context)} on the same instance as obtained
+     * by calling this method.
+     *
+     * @param context
+     * @return
+     */
+    public static Calendars getInstance(Context context) {
+        if (instance == null) {
+            instance = new Calendars(context);
+        }
+        return instance;
+    }
+
+    /**
+     * @return
+     */
     public int getCalendarCount() {
         return configStore.getEntries().size();
     }
@@ -87,12 +88,13 @@ public class Calendars {
     /**
      * Get the calendar at the given position in adding order.
      *
+     * @param context
      * @param pos
      * @return
      */
-    public LinCal getCalendarByPos(int pos) {
+    public LinCal getCalendarByPos(Context context, int pos) {
         try {
-            return getCalendarById(configStore.getEntries().get(pos).getId());
+            return getCalendarById(context, configStore.getEntries().get(pos).getId());
         } catch (IndexOutOfBoundsException ex) {
             throw new RuntimeException("Illegal calendar position used.");
         }
@@ -101,17 +103,18 @@ public class Calendars {
     /**
      * Get the calendar with the given id.
      *
+     * @param context
      * @param id
      * @return the calendar or {@code null} if there was an error loading the calendar
      */
-    public LinCal getCalendarById(int id) {
+    public LinCal getCalendarById(Context context, int id) {
         if (calendarsById.get(id) == null) {
             LinCalConfig config = configsById.get(id);
             if (config == null) {
                 throw new RuntimeException("Illegal calendar id used.");
             }
             // load (parse) the calendar
-            calendarsById.put(id, loadCalendar(config.getCalendarFile(), context)); //NOTE if the returned calendar is null it will be loaded again on next request
+            calendarsById.put(id, loadCalendar(context, config.getCalendarFile())); //NOTE if the returned calendar is null it will be loaded again on next request
         }
         return calendarsById.get(id);
     }
@@ -143,6 +146,10 @@ public class Calendars {
         return configsById.get(id);
     }
 
+    /**
+     * @param file
+     * @return
+     */
     public boolean calendarFromFileExists(String file) {
         return configStore.containsCalendarFile(file);
     }
@@ -151,12 +158,13 @@ public class Calendars {
      * Add a calendar to the configuration and save it. It is added in the last position. Runs
      * {@link NotificationService} for the new calendar.
      *
-     * @param config the configuration for the new calendar (the id will be overwritten).
+     * @param context
+     * @param config  the configuration for the new calendar (the id will be overwritten).
      * @return the id of the new calendar
      */
-    public int addCalendar(LinCalConfig config) {
+    public int addCalendar(Context context, LinCalConfig config) {
         int id = configStore.add(config);
-        configStore.save();
+        configStore.save(context);
         NotificationService.runWithCalendar(context, id);
         return id;
     }
@@ -172,10 +180,10 @@ public class Calendars {
      * @param context
      * @param finish  action to be performed when the calendar has been added (and not otherwise)
      */
-    public static void addCalendarChecked(final LinCalConfig config, Context context, final Runnable finish) {
+    public static void addCalendarChecked(final LinCalConfig config, final Context context, final Runnable finish) {
         final Calendars instance = getInstance(context);
         // First load calendar to check syntax and get information (title)
-        LinCal calendar = loadCalendar(config.getCalendarFile(), context);
+        LinCal calendar = loadCalendar(context, config.getCalendarFile());
         if (calendar == null) {
             return;
         }
@@ -195,13 +203,13 @@ public class Calendars {
             }).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    instance.addCalendar(config);
+                    instance.addCalendar(context, config); //NOTE keeping context for existence of dialog
                     finish.run();
                 }
             });
             builder.show();
         } else {
-            instance.addCalendar(config);
+            instance.addCalendar(context, config);
             finish.run();
         }
     }
@@ -209,23 +217,26 @@ public class Calendars {
     /**
      * Remove a calendar from the configuration and save it.
      *
+     * @param context
      * @param pos
      */
-    public void removeCalendarByPos(int pos) {
+    public void removeCalendarByPos(Context context, int pos) {
         int id = configStore.getEntries().get(pos).getId();
         configsById.remove(id);
         calendarsById.remove(id);
         configStore.getEntries().remove(pos);
-        save();
+        save(context);
     }
 
     /**
      * Write the current configuration to the configuration file. This is automatically called by
-     * {@link #addCalendar(LinCalConfig)}  but has to be called manually when changing a
+     * {@link #addCalendar(Context, LinCalConfig)}  but has to be called manually when changing a
      * configuration obtained by {@link #getConfigByPos(int)} or {@link #getConfigById(int)}.
+     *
+     * @param context
      */
-    public void save() {
-        configStore.save();
+    public void save(Context context) {
+        configStore.save(context);
     }
 
     /**
@@ -241,10 +252,11 @@ public class Calendars {
     /**
      * Load a calendar and show an error dialog on failure.
      *
+     * @param context
      * @param file
      * @return the loaded calendar or {@code null} if there was an error
      */
-    public static LinCal loadCalendar(String file, Context context) {
+    public static LinCal loadCalendar(Context context, String file) {
         try {
             return new LinCalParser(context).parse(new File(file));
         } catch (FileNotFoundException ex) {
@@ -258,6 +270,12 @@ public class Calendars {
     }
 
     //TODO consider default configuration
+
+    /**
+     * @param entry
+     * @param config
+     * @return
+     */
     public static Calendar calcNotificationTime(CEntry entry, LinCalConfig config) {
         Calendar notificationTime = Calendar.getInstance();
         notificationTime.setTime(entry.getDate().getTime());
@@ -268,6 +286,11 @@ public class Calendars {
         return notificationTime;
     }
 
+    /**
+     * @param entry
+     * @param calendarPos
+     * @return
+     */
     public Calendar calcNotificationTime(CEntry entry, int calendarPos) {
         return calcNotificationTime(entry, getConfigByPos(calendarPos));
     }

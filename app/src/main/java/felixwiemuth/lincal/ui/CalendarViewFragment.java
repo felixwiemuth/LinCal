@@ -93,7 +93,7 @@ public class CalendarViewFragment extends Fragment {
             config.setEarliestNotificationTime(time);
             TextView textViewEarliestNotificationTime = (TextView) getActivity().findViewById(R.id.setting_earliest_notification_time);
             textViewEarliestNotificationTime.setText(time.toString());
-            calendars.save();
+            calendars.save(getContext());
             // have to update the displayed notification times (times might have changed)
             RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.entry_list_recycler_view);
             recyclerView.getAdapter().notifyDataSetChanged();
@@ -118,7 +118,7 @@ public class CalendarViewFragment extends Fragment {
         Activity activity = this.getActivity();
         calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
         Calendars calendars = Calendars.getInstance(getContext());
-        calendar = calendars.getCalendarByPos(calendarPos);
+        calendar = calendars.getCalendarByPos(getContext(), calendarPos);
         // If toolbar is present (handset mode), set title to calendar title
         //TODO add toolbar again
         //        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -213,7 +213,7 @@ public class CalendarViewFragment extends Fragment {
                         // First remove this fragment, so that it cannot be used anymore
                         getActivity().getSupportFragmentManager().beginTransaction().remove(CalendarViewFragment.this).commit();
                         Calendars calendars = Calendars.getInstance(getContext());
-                        calendars.removeCalendarByPos(calendarPos);
+                        calendars.removeCalendarByPos(getContext(), calendarPos);
                         // If displayed in a {@link CalendarListActivity}, notify calendar list that the calendar with the given position was removed
                         try {
                             CalendarListActivity calendarListActivity = (CalendarListActivity) getActivity();
@@ -342,7 +342,7 @@ public class CalendarViewFragment extends Fragment {
         config.setEarliestNotificationTimeEnabled(earliestNotificationTimeEnabled.isChecked());
         //config.setOnScreenOn(onScreenOnEnabled.isChecked()); //TODO implement
         config.setEntryDisplayMode(LinCalConfig.EntryDisplayMode.values()[entryDisplayMode.getSelectedItemPosition()]);
-        calendars.save();
+        calendars.save(getContext());
     }
 
     private void loadSettings() {

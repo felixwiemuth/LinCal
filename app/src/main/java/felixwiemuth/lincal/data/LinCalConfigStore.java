@@ -44,7 +44,6 @@ public class LinCalConfigStore {
     public static final String CONFIG_FILE = "config.txt";
     public static final String CONFIG_FILE_OPENED = CONFIG_FILE + ".locked"; // name of the file while reading or writing from/to it
 
-    private final Context context;
     private int nextId;
     private final List<LinCalConfig> entries = new ArrayList<>();
 
@@ -55,9 +54,8 @@ public class LinCalConfigStore {
      * @param context
      */
     public LinCalConfigStore(Context context) {
-        this.context = context;
         //TODO check correct handling of exceptions
-        lockConfigFile(); //NOTE: this assumes that file exists
+        lockConfigFile(context); //NOTE: this assumes that file exists
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(context.openFileInput(CONFIG_FILE_OPENED)));
             try {
@@ -75,7 +73,7 @@ public class LinCalConfigStore {
             } finally {
                 try {
                     in.close();
-                    unlockConfigFile(); //TODO how to deal with exceptions, unlock file?
+                    unlockConfigFile(context); //TODO how to deal with exceptions, unlock file?
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -89,9 +87,11 @@ public class LinCalConfigStore {
     /**
      * Write the configuration represented by this instance to the configuration file. If the file
      * is not present, it is created.
+     *
+     * @param context
      */
-    public void save() {
-        lockConfigFile();
+    public void save(Context context) {
+        lockConfigFile(context);
         PrintWriter writer = null;
         try {
             //TODO check how to allow file to be public (other modes deprecated)
@@ -104,14 +104,14 @@ public class LinCalConfigStore {
             writer.println(linCalConfig);
         }
         writer.close();
-        unlockConfigFile(); //TODO if this throws an exception: ignoring error check at writer
+        unlockConfigFile(context); //TODO if this throws an exception: ignoring error check at writer
         if (writer.checkError()) {
             throw new RuntimeException("Error while writing to configuration file.");
         }
     }
 
     /**
-     * Add an entry to this loaded configuration (call{@link #save()} to persist).
+     * Add an entry to this loaded configuration (call{@link #save(Context)} ve()} to persist).
      *
      * @param config the configuration for the new calendar (the id will be overwritten).
      * @return the id of the new calendar
@@ -124,6 +124,10 @@ public class LinCalConfigStore {
     }
 
 
+    /**
+     * @param file
+     * @return
+     */
     public boolean containsCalendarFile(String file) {
         for (LinCalConfig linCalConfig : entries) {
             if (linCalConfig.getCalendarFile().equals(file)) {
@@ -133,11 +137,14 @@ public class LinCalConfigStore {
         return false;
     }
 
+    /**
+     * @return
+     */
     public List<LinCalConfig> getEntries() {
         return entries;
     }
 
-    private void lockConfigFile() {
+    private void lockConfigFile(Context context) {
         File dir = context.getFilesDir();
         // in increasing time intervals of up to ~15s try to lock file (6 times)
         for (int t = 5; t <= 15625; t *= 5) {
@@ -154,7 +161,7 @@ public class LinCalConfigStore {
         throw new RuntimeException("Error: Could not lock config file to read/write.");
     }
 
-    private void unlockConfigFile() {
+    private void unlockConfigFile(Context context) {
         File dir = context.getFilesDir();
         if (!new File(dir, CONFIG_FILE_OPENED).renameTo(new File(dir, CONFIG_FILE))) {
             throw new RuntimeException("Error: Could not unlock config file.");
