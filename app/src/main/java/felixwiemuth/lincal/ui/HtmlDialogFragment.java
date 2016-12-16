@@ -21,6 +21,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.RawRes;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -62,7 +64,7 @@ public class HtmlDialogFragment extends DialogFragment {
      *
      * @param fm A fragment manager instance used to display this HtmlDialogFragment.
      */
-    public static void displayHtmlDialogFragment(FragmentManager fm, int resTitle, int resHtmlFile) {
+    public static void displayHtmlDialogFragment(FragmentManager fm, @StringRes int resTitle, @RawRes int resHtmlFile) {
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag(FRAGMENT_TAG);
         if (prev != null) {
