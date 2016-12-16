@@ -17,9 +17,8 @@
 
 <resources>
     <string name="app_name">Lincal</string>
-    <string name="title_entry_detail">Entry Detail</string>
+    <string name="title_activity_calendar_view">Calendar view</string>
     <string name="title_activity_add_calendar">Add Calendar</string>
-    <string name="title_activity_test">Test</string>
 
     <string name="menu_about">About</string>
     <string name="menu_open_source_licenses">Open source licenses</string>

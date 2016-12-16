@@ -80,7 +80,7 @@ public class CalendarListActivity extends AppCompatActivity {
         assert recyclerView != null;
         setupRecyclerView(recyclerView);
 
-        if (findViewById(R.id.entry_list_container) != null) {
+        if (findViewById(R.id.calendar_view_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -157,7 +157,7 @@ public class CalendarListActivity extends AppCompatActivity {
                         CalendarViewFragment fragment = new CalendarViewFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.entry_list_container, fragment)
+                                .replace(R.id.calendar_view_container, fragment)
                                 .commit();
                     } else {
                         Context context = v.getContext();

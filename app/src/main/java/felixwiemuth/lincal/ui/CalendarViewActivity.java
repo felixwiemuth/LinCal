@@ -35,7 +35,7 @@ public class CalendarViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entry_list);
+        setContentView(R.layout.activity_calendar_view);
         //TODO activate toolbar again
         //        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         //        setSupportActionBar(toolbar);
@@ -67,7 +67,7 @@ public class CalendarViewActivity extends AppCompatActivity {
             CalendarViewFragment fragment = new CalendarViewFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.entry_list_container, fragment)
+                    .replace(R.id.calendar_view_container, fragment)
                     .commit();
         }
     }
