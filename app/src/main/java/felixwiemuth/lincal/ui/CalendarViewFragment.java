@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -215,11 +216,17 @@ public class CalendarViewFragment extends Fragment {
                         getActivity().getSupportFragmentManager().beginTransaction().remove(CalendarViewFragment.this).commit();
                         Calendars calendars = Calendars.getInstance(getContext());
                         calendars.removeCalendarByPos(getContext(), calendarPos);
-                        // If displayed in a {@link CalendarListActivity}, notify calendar list that the calendar with the given position was removed
-                        try {
-                            CalendarListActivity calendarListActivity = (CalendarListActivity) getActivity();
-                            calendarListActivity.getCalendarListRecyclerView().getAdapter().notifyItemRemoved(calendarPos);
-                        } catch (ClassCastException ex) {
+                        // Notify calendar list that the calendar with the given position was removed and return to calendar list in case of CalendarViewActivity
+                        Activity hostActivity = getActivity();
+                        if (hostActivity instanceof CalendarListActivity) {
+                            ((CalendarListActivity) hostActivity).notifyCalendarRemoved(calendarPos);
+                        } else if (hostActivity instanceof CalendarViewActivity) {
+                            Intent resultData = new Intent();
+                            resultData.putExtra(CalendarListActivity.EXTRA_RESULT_CAL_REMOVED, calendarPos);
+                            hostActivity.setResult(Activity.RESULT_OK, resultData);
+                            hostActivity.finish();
+                        } else {
+                            throw new RuntimeException("CalendarViewFragment may only be contained in either CalendarListActivity or CalendarViewActivity.");
                         }
                     }
                 });

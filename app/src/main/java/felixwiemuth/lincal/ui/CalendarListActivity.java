@@ -55,11 +55,18 @@ public class CalendarListActivity extends AppCompatActivity {
      * is "true", the last calendar in the list is selected.
      */
     public static final String EXTRA_ARG_CONFIG_CHANGED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED"; //TODO update this to "calendar added"
+    /**
+     * If the activity receives a result with this int extra, the UI is notified of a calendar
+     * haveing been removed at the given position.
+     */
+    public static final String EXTRA_RESULT_CAL_REMOVED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_RESULT_CAL_REMOVED";
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet device.
      */
     private boolean mTwoPane;
+
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +85,7 @@ public class CalendarListActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = getCalendarListRecyclerView();
+        recyclerView = (RecyclerView) findViewById(R.id.calendar_list);
         assert recyclerView != null;
         setupRecyclerView(recyclerView);
 
@@ -137,6 +144,13 @@ public class CalendarListActivity extends AppCompatActivity {
         //addListChangeListener(adapter);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data != null && data.hasExtra(EXTRA_RESULT_CAL_REMOVED)) {
+            notifyCalendarRemoved(data.getIntExtra(EXTRA_RESULT_CAL_REMOVED, -1));
+        }
+    }
+
     /**
      * Adapter to represent calendar titles in a list.
      */
@@ -171,7 +185,7 @@ public class CalendarListActivity extends AppCompatActivity {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, CalendarViewActivity.class);
                         intent.putExtra(CalendarViewFragment.ARG_CALENDAR_POS, holder.getAdapterPosition());
-                        context.startActivity(intent);
+                        startActivityForResult(intent, 0);
                     }
                 }
             });
@@ -195,13 +209,7 @@ public class CalendarListActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Get the {@link RecyclerView} representing the list of all calendars in the configuration.
-     * Should be used by other activities to notify of changes.
-     *
-     * @return
-     */
-    public RecyclerView getCalendarListRecyclerView() {
-        return (RecyclerView) findViewById(R.id.calendar_list);
+    public void notifyCalendarRemoved(int pos) {
+        recyclerView.getAdapter().notifyItemRemoved(pos);
     }
 }
