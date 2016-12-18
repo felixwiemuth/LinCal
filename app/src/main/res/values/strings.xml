@@ -58,7 +58,7 @@
 
     <string name="dialog_warning_add_cal_title">Warning</string>
     <string name="dialog_warning_add_cal_msg">Only use calendars from people you trust - opening links to malicious sites is a security risk!</string>
-    <string name="add_cal_title">Custom title (leave empty to load from calendar):</string>
+    <string name="add_cal_title">Custom title (leave empty to use calendar\'s title):</string>
     <string name="add_cal_file">Calendar file (full path):</string>
     <string name="add_cal_notifications">Enable notifications</string>
     <string name="add_cal_file_button">Choose…</string>
