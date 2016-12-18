@@ -30,15 +30,19 @@ import felixwiemuth.lincal.R;
  */
 public class Util {
 
-    public static void showMessageDialog(int title, String message, Context context) {
+    public static void showMessageDialog(int resTitle, String message, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        }).setTitle(title).setMessage(message);
+        }).setTitle(resTitle).setMessage(message);
         builder.show();
+    }
+
+    public static void showMessageDialog(int resTitle, int resMessage, Context context) {
+        showMessageDialog(resTitle, context.getString(resMessage), context);
     }
 
     public static void showErrorDialog(int title, String message, Context context) {

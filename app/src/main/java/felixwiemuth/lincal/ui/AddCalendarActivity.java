@@ -17,6 +17,7 @@
 
 package felixwiemuth.lincal.ui;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +31,7 @@ import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.util.Time;
+import felixwiemuth.lincal.util.Util;
 
 public class AddCalendarActivity extends AppCompatActivity {
 
@@ -78,6 +80,12 @@ public class AddCalendarActivity extends AppCompatActivity {
                 });
             }
         });
+
+        SharedPreferences preferences = getPreferences(0); //TODO performance issue? If so, load beforehand to make use of caches etc.
+        if (!preferences.contains("warningMessageShown")) {
+            Util.showMessageDialog(R.string.dialog_warning_add_cal_title, R.string.dialog_warning_add_cal_msg, this);
+            preferences.edit().putBoolean("warningMessageShown", true).apply();
+        }
     }
 
     @Override

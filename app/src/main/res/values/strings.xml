@@ -56,6 +56,8 @@
     <string name="action_remove_cal">Remove calendar</string>
     <string name="entry_hide_text">***</string>
 
+    <string name="dialog_warning_add_cal_title">Warning</string>
+    <string name="dialog_warning_add_cal_msg">Only use calendars from people you trust - opening links to malicious sites is a security risk!</string>
     <string name="add_cal_title">Custom title (leave empty to load from calendar):</string>
     <string name="add_cal_file">Calendar file (full path):</string>
     <string name="add_cal_notifications">Enable notifications</string>
