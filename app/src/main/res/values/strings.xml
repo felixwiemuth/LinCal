@@ -24,7 +24,7 @@
     <string name="menu_about">About</string>
 
     <string name="dialog_welcome_title">Welcome</string>
-    <string name="welcome_message">Welcome to LinCal! This is a pre-release version which is incomplete and probably contains a lot of errors - please report them.</string>
+    <string name="welcome_message">Welcome to LinCal! This is the first release version which might still contain some problems - see \"About\" on how to report them. LinCal is free software (licensed under the GNU General Public License) and comes without any warranty.</string>
 
     <string name="crash_toast_text">An unexpected error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You might add your comments about the problem.</string>
 
