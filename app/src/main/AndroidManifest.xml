@@ -19,6 +19,15 @@
           package="felixwiemuth.lincal">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <receiver
+        android:name=".LinCalBroadcastReceiver"
+        android:enabled="true">
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+        </intent-filter>
+    </receiver>
 
     <application
         android:name=".Main"

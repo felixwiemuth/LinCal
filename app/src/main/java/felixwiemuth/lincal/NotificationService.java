@@ -39,7 +39,6 @@ import felixwiemuth.lincal.data.LinCalConfig;
  * due entries and then uses {@link android.app.AlarmManager} to schedule its next execution.
  */
 public class NotificationService extends IntentService {
-    //TODO have to reschedule after reboot -> load all calendars
     //TODO for now ignores calendar parameter and processes all calendars, due to the problem that setting multiple alarms seems to cancel previous alarms (even if intents are different). This problem needs further investigation.
 
     /**
