@@ -146,6 +146,20 @@ public class CalendarViewFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
             ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
         }
+
+        notificationsEnabled = (CheckBox) rootView.findViewById(R.id.notifications_enabled);
+        textViewEarliestNotificationTime = (TextView) rootView.findViewById(R.id.setting_earliest_notification_time);
+        earliestNotificationTimeEnabled = (CheckBox) rootView.findViewById(R.id.setting_earliest_notification_time_enabled);
+        entryDisplayMode = (Spinner) rootView.findViewById(R.id.setting_entry_display_mode);
+        buttonRemoveCalendar = (Button) rootView.findViewById(R.id.button_remove_cal);
+
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.setting_entry_display_mode_options, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        entryDisplayMode.setAdapter(spinnerAdapter);
+
+        loadSettings(); // loading settings before adding listeners prevents them from firing due to initialization (e.g. Spinner)
+
+        // Set listeners
         final View.OnClickListener saveSettingsListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,9 +167,8 @@ public class CalendarViewFragment extends Fragment {
                 NotificationService.runWithCalendar(getContext(), Calendars.getInstance(getContext()).getConfigByPos(calendarPos).getId()); //TODO reconsider when to call
             }
         };
-        notificationsEnabled = (CheckBox) rootView.findViewById(R.id.notifications_enabled);
+
         notificationsEnabled.setOnClickListener(saveSettingsListener);
-        textViewEarliestNotificationTime = (TextView) rootView.findViewById(R.id.setting_earliest_notification_time);
         textViewEarliestNotificationTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +182,6 @@ public class CalendarViewFragment extends Fragment {
                 dialogFragment.show(getFragmentManager(), "timePicker");
             }
         });
-        earliestNotificationTimeEnabled = (CheckBox) rootView.findViewById(R.id.setting_earliest_notification_time_enabled);
         earliestNotificationTimeEnabled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,16 +193,17 @@ public class CalendarViewFragment extends Fragment {
         //TODO implement
         //        onScreenOnEnabled = (CheckBox) rootView.findViewById(R.id.setting_show_notification_on_screen_on);
         //        onScreenOnEnabled.setOnClickListener(saveSettingsListener);
-        entryDisplayMode = (Spinner) rootView.findViewById(R.id.setting_entry_display_mode);
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.setting_entry_display_mode_options, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        entryDisplayMode.setAdapter(spinnerAdapter);
         entryDisplayMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            int selected = entryDisplayMode.getSelectedItemPosition();
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                saveSettingsListener.onClick(view);
-                // have to update the displayed entries
-                entryList.getAdapter().notifyDataSetChanged();
+                if (selected != position) {
+                    saveSettingsListener.onClick(view);
+                    // have to update the displayed entries
+                    entryList.getAdapter().notifyDataSetChanged();
+                    selected = position;
+                }
             }
 
             @Override
@@ -198,7 +211,6 @@ public class CalendarViewFragment extends Fragment {
 
             }
         });
-        buttonRemoveCalendar = (Button) rootView.findViewById(R.id.button_remove_cal);
         buttonRemoveCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,7 +245,6 @@ public class CalendarViewFragment extends Fragment {
                 builder.show();
             }
         });
-        loadSettings();
         return rootView;
     }
 
