@@ -227,8 +227,9 @@ public class Calendars {
 
     /**
      * Write the current configuration to the configuration file. This is automatically called by
-     * {@link #addCalendar(Context, LinCalConfig)}  but has to be called manually when changing a
-     * configuration obtained by {@link #getConfigByPos(int)} or {@link #getConfigById(int)}.
+     * {@link #addCalendar(Context, LinCalConfig)} and {@link #removeCalendarByPos(Context, int)}
+     * but has to be called manually when changing a configuration obtained by {@link
+     * #getConfigByPos(int)} or {@link #getConfigById(int)}.
      *
      * @param context
      */
