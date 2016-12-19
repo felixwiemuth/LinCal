@@ -1,0 +1,76 @@
+# This is an example calendar file for the LinCal app. It demonstrates how calenders are created.
+# Open this file under Android and select "Add Calendar" to add it to the LinCal app.
+# Every line starting with "#" is a comment and is ignored by the app. Empty lines are ignored as well.
+
+# The following (required) commands add some general information about the calendar which the user can see (it can only be defined before "@begin"). The date must be given in the shown format, all other information are just strings (the title must not contain ";"). None of the fields have any relevance to the functions of the app.
+@author Alice
+@title An example Calendar
+@descr This calendar serves as a demonstration.
+@date 18/12/2016
+# The version field can be used to distinguish different versions of a calendar
+@version 1
+
+# This indicates that the definition of the calendar entries themselves begins now
+@begin
+
+# We start by setting the date of the first entry
+@d 01/12/2016
+# We can add an optional description for the next link. It is used as the text for the notification.
+@descr The weather in Munich
+# Next comes the link - in fact every line not starting with "@" or "#" is interpreted as a link!
+http://www.wetteronline.de/wetterprognose/m%C3%BCnchen
+
+# Giving the next link without specification of the date automatically uses the next calendar day!
+@descr Do you actually know what Android is?
+https://en.wikipedia.org/wiki/Android_%28operating_system%29
+
+# So here we are at Dec 3rd.
+https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&utm_medium=sidebar&utm_campaign=C13_en.wikipedia.org&uselang=en
+
+# Now we decide to skip two days. As we stay in the same month, we only need to specify the day!
+@d 6
+https://en.wikipedia.org/wiki/Saint_Nicholas
+
+@descr HTTPS: What is it? Why should we use it?
+http://mashable.com/2011/05/31/https-web-security/
+
+# Let's say the next link should be in another month and year than the previous. We have to specify the complete date.
+@d 03/01/2017
+We can also add plain text instead of a link. Everything will be shown to the user and if it can be opened as a link, then it will! [not yet supported]
+
+# If the year doesn't change, switching to another month is shorter:
+@d 01/02
+Februaray has begun!
+
+# It is not required that entries are specified in date order and it doesn't make a difference to the viewer of the calendar. For example, we can add an entry for a date we haven't specified earlier:
+@d 05/12/2016
+Forgot this one!
+
+# The next entry will be for the 6th which we already added but this is also okay: multiple entries per day are allowed!
+St. Nicholas gets an extra entry.
+
+# We can also set the time at which the notification should be shown:
+@t 8:30
+This is an early notification, however not the first today... Wake up!
+
+# We can set a default time to be used whenever we don't specify the time with "@t":
+@st 12:00
+
+# The next entries will all be shown at 12:00
+
+Another message, for the 08/12/2016 if we counted correctly!
+And another, next day
+
+@t 9:00
+Just for the 9th, show the notifcation at 9:00.
+At the 10th it is shown at 12:00 again!
+
+@st 11:00
+
+Unless we have changed the default time to 11:00 for the 11th :).
+
+
+# That's it! We specified a calendar with several entries, for custom dates and times.
+# In general, before sending a calendar to someone, make sure that the dates are correct and the links work by loading it into LinCal.
+
+# A calendar can be updated while in use (that is, the user simply replaces the calendar file on their device). However, at the time the new file is next loaded by the app (which usually is at the next due notification) no entries in the past must have been added or deleted. Thus, in general make sure that you only make changes to entries past the one the user will see next. Therefore it is advisable to specify entries in order to get a better overview.
