@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <string name="app_name">LinCal</string>
+    <string name="app_name" translatable="false">LinCal</string>
     <string name="title_activity_calendar_view">Calendar view</string>
     <string name="title_activity_add_calendar">Add Calendar</string>
 
