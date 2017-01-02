@@ -1,0 +1,82 @@
+<!--
+  ~ Copyright (C) 2015 Felix Wiemuth
+  ~ Copyright (C) 2017 Naofumi Fukue
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="title_activity_calendar_view">カレンダー表示</string>
+    <string name="title_activity_add_calendar">カレンダーを追加</string>
+
+    <string name="menu_help">ヘルプ</string>
+    <string name="menu_about">アプリについて</string>
+
+    <string name="dialog_welcome_title">ようこそ</string>
+    <string name="welcome_message">LinCal へようこそ！ これは初期のバージョンです。まだいくつかの問題があるかもしれません - 問題を報告する方法については \"アプリについて\" を参照してください。 LinCal はフリーソフトウェアであり (GNU 一般公衆利用許諾契約書に基づいてライセンスされています)、何の保証もありません。</string>
+
+    <string name="crash_toast_text">予期しないエラーが発生して、アプリケーションが強制的に停止しました。 エラーに関する重要な情報が記載されたこのメールを開発者に送信してください。 問題についてのコメントを追加することもできます。</string>
+
+    <string name="invalidDateSpecificationException_base">日付指定が無効です:</string>
+    <string name="invalidDateSpecificationException_expected_full">完全な日付指定が必要です (d/m/y)</string>
+    <string name="invalidDateSpecificationException_in_header">カレンダーの日付</string>
+    <string name="invalidDateSpecificationException_first">最初の日付として</string>
+    <string name="invalidDateSpecificationException_format">形式エラー (d/m/y を使用)</string>
+    <string name="dateSpecificationRequiredException">最初のエントリーを追加する前に、最初の日付を "@d d/m/y" で指定する必要があります。</string>
+    <string name="invalidTimeSpecificationException_base">時間指定が無効です:</string>
+    <string name="invalidTimeSpecificationException_format">(hh:mm を使用)</string>
+
+
+    <string name="cal_title">タイトル:</string>
+    <string name="cal_title_error_loading">(エラーのためカレンダーを読み込めませんでした)</string>
+    <string name="cal_author">作者:</string>
+    <string name="cal_description">説明:</string>
+    <string name="cal_version">バージョン:</string>
+    <string name="cal_date">日付:</string>
+    <string name="setting_notifications_enabled">通知を有効にする</string>
+    <string name="setting_show_notifications_earliest">最も早い通知を表示する:</string>
+    <string name="setting_show_notifications_on_screen_on">画面をオンにした後にのみ通知を表示する</string>
+    <string name="setting_entry_display_mode">エントリーの表示:</string>
+    <string-array name="setting_entry_display_mode_options">
+        <item>すべて非表示</item>
+        <item>未来を非表示</item>
+        <item>すべて表示</item>
+    </string-array>
+    <string name="action_remove_cal">カレンダーを削除</string>
+    <string name="entry_hide_text">***</string>
+
+    <string name="dialog_warning_add_cal_title">警告</string>
+    <string name="dialog_warning_add_cal_msg">あなたが信頼できる人のカレンダーのみを使用してください - 悪意のあるサイトへのリンクを開くことはセキュリティリスクです!</string>
+    <string name="add_cal_title">カスタムタイトル (空にするとカレンダーのタイトルを使用します):</string>
+    <string name="add_cal_file">カレンダーファイル (完全なパス):</string>
+    <string name="add_cal_notifications">通知を有効にする</string>
+    <string name="add_cal_file_button">選択…</string>
+    <string name="add_cal_button">追加</string>
+    <string name="dialog_file_not_found">ファイルが見つかりません</string>
+    <string name="dialog_parsing_error_title">解析エラー</string>
+    <string name="dialog_error_title">エラー</string>
+    <string name="dialog_error_dismiss">閉じる</string>
+    <string name="dialog_file_not_found_msg">ファイル \"%s\" が存在しません。</string>
+    <string name="dialog_symbol_not_allowed_message">"記号 \"%s\" はタイトルで使用できません。"</string>
+    <string name="dialog_cal_already_added_title">カレンダーは既に追加されています</string>
+    <string name="dialog_cal_already_added_msg">カレンダーは既に追加されています。 別の、独立したコピーを追加しますか?</string>
+    <string name="dialog_show_link">リンクを表示</string>
+    <string name="dialog_cancel">キャンセル</string>
+    <string name="dialog_open_link">リンクを開く</string>
+    <string name="dialog_dismiss">閉じる</string>
+    <string name="dialog_yes">はい</string>
+    <string name="dialog_no">いいえ</string>
+    <string name="dialog_remove_cal_title">カレンダーを削除</string>
+    <string name="dialog_remove_cal_msg">設定と現在の状況を含むカレンダーを削除しますか? カレンダーファイル自体は削除されません。</string>
+</resources>
