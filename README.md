@@ -27,7 +27,7 @@ About
 
 Project status
 --------------
-A first public release on [FDroid](https://f-droid.org/) will be available in the coming days.
+A first release is available on [FDroid](https://f-droid.org/repository/browse/?fdid=felixwiemuth.lincal). Smaller updates and improvements are planned for the first quarter 2017.
 
 Features
 --------
