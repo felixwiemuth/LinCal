@@ -1,6 +1,6 @@
 LinCal
 ======
-Copyright (C) 2016 Felix Wiemuth
+Copyright (C) 2016 Felix Wiemuth, François Vincent
 
 License
 -------
