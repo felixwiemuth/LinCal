@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <string name="app_name">LinCal</string>
+    <string name="app_name" translatable="false">LinCal</string>
     <string name="title_activity_calendar_view">Vue Calendrier</string>
     <string name="title_activity_add_calendar">Ajouter calendrier</string>
 
@@ -24,7 +24,7 @@
     <string name="menu_about">À Propos</string>
 
     <string name="dialog_welcome_title">Bienvenue</string>
-    <string name="welcome_message">Bienvenue sur LinCal! Ceci est la première version, et elle doit donc encore comporter quelques problèmes - consultez le \"À Propos\" pour savoir comment les rapporter. LinCal est un logiciel libre (sous GNU General Public License) et ne comporte aucune garantie d\'aucune sorte.</string>
+    <string name="welcome_message">Bienvenue sur LinCal! Ceci est une des premières versions, et elle doit donc encore comporter quelques problèmes - consultez l\'onglet \"À Propos\" pour savoir comment les rapporter. LinCal est un logiciel libre (sous GNU General Public License) et ne comporte aucune garantie d\'aucune sorte.</string>
 
     <string name="crash_toast_text">Une erreur inattendue a forcé l\'application à s\'arrêter. Envoyez s\'il vous plait cet email contenant des informations importantes à propos de l\'erreur au développeur. Vous pouvez ajouter des commentaires à propos du problème rencontré.</string>
 
@@ -44,7 +44,7 @@
     <string name="cal_description">Description :</string>
     <string name="cal_version">Version :</string>
     <string name="cal_date">Date :</string>
-    <string name="setting_notifications_enabled">Autoriser les notifications</string>
+    <string name="setting_notifications_enabled">Activer les notifications</string>
     <string name="setting_show_notifications_earliest">Montrer les notifications en premier :</string>
     <string name="setting_show_notifications_on_screen_on">Montrer les notifications seulement lorsque l\'écran est allumé</string>
     <string name="setting_entry_display_mode">Montrer les entrées :</string>
@@ -60,7 +60,7 @@
     <string name="dialog_warning_add_cal_msg">Utilisez uniquement des calendriers de gens à qui vous faites confiance - ouvrir des liens pointant vers des sites dangereux implique un risque pour la sécurité de votre portable!</string>
     <string name="add_cal_title">Personnaliser le titre (laissez vide pour utiliser le titre du calendrier) :</string>
     <string name="add_cal_file">Fichier du calendrier (chemin complet):</string>
-    <string name="add_cal_notifications">Autoriser les notifications</string>
+    <string name="add_cal_notifications">Activer les notifications</string>
     <string name="add_cal_file_button">Choisir…</string>
     <string name="add_cal_button">Ajouter</string>
     <string name="dialog_file_not_found">Fichier non trouvé</string>
