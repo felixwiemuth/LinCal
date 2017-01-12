@@ -53,7 +53,8 @@ public class LinCalConfig {
     private int id;
     private String calendarFile;
     private String calendarTitle;
-    private EntryDisplayMode entryDisplayMode;
+    private EntryDisplayMode entryDisplayModeDate;
+    private EntryDisplayMode entryDisplayModeDescription;
     private boolean notificationsEnabled;
     private boolean earliestNotificationTimeEnabled;
     private Time earliestNotificationTime;
@@ -66,17 +67,18 @@ public class LinCalConfig {
      * @param id
      * @param calendarFile
      * @param calendarTitle
-     * @param entryDisplayMode
+     * @param entryDisplayModeDescription
      * @param notificationsEnabled
      * @param earliestNotificationTimeEnabled
      * @param earliestNotificationTime
      * @param onScreenOn
      */
-    public LinCalConfig(int id, String calendarFile, String calendarTitle, EntryDisplayMode entryDisplayMode, boolean notificationsEnabled, boolean earliestNotificationTimeEnabled, Time earliestNotificationTime, boolean onScreenOn) {
+    public LinCalConfig(int id, String calendarFile, String calendarTitle, EntryDisplayMode entryDisplayModeDate, EntryDisplayMode entryDisplayModeDescription, boolean notificationsEnabled, boolean earliestNotificationTimeEnabled, Time earliestNotificationTime, boolean onScreenOn) {
         this.id = id;
         this.calendarFile = calendarFile;
         this.calendarTitle = calendarTitle;
-        this.entryDisplayMode = entryDisplayMode;
+        this.entryDisplayModeDate = entryDisplayModeDate;
+        this.entryDisplayModeDescription = entryDisplayModeDescription;
         this.notificationsEnabled = notificationsEnabled;
         this.earliestNotificationTimeEnabled = earliestNotificationTimeEnabled;
         this.earliestNotificationTime = earliestNotificationTime;
@@ -98,7 +100,7 @@ public class LinCalConfig {
             id = Integer.parseInt(values.next());
             calendarFile = values.next();
             calendarTitle = values.next();
-            entryDisplayMode = EntryDisplayMode.valueOf(values.next());
+            entryDisplayModeDescription = EntryDisplayMode.valueOf(values.next());
             notificationsEnabled = Boolean.valueOf(values.next());
             earliestNotificationTimeEnabled = Boolean.valueOf(values.next());
             earliestNotificationTime = new Time(0, 0);
@@ -124,8 +126,12 @@ public class LinCalConfig {
         return calendarTitle;
     }
 
-    public EntryDisplayMode getEntryDisplayMode() {
-        return entryDisplayMode;
+    public EntryDisplayMode getEntryDisplayModeDate() {
+        return entryDisplayModeDate;
+    }
+
+    public EntryDisplayMode getEntryDisplayModeDescription() {
+        return entryDisplayModeDescription;
     }
 
     public boolean isNotificationsEnabled() {
@@ -160,8 +166,12 @@ public class LinCalConfig {
         this.calendarTitle = calendarTitle;
     }
 
-    public void setEntryDisplayMode(EntryDisplayMode entryDisplayMode) {
-        this.entryDisplayMode = entryDisplayMode;
+    public void setEntryDisplayModeDate(EntryDisplayMode entryDisplayModeDate) {
+        this.entryDisplayModeDate = entryDisplayModeDate;
+    }
+
+    public void setEntryDisplayModeDescription(EntryDisplayMode entryDisplayModeDescription) {
+        this.entryDisplayModeDescription = entryDisplayModeDescription;
     }
 
     public void setNotificationsEnabled(boolean notificationsEnabled) {
@@ -194,7 +204,7 @@ public class LinCalConfig {
         return id + SEPARATOR
                 + calendarFile + SEPARATOR
                 + calendarTitle + SEPARATOR
-                + entryDisplayMode + SEPARATOR
+                + entryDisplayModeDescription + SEPARATOR
                 + notificationsEnabled + SEPARATOR
                 + earliestNotificationTimeEnabled + SEPARATOR
                 + earliestNotificationTime + SEPARATOR

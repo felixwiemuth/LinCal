@@ -64,7 +64,7 @@ public class Calendars {
 
     /**
      * Obtain an instance to access calendars. Note that subsequent calls to this method may return
-     * different instances as the runtime system may unload classed. If you want to save changes
+     * different instances as the runtime system may unload classes. If you want to save changes
      * made to an instance make sure to call {@link #save(Context)} on the same instance as obtained
      * by calling this method.
      *
@@ -101,7 +101,8 @@ public class Calendars {
     }
 
     /**
-     * Get the calendar with the given id.
+     * Get the calendar with the given id. Calling this loads a calendar if not in cache and updates
+     * the config with values from the calendar.
      *
      * @param context
      * @param id
@@ -110,7 +111,17 @@ public class Calendars {
     public LinCal getCalendarById(Context context, int id) {
         if (calendarsById.get(id) == null) {
             // load (parse) the calendar
-            calendarsById.put(id, loadCalendar(context, getConfigById(id).getCalendarFile())); //NOTE if the returned calendar is null it will be loaded again on next request
+            LinCalConfig config = getConfigById(id);
+            LinCal calendar = loadCalendar(context, config.getCalendarFile());
+            calendarsById.put(id, calendar); //NOTE if the returned calendar is null it will be loaded again on next request
+            if (calendar != null) {
+                if (calendar.getForceEntryDisplayModeDate() != null) {
+                    config.setEntryDisplayModeDate(calendar.getForceEntryDisplayModeDate());
+                }
+                if (calendar.getForceEntryDisplayModeDescription() != null) {
+                    config.setEntryDisplayModeDate(calendar.getForceEntryDisplayModeDescription());
+                }
+            }
         }
         return calendarsById.get(id);
     }

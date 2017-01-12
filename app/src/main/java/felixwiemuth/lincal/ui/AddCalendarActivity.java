@@ -66,7 +66,8 @@ public class AddCalendarActivity extends AppCompatActivity {
                 LinCalConfig config = new LinCalConfig();
                 config.setCalendarFile(file);
                 config.setCalendarTitle(titleEditText.getText().toString());
-                config.setEntryDisplayMode(LinCalConfig.EntryDisplayMode.HIDE_FUTURE);
+                config.setEntryDisplayModeDate(LinCalConfig.EntryDisplayMode.HIDE_FUTURE);
+                config.setEntryDisplayModeDescription(LinCalConfig.EntryDisplayMode.HIDE_FUTURE);
                 config.setNotificationsEnabled(true);
                 config.setEarliestNotificationTimeEnabled(true);
                 config.setEarliestNotificationTime(DEFAULT_EARLIEST_NOTIFICATION_TIME);

@@ -47,14 +47,16 @@
     <string name="setting_notifications_enabled">Enable notifications</string>
     <string name="setting_show_notifications_earliest">Show notifications earliest:</string>
     <string name="setting_show_notifications_on_screen_on">Show notifications only after screen turned on</string>
-    <string name="setting_entry_display_mode">Show entries:</string>
+    <string name="setting_entry_display_mode_date">Show entry date:</string>
+    <string name="setting_entry_display_mode_description">Show entry description:</string>
     <string-array name="setting_entry_display_mode_options">
         <item>Hide all</item>
         <item>Hide future</item>
         <item>Show all</item>
     </string-array>
     <string name="action_remove_cal">Remove calendar</string>
-    <string name="entry_hide_text">***</string>
+    <string name="entry_hide_date_text" translatable="false">***</string>
+    <string name="entry_hide_description_text" translatable="false">***</string>
 
     <string name="dialog_warning_add_cal_title">Warning</string>
     <string name="dialog_warning_add_cal_msg">Only use calendars from people you trust - opening links to malicious sites is a security risk!</string>
