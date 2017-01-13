@@ -20,7 +20,6 @@ package felixwiemuth.lincal.ui;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -43,9 +42,6 @@ public class AddCalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_calendar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.hide();
 
         Button chooseFileButton = (Button) findViewById(R.id.cb_file);
         Button addButton = (Button) findViewById(R.id.cb_add);
