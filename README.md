@@ -61,7 +61,7 @@ Usage
 Using LinCal is divided into two parts: creating a calendar and using a calendar in the app.
 
 ### Creating a calendar
-A calendar is described by a text file, the format of which is described in this section.
+A calendar is described by a text file (which has to be in [UTF-8 encoding](https://www.w3.org/International/questions/qa-choosing-encodings)), the format of which is described in this section.
 For an example with explanations, see [ExampleCalendar](ExampleCalendar).
 The file consists of a "header section" followed by an "entry section".
 In general, each line starts with a command, indicated by `@`, to specify certain parameters of an entry or the calendar.
@@ -129,6 +129,10 @@ A notification is shown exactly once for each entry in each calendar. Unless oth
 - *Enable notifications*: Only if this is checked notifications will be shown. When reenabling, notifications for past entries will be shown.
 - *Earliest notification time*: If enabled, no notifications will be shown before the given time - if they are scheduled earlier by the calendar, they will be shown exactly at the time specified here. If the author of the calendar hasn't specified any times, then the entries are scheduled for 0:00 - thus choose this time to make sure you won't receive notifications when you don't want to.
 - *Show entries*: This can be used to hide all or future entries, to not reveal a description text in advance. Entries can still be viewed by clicking on them.
+
+**Problems**
+
+- If any text content of a calendar is displayed with cryptic or missing characters, this is probably because the calendar file does not use UTF-8 encoding as required (see above). Ask the author of the calendar to use the correct encoding.
 
 Bug reports and feature requests
 --------------------------------
