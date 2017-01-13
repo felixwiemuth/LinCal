@@ -36,6 +36,7 @@ Features
 - Receive calendars from friends and add them to the LinCal app
   - Receive notifications when specified in the calendar
   - Click on notifications to open contained link
+  - Open links with matching app if installed (e.g. Dropbox, Spotify, ...)
   - Set an earliest notification time
   - List all entries in the calendar (optionally hide future or all entries)
   - Calendar files can be updated while in use
@@ -92,6 +93,12 @@ Thus, to add an entry for each day, except for the starting day no further dates
 - `@t hh:mm`: Specify the time the notification for the next entry should be shown
 - `@st hh:mm`: Set the default notification time - works like `@t`, but is valid for all following entries where `@t` is not specified (before the first usage of `@st` the default notification time is 0:00).
 - `@descr`: Add a description to the next entry which will be used as the notification text
+
+**Media**
+
+In the future, you will be able to add media like photos to a calendar. For now the best way to include media is to upload it to some cloud storage, create a shared link and use this link for a LinCal entry. If the user has the app of the cloud service installed, they might be able to open the link directly with that app.
+
+**Sending and updating calendars**
 
 In general, before sending a calendar to someone, make sure that the dates are correct and the links work by loading it into LinCal (see next section).
 
