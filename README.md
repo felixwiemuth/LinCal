@@ -116,9 +116,9 @@ Optionally enter a custom title for the calendar to be shown in the list of cale
 
 Select a calendar from the list to view the calendar's information, settings and a list of its entries.
 
-- For each entry, the time as scheduled by the calendar is shown on the left. If the notification time differs, it is shown in brackets after the first time. Next to the time, the description of the entry is shown. Depending on the "Show entries" setting, the description might be hidden.
+- For each entry, the time as scheduled by the calendar is shown on the left. If the notification time differs, it is shown in brackets after the first time. Next to the time, the description of the entry is shown. Depending on the "Show entry" setting, the date or description might be hidden.
 
-- Click on an entry to show its description and options to see and open the link.
+- Click on an entry to show its description and options to see and open the link (hidden entries cannot be clicked).
 
 **Notifications**
 
@@ -128,7 +128,7 @@ A notification is shown exactly once for each entry in each calendar. Unless oth
 
 - *Enable notifications*: Only if this is checked notifications will be shown. When reenabling, notifications for past entries will be shown.
 - *Earliest notification time*: If enabled, no notifications will be shown before the given time - if they are scheduled earlier by the calendar, they will be shown exactly at the time specified here. If the author of the calendar hasn't specified any times, then the entries are scheduled for 0:00 - thus choose this time to make sure you won't receive notifications when you don't want to.
-- *Show entries*: This can be used to hide all or future entries, to not reveal a description text in advance. Entries can still be viewed by clicking on them.
+- *Show entry date/description*: This can be used to hide the date/description of all or future entries, to not reveal a description text in advance. Only entries where the description is not hidden can be clicked.
 
 **Problems**
 
