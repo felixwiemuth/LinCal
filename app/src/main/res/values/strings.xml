@@ -65,6 +65,9 @@
     <string name="add_cal_notifications">Enable notifications</string>
     <string name="add_cal_file_button">Choose…</string>
     <string name="add_cal_button">Add</string>
+    <string name="add_cal_info_title">Note:</string>
+    <string name="add_cal_info_1">You can also add a calendar by opening the file directly (using a file manager etc.)</string>
+    <string name="add_cal_info_2">Once added, the calendar file has to stay at the same location. This has the advantage that you can simply update a calendar by changing the file, without readding it to LinCal. If, for example, a friend wants to make a calendar for you that they update regularly, they could share it from the cloud and you use an app that synchronizes the file on your device automatically with the one in the cloud. Then your calendar will always be up-to-date. If you want to move a calendar file, you have to remove the calendar from LinCal first and readd it after moving the file.</string>
     <string name="dialog_file_not_found">File not found</string>
     <string name="dialog_parsing_error_title">Parsing error</string>
     <string name="dialog_error_title">Error</string>
@@ -81,4 +84,8 @@
     <string name="dialog_no">No</string>
     <string name="dialog_remove_cal_title">Remove calendar</string>
     <string name="dialog_remove_cal_msg">Remove calendar with settings and current progress? The calendar file itself will not be removed.</string>
+
+    <string name="notification_lincal_error_title">LinCal error</string>
+    <string name="notification_lincal_error_description">The following error has occurred while LinCal processed the added calendars to schedule notifications:</string>
+    <string name="notification_lincal_error_file_not_found">Note that calendar files may not be moved after added (see help).</string>
 </resources>
