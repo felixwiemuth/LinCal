@@ -128,7 +128,7 @@ A notification is shown exactly once for each entry in each calendar. Unless oth
 
 - *Enable notifications*: Only if this is checked notifications will be shown. When reenabling, notifications for past entries will be shown.
 - *Earliest notification time*: If enabled, no notifications will be shown before the given time - if they are scheduled earlier by the calendar, they will be shown exactly at the time specified here. If the author of the calendar hasn't specified any times, then the entries are scheduled for 0:00 - thus choose this time to make sure you won't receive notifications when you don't want to.
-- *Show entry date/description*: This can be used to hide the date/description of all or future entries, to not reveal a description text in advance. Only entries where the description is not hidden can be clicked.
+- *Show entry date/description*: This can be used to hide the date/description of all or future entries, to not reveal a description text in advance. "Future" here refers to the time as scheduled by the calendar (as opposed to notification time). Only entries where the description is not hidden can be clicked.
 
 **Problems**
 
