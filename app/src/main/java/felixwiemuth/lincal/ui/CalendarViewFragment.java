@@ -302,15 +302,15 @@ public class CalendarViewFragment extends Fragment {
             if (config.getEntryDisplayModeDescription() == LinCalConfig.EntryDisplayMode.SHOW_ALL
                     || config.getEntryDisplayModeDescription() == LinCalConfig.EntryDisplayMode.HIDE_FUTURE && isEntryDue) {
                 holder.descriptionView.setText(descr);
+                holder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showEntryDialog(entry, false);
+                    }
+                });
             } else {
                 holder.descriptionView.setText(getString(R.string.entry_hide_description_text));
             }
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showEntryDialog(entry, false);
-                }
-            });
         }
 
         private void showEntryDialog(final CEntry entry, boolean showLink) {
