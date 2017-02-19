@@ -28,6 +28,7 @@ import felixwiemuth.lincal.util.Time;
  */
 public class LinCalConfig {
     public static final String SEPARATOR = ";"; // separator for config values in a line of the configuration file
+    public static final int FORMAT_VERSION = 1;
 
     //NOTE order of constants must correspond to order of strings in spinner for UI
     public enum EntryDisplayMode {
@@ -89,13 +90,32 @@ public class LinCalConfig {
     }
 
     /**
-     * Create an entry from a formatted line in a configuration file.
+     * Create an entry from a formatted line in a configuration file, which is at the specified
+     * format version.
      *
      * @param line
      */
-    public LinCalConfig(String line) throws FormatException {
+    public LinCalConfig(String line, int formatVersion) throws FormatException {
         String[] split = line.split(SEPARATOR);
         Iterator<String> values = Arrays.asList(split).iterator();
+        switch (formatVersion) {
+            case 1:
+                initialize1(values);
+                break;
+            case 0:
+                initialize0(values);
+                update1();
+                break;
+        } //NOTE: can also do a second switch which will run through the cases without break, performating all updates starting from the old version
+    }
+
+    /**
+     * Initialize this configuration instance from the given values array (format version 0).
+     *
+     * @param values
+     * @throws FormatException
+     */
+    public void initialize0(Iterator<String> values) throws FormatException {
         try {
             id = Integer.parseInt(values.next());
             calendarFile = values.next();
@@ -112,6 +132,40 @@ public class LinCalConfig {
         } catch (NoSuchElementException | IllegalArgumentException ex) {
             throw new FormatException(ex);
         }
+    }
+
+    /**
+     * Initialize this configuration instance from the given values array (format version 1).
+     *
+     * @param values
+     * @throws FormatException
+     */
+    public void initialize1(Iterator<String> values) throws FormatException {
+        try {
+            id = Integer.parseInt(values.next());
+            calendarFile = values.next();
+            calendarTitle = values.next();
+            entryDisplayModeDate = EntryDisplayMode.valueOf(values.next());
+            entryDisplayModeDescription = EntryDisplayMode.valueOf(values.next());
+            notificationsEnabled = Boolean.valueOf(values.next());
+            earliestNotificationTimeEnabled = Boolean.valueOf(values.next());
+            earliestNotificationTime = new Time(0, 0);
+            if (!earliestNotificationTime.set(values.next())) {
+                throw new FormatException("Invalid time specification.");
+            }
+            onScreenOn = Boolean.parseBoolean(values.next());
+            pos = Integer.parseInt(values.next());
+        } catch (NoSuchElementException | IllegalArgumentException ex) {
+            throw new FormatException(ex);
+        }
+    }
+
+    /**
+     * Update an instance loaded with format version 0 to format version 1 (e.g. initialize new
+     * fields).
+     */
+    private void update1() {
+        entryDisplayModeDate = entryDisplayModeDescription;
     }
 
     public int getId() {
@@ -204,6 +258,7 @@ public class LinCalConfig {
         return id + SEPARATOR
                 + calendarFile + SEPARATOR
                 + calendarTitle + SEPARATOR
+                + entryDisplayModeDate + SEPARATOR
                 + entryDisplayModeDescription + SEPARATOR
                 + notificationsEnabled + SEPARATOR
                 + earliestNotificationTimeEnabled + SEPARATOR

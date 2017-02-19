@@ -24,10 +24,8 @@ import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
-import java.io.File;
 import java.text.DateFormat;
 
-import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.util.Util;
 
 @ReportsCrashes(
@@ -46,22 +44,6 @@ public class Main extends Application {
         super.onCreate();
         if (!BuildConfig.DEBUG) {
             ACRA.init(this);
-        }
-        update(this);
-    }
-
-    /**
-     * Checks whether the configuration has to be updated to a new format and performs updates if
-     * necessary. Also initializes the configuration on first launch.
-     */
-    public static void update(Context context) {
-        File dir = context.getFilesDir();
-        File configDir = new File(dir, "config-0");
-        if (!configDir.exists()) {
-            if (!configDir.mkdir()) {
-                throw new RuntimeException("Could not create configuration directory.");
-            }
-            LinCalConfigStore.createInitialConfigurationFile(context); //TODO is this guaranteed to finish before AddCalendarActivity loads and tries to access file?
         }
     }
 
