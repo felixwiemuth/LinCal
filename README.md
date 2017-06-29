@@ -132,6 +132,7 @@ A notification is shown exactly once for each entry in each calendar. Unless oth
 
 **Problems**
 
+- If notifications stop working, reenable notifications in the calendar's settings.
 - If any text content of a calendar is displayed with cryptic or missing characters, this is probably because the calendar file does not use UTF-8 encoding as required (see above). Ask the author of the calendar to use the correct encoding.
 
 Bug reports and feature requests
