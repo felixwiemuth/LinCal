@@ -19,7 +19,10 @@ package felixwiemuth.lincal.ui;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
@@ -30,7 +33,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
@@ -45,7 +50,7 @@ import felixwiemuth.lincal.R;
 /**
  * Created by Adam Speakman on 24/09/13. http://speakman.net.nz
  * <p>
- * Edited by Felix Wiemuth 12/2016.
+ * Edited by Felix Wiemuth 12/2016, 07/2017.
  */
 
 /**
@@ -53,7 +58,7 @@ import felixwiemuth.lincal.R;
  */
 public class HtmlDialogFragment extends DialogFragment {
 
-    private AsyncTask<Void, Void, String> mLicenseLoader;
+    private AsyncTask<Void, Void, String> loader;
 
     private static final String FRAGMENT_TAG = "nz.net.speakman.androidlicensespage.HtmlDialogFragment";
     private static final String ARG_TITLE = "felixwiemuth.lincal.ARG_TITLE";
@@ -107,43 +112,23 @@ public class HtmlDialogFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        loadLicenses();
+        loadPage();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mLicenseLoader != null) {
-            mLicenseLoader.cancel(true);
+        if (loader != null) {
+            loader.cancel(true);
         }
     }
 
-    private WebView mWebView;
-    private ProgressBar mIndeterminateProgress;
+    private WebView webView;
+    private ProgressBar indeterminateProgress;
 
-    @NonNull
-    @SuppressLint("InflateParams")
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View content = LayoutInflater.from(getActivity()).inflate(R.layout.html_dialog_fragment, null);
-        mWebView = (WebView) content.findViewById(R.id.html_dialog_fragment_web_view);
-        mIndeterminateProgress = (ProgressBar) content.findViewById(R.id.html_dialog_fragment_indeterminate_progress);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        Bundle arguments = getArguments();
-        // if argument for title is given (string or int referencing a string resource) set the title
-        if (arguments.getString(ARG_TITLE) != null) {
-            builder.setTitle(arguments.getString(ARG_TITLE));
-        } else {
-            builder.setTitle(getArguments().getInt(ARG_TITLE)); //TODO error handling
-        }
-        builder.setView(content);
-        return builder.create();
-    }
-
-    private void loadLicenses() {
+    private void loadPage() {
         // Load asynchronously in case of a very large file.
-        mLicenseLoader = new AsyncTask<Void, Void, String>() {
+        loader = new AsyncTask<Void, Void, String>() {
 
             @Override
             protected String doInBackground(Void... params) {
@@ -167,17 +152,65 @@ public class HtmlDialogFragment extends DialogFragment {
             }
 
             @Override
-            protected void onPostExecute(String licensesBody) {
-                super.onPostExecute(licensesBody);
+            protected void onPostExecute(String body) {
+                super.onPostExecute(body);
                 if (getActivity() == null || isCancelled()) {
                     return;
                 }
-                mIndeterminateProgress.setVisibility(View.INVISIBLE);
-                mWebView.setVisibility(View.VISIBLE);
-                mWebView.loadDataWithBaseURL(null, licensesBody, "text/html", "utf-8", null);
-                mLicenseLoader = null;
+                indeterminateProgress.setVisibility(View.INVISIBLE);
+                webView.setVisibility(View.VISIBLE);
+                webView.loadDataWithBaseURL(null, body, "text/html", "utf-8", null);
+                loader = null;
             }
 
         }.execute();
+    }
+
+    @NonNull
+    @SuppressLint("InflateParams")
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        View content = LayoutInflater.from(getActivity()).inflate(R.layout.html_dialog_fragment, null);
+        webView = (WebView) content.findViewById(R.id.html_dialog_fragment_web_view);
+        if (Build.VERSION.SDK_INT >= 24) {
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
+                    if (webResourceRequest.getUrl().getScheme().equals("file")) { // @TargetApi(Build.VERSION_CODES.N_MR1)
+                        webView.loadUrl(webResourceRequest.getUrl().toString());
+                    } else {
+                        // If the URI is not pointing to a local file, open with an ACTION_VIEW Intent
+                        webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, webResourceRequest.getUrl()));
+                    }
+                    return true; // in both cases we handle the link manually
+                }
+            });
+        } else { //TODO test on an API < 24 device
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+                    if (Uri.parse(url).getScheme().equals("file")) {
+                        webView.loadUrl(url);
+                    } else {
+                        // If the URI is not pointing to a local file, open with an ACTION_VIEW Intent
+                        webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    }
+                    return true; // in both cases we handle the link manually
+                }
+            });
+        }
+
+        indeterminateProgress = (ProgressBar) content.findViewById(R.id.html_dialog_fragment_indeterminate_progress);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        Bundle arguments = getArguments();
+        // if argument for title is given (string or int referencing a string resource) set the title
+        if (arguments.getString(ARG_TITLE) != null) {
+            builder.setTitle(arguments.getString(ARG_TITLE));
+        } else {
+            builder.setTitle(getArguments().getInt(ARG_TITLE)); //TODO error handling
+        }
+        builder.setView(content);
+        return builder.create();
     }
 }
