@@ -84,6 +84,10 @@
     <string name="dialog_no">No</string>
     <string name="dialog_remove_cal_title">Remove calendar</string>
     <string name="dialog_remove_cal_msg">Remove calendar with settings and current progress? The calendar file itself will not be removed.</string>
+    <string name="dialog_downgrade_title">Application downgrade</string>
+    <string name="dialog_downgrade_msg">You seem to have used a newer version of LinCal before. The newer format of saving status and configuration of calendars is not compatible with this version. To use this older version, the status and configuration of calendars has to be reset, i.e., you have to readd all calendars.</string>
+    <string name="dialog_downgrade_yes">Reset configuration</string>
+    <string name="dialog_downgrade_no">Close app</string>
 
     <string name="notification_lincal_error_title">LinCal error</string>
     <string name="notification_lincal_error_description">The following error has occurred while LinCal processed the added calendars to schedule notifications:</string>

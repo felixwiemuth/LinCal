@@ -17,7 +17,10 @@
 
 package felixwiemuth.lincal.data;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 
 import java.io.BufferedReader;
@@ -30,6 +33,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import felixwiemuth.lincal.R;
 
 /**
  * Holds configurations of all added calendars. Ensures that if an entry is added to the file also
@@ -233,7 +238,25 @@ public class LinCalConfigStore {
             if (fromVersion == LinCalConfig.FORMAT_VERSION) {
                 return;
             } else if (fromVersion > LinCalConfig.FORMAT_VERSION) {
-                throw new RuntimeException("PREF_CONFIG_FILE_ENTRY_VERSION has an illegal value.");
+                if (!(context instanceof Activity)) { // check whether the context is an Activity and dialogs can be shown - if not throw an exception
+                    throw new RuntimeException("PREF_CONFIG_FILE_ENTRY_VERSION has an illegal value.");
+                }
+                final Activity activity = (Activity) context;
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle(R.string.dialog_downgrade_title).setMessage(R.string.dialog_downgrade_msg).setNegativeButton(R.string.dialog_downgrade_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // At this point, the application should stop
+                        System.exit(0); // this should be safe here as it is called right after starting the app and no files should be open //TODO find an alternative which really terminates the app such that
+                    }
+                }).setPositiveButton(R.string.dialog_downgrade_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        createInitialConfigurationFile(context, pref); // reset configuration file
+                        setVersion(pref, LinCalConfig.FORMAT_VERSION); // set the current version
+                    }
+                });
+                builder.show();
                 //throw new RuntimeException("The present configuration file seems to be of a format only supported by newer versions of this application.");
             } else { // have to update config file entries from a lower version to the current
                 load(context, fromVersion, null);
