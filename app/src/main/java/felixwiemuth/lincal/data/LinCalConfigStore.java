@@ -34,6 +34,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
 
 /**
@@ -63,7 +64,10 @@ public class LinCalConfigStore {
      * @param context
      */
     public LinCalConfigStore(Context context) {
-        update(context); // if updating, this will also load, but to verify it works, it is good to load again anyway with the next statement
+        boolean stop = update(context); // if updating, this will also load, but to verify it works, it is good to load again anyway with the next statement
+        if (stop) {
+            return; // Note: this leaves the application with entries being empty and an invalid nextId which is fine
+        }
         load(context, LinCalConfig.FORMAT_VERSION, null);
     }
 
@@ -213,8 +217,9 @@ public class LinCalConfigStore {
      * Update the configuration file to the current format if in an older format.
      *
      * @param context
+     * @return true, if further initialization is handled by this method
      */
-    private void update(final Context context) {
+    private boolean update(final Context context) {
         final SharedPreferences pref = getVersionPref(context);
         if (!pref.contains(PREF_CONFIG_FILE_ENTRY_VERSION)) { // This is the first request of the configuration file OR the first after updating to version 1
             File dir = context.getFilesDir();
@@ -228,18 +233,19 @@ public class LinCalConfigStore {
                         setVersion(pref, 1);
                     }
                 });
+                return false;
             } else {
                 createInitialConfigurationFile(context, pref);
                 setVersion(pref, LinCalConfig.FORMAT_VERSION); // it is okay if program fails before setting version here, it would just do the same procedure of creating an initial file on next request
-                return;
+                return false;
             }
         } else { // This is the general update case
             int fromVersion = pref.getInt(PREF_CONFIG_FILE_ENTRY_VERSION, -1);
             if (fromVersion == LinCalConfig.FORMAT_VERSION) {
-                return;
+                return false;
             } else if (fromVersion > LinCalConfig.FORMAT_VERSION) {
                 if (!(context instanceof Activity)) { // check whether the context is an Activity and dialogs can be shown - if not throw an exception
-                    throw new RuntimeException("PREF_CONFIG_FILE_ENTRY_VERSION has an illegal value.");
+                    throw new RuntimeException("Application downgrade with incompatible config file formats - start app for further options.");
                 }
                 final Activity activity = (Activity) context;
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -253,11 +259,12 @@ public class LinCalConfigStore {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         createInitialConfigurationFile(context, pref); // reset configuration file
+                        Calendars.invalidate(); // the initial configuration file just created has to be loaded (e.g. to set correct nextId)
                         setVersion(pref, LinCalConfig.FORMAT_VERSION); // set the current version
                     }
-                });
+                }).setCancelable(false); // the app may not be used without selecting an option
                 builder.show();
-                //throw new RuntimeException("The present configuration file seems to be of a format only supported by newer versions of this application.");
+                return true; // leave application with an empty ConfigStore - should it try to load the configuration again, another dialog will be shown if the previous one has not been exited with
             } else { // have to update config file entries from a lower version to the current
                 load(context, fromVersion, null);
                 save(context, new Runnable() {
@@ -266,6 +273,7 @@ public class LinCalConfigStore {
                         setVersion(pref, LinCalConfig.FORMAT_VERSION);
                     }
                 });
+                return false; // to make sure the new format works, the file is directly loaded again
             }
         }
     }

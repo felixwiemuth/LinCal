@@ -303,4 +303,13 @@ public class Calendars {
     public Calendar calcNotificationTime(CEntry entry, int calendarPos) {
         return calcNotificationTime(entry, getConfigByPos(calendarPos));
     }
+
+    /**
+     * Invalidate the current instance. Should be called when the configuration file is changed in
+     * another way than through this class. Note that any changes made to the current instance which
+     * have not been written back (by calling {@link #save(Context)}) will be lost.
+     */
+    public static void invalidate() {
+        instance = null;
+    }
 }

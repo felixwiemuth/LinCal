@@ -43,6 +43,8 @@ public class AddCalendarActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Calendars.getInstance(this); // load calendars already here to check for updates before adding calendar (important for downgrade warning to be shown before clicking "add")
+
         Button chooseFileButton = (Button) findViewById(R.id.cb_file);
         Button addButton = (Button) findViewById(R.id.cb_add);
         final EditText fileEditText = (EditText) findViewById(R.id.ce_file);
