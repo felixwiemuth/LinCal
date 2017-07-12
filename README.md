@@ -135,6 +135,10 @@ A notification is shown exactly once for each entry in each calendar. Unless oth
 - If notifications stop working, reenable notifications in the calendar's settings.
 - If any text content of a calendar is displayed with cryptic or missing characters, this is probably because the calendar file does not use UTF-8 encoding as required (see above). Ask the author of the calendar to use the correct encoding.
 
+Downgrading
+-----------
+It is possible to use an older version of the app after a newer has been used. If the format of saving status and configuration of calendars is not compatible, a message will be shown with an option to reset the configuration.
+
 Bug reports and feature requests
 --------------------------------
 Please report bugs using [Github](https://github.com/felixwiemuth/LinCal/issues). Always include version number (see "About" dialog in app), device and Android version. Feature requests may also be filed as an issue.
