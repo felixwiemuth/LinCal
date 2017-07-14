@@ -19,6 +19,8 @@ package felixwiemuth.lincal.parser;
 
 import android.content.Context;
 
+import com.google.common.collect.EnumHashBiMap;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,7 +48,7 @@ public class LinCalParser extends LinearFileParser {
 
     private final static Pattern DATE_PATTERN = Pattern.compile("/");
 
-    //TODO use string resources
+    //TODO use (non-translatable) string resources
     // sections
     private final static String HEADER = "header";
     private final static String MAIN = "main";
@@ -58,6 +60,18 @@ public class LinCalParser extends LinearFileParser {
     private final static String CAL_DESCRIPTION = "descr";
     private final static String CAL_VERSION = "version";
     private final static String CAL_DATE = "date";
+    private final static String SET_ENTRY_DISPLAY_MODE_DATE = "setDateDisplayMode";
+    private final static String SET_ENTRY_DISPLAY_MODE_DESCRIPTION = "setDescrDisplayMode";
+    private final static String FORCE_ENTRY_DISPLAY_MODE_DATE = "forceDateDisplayMode";
+    private final static String FORCE_ENTRY_DISPLAY_MODE_DESCRIPTION = "forceDescrDisplayMode";
+
+    public static final EnumHashBiMap<LinCal.EntryDisplayMode, String> ENTRY_DISPLAY_MODE_STRING_MAP = EnumHashBiMap.create(LinCal.EntryDisplayMode.class);
+
+    static {
+        ENTRY_DISPLAY_MODE_STRING_MAP.put(LinCal.EntryDisplayMode.HIDE_ALL, "hideAll");
+        ENTRY_DISPLAY_MODE_STRING_MAP.put(LinCal.EntryDisplayMode.HIDE_FUTURE, "hideFuture");
+        ENTRY_DISPLAY_MODE_STRING_MAP.put(LinCal.EntryDisplayMode.SHOW_ALL, "showAll");
+    }
 
     private final static String SWITCH_DATE = "d";
     private final static String SET_TIME = "t";
@@ -122,6 +136,32 @@ public class LinCalParser extends LinearFileParser {
                 c.date(currentDate);
             }
         });
+        addKeyProcessor(HEADER, new ArgKeyProcessor(SET_ENTRY_DISPLAY_MODE_DATE) {
+            @Override
+            public void _process(String arg, ListIterator<String> it) throws ParseException {
+                c.entryDisplayModeDate(parseEntryDisplayMode(arg));
+            }
+        });
+        addKeyProcessor(HEADER, new ArgKeyProcessor(SET_ENTRY_DISPLAY_MODE_DESCRIPTION) {
+            @Override
+            public void _process(String arg, ListIterator<String> it) throws ParseException {
+                c.entryDisplayModeDescription(parseEntryDisplayMode(arg));
+            }
+        });
+        addKeyProcessor(HEADER, new ArgKeyProcessor(FORCE_ENTRY_DISPLAY_MODE_DATE) {
+            @Override
+            public void _process(String arg, ListIterator<String> it) throws ParseException {
+                c.entryDisplayModeDate(parseEntryDisplayMode(arg));
+                c.forceEntryDisplayModeDate(true);
+            }
+        });
+        addKeyProcessor(HEADER, new ArgKeyProcessor(FORCE_ENTRY_DISPLAY_MODE_DESCRIPTION) {
+            @Override
+            public void _process(String arg, ListIterator<String> it) throws ParseException {
+                c.entryDisplayModeDescription(parseEntryDisplayMode(arg));
+                c.forceEntryDisplayModeDescription(true);
+            }
+        });
 
         /**
          * A line which starts with neither a comment, key or section prefix is
@@ -180,6 +220,17 @@ public class LinCalParser extends LinearFileParser {
                 e.description(arg);
             }
         });
+    }
+
+    private LinCal.EntryDisplayMode parseEntryDisplayMode(String arg) throws InvalidDisplayModeSpecificationException {
+        LinCal.EntryDisplayMode mode = ENTRY_DISPLAY_MODE_STRING_MAP.inverse().get(arg);
+        if (mode == null) {
+            throw new InvalidDisplayModeSpecificationException(getCurrentLineNumber(), "Valid display modes are: "
+                    + ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.HIDE_ALL) + ", "
+                    + ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.HIDE_FUTURE) + ", "
+                    + ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.SHOW_ALL));
+        }
+        return mode;
     }
 
     private void setDate(String changeSpec, int min, String minError) throws InvalidDateSpecificationException {

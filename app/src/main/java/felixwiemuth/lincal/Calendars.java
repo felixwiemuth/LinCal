@@ -115,11 +115,11 @@ public class Calendars {
             LinCal calendar = loadCalendar(context, config.getCalendarFile());
             calendarsById.put(id, calendar); //NOTE if the returned calendar is null it will be loaded again on next request
             if (calendar != null) {
-                if (calendar.getForceEntryDisplayModeDate() != null) {
-                    config.setEntryDisplayModeDate(calendar.getForceEntryDisplayModeDate());
+                if (calendar.hasForceEntryDisplayModeDate()) {
+                    config.setEntryDisplayModeDate(calendar.getEntryDisplayModeDate());
                 }
-                if (calendar.getForceEntryDisplayModeDescription() != null) {
-                    config.setEntryDisplayModeDate(calendar.getForceEntryDisplayModeDescription());
+                if (calendar.hasForceEntryDisplayModeDescription()) {
+                    config.setEntryDisplayModeDate(calendar.getEntryDisplayModeDescription());
                 }
             }
         }
@@ -201,6 +201,12 @@ public class Calendars {
         if (config.getCalendarTitle().contains(LinCalConfig.SEPARATOR)) {
             showErrorDialog(R.string.dialog_error_title, String.format(context.getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR), context);
             return;
+        }
+        if (config.getEntryDisplayModeDate() == null) {
+            config.setEntryDisplayModeDate(calendar.getEntryDisplayModeDate());
+        }
+        if (config.getEntryDisplayModeDescription() == null) {
+            config.setEntryDisplayModeDescription(calendar.getEntryDisplayModeDescription());
         }
         if (instance.configStore.containsCalendarFile(config.getCalendarFile())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);

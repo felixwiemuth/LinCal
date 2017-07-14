@@ -53,7 +53,6 @@ There are a lot of small extensions and more features planned, some of them list
 - Improved layout/design
 - Richer content for notifications: custom included offline media, HTML pages
 - Widget to show today's notifications on click
-- Force hide entries by calendar file
 - Obfuscated calendar files: App makes file unreadable before sending it to someone, to not allow others to see entries in advance
 
 Usage
@@ -71,13 +70,22 @@ The header and entry section use the following commands:
 
 **Header section** (all commands are required)
 
-This information is displayed when a user views the calendar. It has no relevance to the functions of the app.
+The following commands are required. The information is displayed when a user views the calendar. It has no relevance to the functions of the app.
 
 - `@author`: Who created the calendar
 - `@title`: A title for the calendar, shown as title of notifications and in the list of calendars if the user doesn't choose another name
 - `@descr`: A more detailed description of the calendar
 - `@date`: Creation date of the calendar (must have the format `dd/mm/yyyy`)
 - `@version`: Can be used to distinguish different versions of a calendar
+
+The following commands are optional and concern the visibility of dates and descriptions of entries to the user (see [Using the app](#using-the-app)). Possible values for `<mode>` are `hideAll`, `hideFuture`, `hideAll`. The default is `set` and `hideFuture`. The `set` option only apply when the user initially adds the calendar, the `force` options can be changed when updating the calendar.
+
+- `@setDateDisplayMode <mode>`: Set an initial value for the *Show entry date* option 
+- `@forceDateDisplayMode <mode>`: Set a value for the *Show entry date* option such that the user cannot change it
+- `@setDescriptionDisplayMode <mode>`: Set an initial value for the *Show entry description* option 
+- `@forceDescriptionDisplayMode <mode>`: Set a value for the *Show entry description* option such that the user cannot change it
+
+ 
 
 **Entry section** (started with `@begin` on a single line after the header section)
 
@@ -91,7 +99,7 @@ Note that if no date is specified for an entry, the next calendar day after the 
 Thus, to add an entry for each day, except for the starting day no further dates have to be specified.
 
 - `@t hh:mm`: Specify the time the notification for the next entry should be shown
-- `@st hh:mm`: Set the default notification time - works like `@t`, but is valid for all following entries where `@t` is not specified (before the first usage of `@st` the default notification time is 0:00).
+- `@st hh:mm`: Set the default notification time - works like `@t`, but is valid for all following entries where `@t` is not specified (before the first usage of `@st` the default notification time is 0:00)
 - `@descr`: Add a description to the next entry which will be used as the notification text
 
 **Media**
@@ -110,7 +118,7 @@ A calendar can be updated while in use (that is, the user simply replaces the ca
 *Warning:* Only use calendars from people you trust - opening links to malicious sites represents a security risk!
 
 Click the "+" button and enter the full path to the calendar file (e.g. `/sdcard/Downloads/MyCalendar.txt`) or open a calendar file directly and choose "Add calendar".
-Optionally enter a custom title for the calendar to be shown in the list of calendars and as the title of notifications.
+Optionally enter a custom title for the calendar to be shown in the list of calendars and as the title of notifications. Checking `Don't show any entries when viewing the calendar` makes sure you don't see any entries as first but this can later be changed (see *Calendar settings*).
 
 **Viewing a calendar**
 
@@ -128,7 +136,7 @@ A notification is shown exactly once for each entry in each calendar. Unless oth
 
 - *Enable notifications*: Only if this is checked notifications will be shown. When reenabling, notifications for past entries will be shown.
 - *Earliest notification time*: If enabled, no notifications will be shown before the given time - if they are scheduled earlier by the calendar, they will be shown exactly at the time specified here. If the author of the calendar hasn't specified any times, then the entries are scheduled for 0:00 - thus choose this time to make sure you won't receive notifications when you don't want to.
-- *Show entry date/description*: This can be used to hide the date/description of all or future entries, to not reveal a description text in advance. "Future" here refers to the time as scheduled by the calendar (as opposed to notification time). Only entries where the description is not hidden can be clicked.
+- *Show entry date/description*: This can be used to hide the date/description of all or future entries, to not reveal a description text in advance. "Future" here refers to the time as scheduled by the calendar (as opposed to notification time). Only entries where the description is not hidden can be clicked. If the option is greyed out the author of the calendar has set the value so it cannot be changed.
 
 **Problems**
 
@@ -141,4 +149,4 @@ It is possible to use an older version of the app after a newer has been used. I
 
 Bug reports and feature requests
 --------------------------------
-Please report bugs using [Github](https://github.com/felixwiemuth/LinCal/issues). Always include version number (see "About" dialog in app), device and Android version. Feature requests may also be filed as an issue.
+Please report bugs using [Github](https://github.com/felixwiemuth/LinCal/issues). Always include version number (see "About" dialog in app), device name and Android version. Feature requests may also be filed as an issue.

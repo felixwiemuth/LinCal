@@ -120,7 +120,7 @@ public class CalendarViewFragment extends Fragment {
         }
         Activity activity = this.getActivity();
         calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
-        Calendars calendars = Calendars.getInstance(getContext());
+        Calendars calendars = Calendars.getInstance(getContext()); // loads calendar and makes sure all values in config are set (e.g. forceEntryDisplayMode values)
         calendar = calendars.getCalendarByPos(getContext(), calendarPos);
         // If toolbar is present (handset mode), set title to calendar title
         //TODO add toolbar again
@@ -158,10 +158,10 @@ public class CalendarViewFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.cal_descr)).setText(calendar.getDescription());
             ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
             ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
-            if (calendar.getForceEntryDisplayModeDate() != null) {
+            if (calendar.hasForceEntryDisplayModeDate()) {
                 entryDisplayModeDate.setEnabled(false);
             }
-            if (calendar.getForceEntryDisplayModeDescription() != null) {
+            if (calendar.hasForceEntryDisplayModeDescription()) {
                 entryDisplayModeDescription.setEnabled(false);
             }
         }
@@ -302,14 +302,14 @@ public class CalendarViewFragment extends Fragment {
             }
             final String descr = entry.getDescription();
             boolean isEntryDue = entry.getDate().getTime().getTime() <= System.currentTimeMillis();
-            if (config.getEntryDisplayModeDate() == LinCalConfig.EntryDisplayMode.SHOW_ALL
-                    || config.getEntryDisplayModeDate() == LinCalConfig.EntryDisplayMode.HIDE_FUTURE && isEntryDue) {
+            if (config.getEntryDisplayModeDate() == LinCal.EntryDisplayMode.SHOW_ALL
+                    || config.getEntryDisplayModeDate() == LinCal.EntryDisplayMode.HIDE_FUTURE && isEntryDue) {
                 holder.dateView.setText(dateStr);
             } else {
                 holder.dateView.setText(R.string.entry_hide_date_text);
             }
-            if (config.getEntryDisplayModeDescription() == LinCalConfig.EntryDisplayMode.SHOW_ALL
-                    || config.getEntryDisplayModeDescription() == LinCalConfig.EntryDisplayMode.HIDE_FUTURE && isEntryDue) {
+            if (config.getEntryDisplayModeDescription() == LinCal.EntryDisplayMode.SHOW_ALL
+                    || config.getEntryDisplayModeDescription() == LinCal.EntryDisplayMode.HIDE_FUTURE && isEntryDue) {
                 holder.descriptionView.setText(descr);
                 holder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -394,8 +394,8 @@ public class CalendarViewFragment extends Fragment {
         config.setNotificationsEnabled(notificationsEnabled.isChecked());
         config.setEarliestNotificationTimeEnabled(earliestNotificationTimeEnabled.isChecked());
         //config.setOnScreenOn(onScreenOnEnabled.isChecked()); //TODO implement
-        config.setEntryDisplayModeDate(LinCalConfig.EntryDisplayMode.values()[entryDisplayModeDate.getSelectedItemPosition()]);
-        config.setEntryDisplayModeDescription(LinCalConfig.EntryDisplayMode.values()[entryDisplayModeDescription.getSelectedItemPosition()]);
+        config.setEntryDisplayModeDate(LinCal.EntryDisplayMode.values()[entryDisplayModeDate.getSelectedItemPosition()]);
+        config.setEntryDisplayModeDescription(LinCal.EntryDisplayMode.values()[entryDisplayModeDescription.getSelectedItemPosition()]);
         calendars.save(getContext());
     }
 

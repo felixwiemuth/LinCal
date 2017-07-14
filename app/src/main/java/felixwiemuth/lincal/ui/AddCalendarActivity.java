@@ -60,16 +60,16 @@ public class AddCalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String file = fileEditText.getText().toString();
                 EditText titleEditText = (EditText) findViewById(R.id.ce_title);
-                //TODO set entry display mode, notification mode and notification time from UI widgets
+                //TODO set notification mode and notification time from UI widgets
+                //TODO add checkbox to set entry display mode to HIDE_ALL
                 LinCalConfig config = new LinCalConfig();
                 config.setCalendarFile(file);
                 config.setCalendarTitle(titleEditText.getText().toString());
-                config.setEntryDisplayModeDate(LinCalConfig.EntryDisplayMode.HIDE_FUTURE);
-                config.setEntryDisplayModeDescription(LinCalConfig.EntryDisplayMode.HIDE_FUTURE);
                 config.setNotificationsEnabled(true);
                 config.setEarliestNotificationTimeEnabled(true);
                 config.setEarliestNotificationTime(DEFAULT_EARLIEST_NOTIFICATION_TIME);
                 config.setOnScreenOn(false);
+                // adding the calendar sets initial entryDisplayModeDate and entryDisplayModeDescription from the calendar (or to defaults) if not set by the user (above)
                 Calendars.addCalendarChecked(config, AddCalendarActivity.this, new Runnable() {
                     @Override
                     public void run() {
