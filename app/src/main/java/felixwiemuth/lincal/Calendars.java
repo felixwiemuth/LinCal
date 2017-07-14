@@ -273,7 +273,7 @@ public class Calendars {
      */
     public static LinCal loadCalendar(Context context, String file) {
         try {
-            return new LinCalParser(context).parse(new File(file));
+            return new LinCalParser().parse(new File(file), context);
         } catch (FileNotFoundException ex) {
             showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), file), context);
         } catch (IOException ex) {

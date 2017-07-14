@@ -78,7 +78,7 @@ public class LinCalParser extends LinearFileParser {
     private final static String SET_DEFAULT_TIME = "st";
     private final static String ENTRY_DESCRIPTION = "descr";
 
-    private final Context context;
+    private Context context;
     private LinCal.Builder c;
     private CEntry.Builder e;
 
@@ -89,11 +89,10 @@ public class LinCalParser extends LinearFileParser {
     private boolean firstDateSet; // indicates that in MAIN section a date was set
 
     /**
-     * @param context application context needed to provide String resources
+     *
      */
-    public LinCalParser(Context context) {
+    public LinCalParser() {
         super("#", "@", null, HEADER);
-        this.context = context;
 
         addSection(HEADER);
         addSection(MAIN);
@@ -291,6 +290,7 @@ public class LinCalParser extends LinearFileParser {
 
     /**
      * @param file
+     * @param context application context needed to provide String resources
      * @return
      * @throws IOException
      * @throws FileNotFoundException
@@ -298,7 +298,8 @@ public class LinCalParser extends LinearFileParser {
      * @throws UnknownSectionException
      * @throws ParseException
      */
-    public LinCal parse(File file) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
+    public LinCal parse(File file, Context context) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
+        this.context = context;
         // Initialize parser
         currentDate.setTimeInMillis(0);
         defaultTime = new Time(0, 0);
@@ -313,6 +314,8 @@ public class LinCalParser extends LinearFileParser {
         } catch (LinCal.Builder.MissingFieldException ex) {
             //NOTE: could do the check already with a "leave action" of the header section but that would require much more code
             throw new ParseException(getCurrentLineNumber(), "Missing field in header section: " + ex.getField());
+        } finally {
+            context = null; // possibly free resources
         }
     }
 
