@@ -45,6 +45,14 @@ public class Util {
         showMessageDialog(resTitle, context.getString(resMessage), context);
     }
 
+    /**
+     * Show an error dialog in the given context. Make sure to call this only with contexts that can
+     * display a dialog (or accept crash of application).
+     *
+     * @param title   resource id for the title text
+     * @param message the dialog's main message
+     * @param context context where the dialog should be displayed
+     */
     public static void showErrorDialog(int title, String message, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(R.string.dialog_error_dismiss, new DialogInterface.OnClickListener() {
