@@ -63,6 +63,7 @@
     <string name="add_cal_title">Custom title (leave empty to use calendar\'s title):</string>
     <string name="add_cal_file">Calendar file (full path):</string>
     <string name="add_cal_notifications">Enable notifications</string>
+    <string name="add_cal_hideall">Don\'t show any entries now</string>
     <string name="add_cal_file_button">Choose…</string>
     <string name="add_cal_button">Add</string>
     <string name="add_cal_info_title">Note:</string>

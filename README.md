@@ -118,7 +118,7 @@ A calendar can be updated while in use (that is, the user simply replaces the ca
 *Warning:* Only use calendars from people you trust - opening links to malicious sites represents a security risk!
 
 Click the "+" button and enter the full path to the calendar file (e.g. `/sdcard/Downloads/MyCalendar.txt`) or open a calendar file directly and choose "Add calendar".
-Optionally enter a custom title for the calendar to be shown in the list of calendars and as the title of notifications. Checking `Don't show any entries when viewing the calendar` makes sure you don't see any entries as first but this can later be changed (see *Calendar settings*).
+Optionally enter a custom title for the calendar to be shown in the list of calendars and as the title of notifications. Checking "Don't show any entries now" makes sure you don't see any entries directly after adding the calendar (but this can be changed later).
 
 **Viewing a calendar**
 
