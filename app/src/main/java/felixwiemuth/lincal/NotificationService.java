@@ -59,9 +59,12 @@ public class NotificationService extends IntentService {
         Calendar now = Calendar.getInstance();
         Calendar nextAlarm = null;
         for (int i = 0; i < calendars.getCalendarCount(); i++) {
-            Calendar nextTime = processCalendar(calendars.getCalendarByPos(this, i), calendars.getConfigByPos(i), now);
-            if (nextAlarm == null || (nextTime != null && nextTime.before(nextAlarm))) {
-                nextAlarm = nextTime;
+            LinCal cal = calendars.getCalendarByPos(this, i);
+            if (cal != null) { // if the calendar could not be loaded, skip it (this will also skip scheduling of next notifications for this calendar)
+                Calendar nextTime = processCalendar(cal, calendars.getConfigByPos(i), now);
+                if (nextAlarm == null || (nextTime != null && nextTime.before(nextAlarm))) {
+                    nextAlarm = nextTime;
+                }
             }
         }
         calendars.save(this);
