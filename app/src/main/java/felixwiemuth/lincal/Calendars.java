@@ -86,11 +86,12 @@ public class Calendars {
     }
 
     /**
-     * Get the calendar at the given position in adding order.
+     * Get the calendar at the given position in adding order. Returns the calendar from cache if
+     * already present or loads it otherwise.
      *
      * @param context
      * @param pos
-     * @return
+     * @return the calendar from cache or {@code null} if there was an error loading it
      */
     public LinCal getCalendarByPos(Context context, int pos) {
         try {
@@ -101,8 +102,8 @@ public class Calendars {
     }
 
     /**
-     * Get the calendar with the given id. Calling this loads a calendar if not in cache and updates
-     * the config with values from the calendar.
+     * Get the calendar with the given id. Returns the calendar from cache if already present or
+     * loads it otherwise, updating the config with values from the calendar.
      *
      * @param context
      * @param id
@@ -199,7 +200,7 @@ public class Calendars {
             config.setCalendarTitle(calendar.getTitle());
         }
         if (config.getCalendarTitle().contains(LinCalConfig.SEPARATOR)) {
-            showErrorDialog(R.string.dialog_error_title, String.format(context.getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR), context);
+            showErrorDialog(R.string.dialog_error_title, String.format(context.getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR), true, context);
             return;
         }
         if (config.getEntryDisplayModeDate() == null) {
@@ -275,11 +276,11 @@ public class Calendars {
         try {
             return new LinCalParser().parse(new File(file), context);
         } catch (FileNotFoundException ex) {
-            showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), file), context);
+            showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), file), true, context);
         } catch (IOException ex) {
-            showErrorDialog(R.string.dialog_error_title, ex.getMessage(), context);
+            showErrorDialog(R.string.dialog_error_title, ex.getMessage(), true, context);
         } catch (ParseException ex) {
-            showErrorDialog(R.string.dialog_parsing_error_title, ex.getMessage(), context);
+            showErrorDialog(R.string.dialog_parsing_error_title, ex.getMessage(), true, context);
         }
         return null;
     }
