@@ -107,15 +107,19 @@ public class Calendars {
      *
      * @param context
      * @param id
-     * @return the calendar or {@code null} if there was an error loading the calendar
+     * @return the calendar or {@code null} if there was an error loading it (it will be tried to be
+     * loaded again on next call of this method)
      */
     public LinCal getCalendarById(Context context, int id) {
         if (calendarsById.get(id) == null) {
-            // load (parse) the calendar
             LinCalConfig config = getConfigById(id);
             LinCal calendar = loadCalendar(context, config.getCalendarFile());
-            calendarsById.put(id, calendar); //NOTE if the returned calendar is null it will be loaded again on next request
-            if (calendar != null) {
+            if (calendar == null) {
+                config.setNotificationsEnabled(false); // disable notifications to avoid further error notifications when running the service (which can't process the calendar anyway)
+                save(context);
+            } else {
+                calendarsById.put(id, calendar);
+                // The following settings are overridden by the calendar's values but should not be saved (in case the calendar removes its settings, the previous values are restored)
                 if (calendar.hasForceEntryDisplayModeDate()) {
                     config.setEntryDisplayModeDate(calendar.getEntryDisplayModeDate());
                 }
