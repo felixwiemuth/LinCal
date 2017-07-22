@@ -20,11 +20,14 @@ package felixwiemuth.lincal.util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import felixwiemuth.lincal.R;
+import felixwiemuth.lincal.ui.CalendarListActivity;
 
 /**
  * Utility methods.
@@ -49,24 +52,29 @@ public class Util {
     }
 
     /**
-     * Show an error dialog in the given context. Make sure to call this only with contexts that can
-     * display a dialog (or accept crash of application).
+     * Show an error dialog in the given context (or optionally a notification if a dialog cannot be
+     * shown).
      *
      * @param title        resource id for the title text
      * @param message      the dialog's main message
      * @param notification whether to show a notification when a dialog cannot be shown in the given
-     *                     context - if {@code false} and the dialog cannot be shown, the
-     *                     application will crash
+     *                     context (clicking the notification will start {@link
+     *                     CalendarListActivity}) - if {@code false} and the dialog cannot be shown,
+     *                     the application will crash
      * @param context      context where the dialog should be displayed
      */
     public static void showErrorDialog(int title, String message, boolean notification, Context context) {
         if (notification && !(context instanceof Activity)) {
+            Intent intent = new Intent(context, CalendarListActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
             NotificationCompat.Builder nb = new NotificationCompat.Builder(context)
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .bigText(message))
                     .setSmallIcon(android.R.drawable.stat_sys_warning)
                     .setContentTitle(context.getString(title))
-                    .setContentText(message);
+                    .setContentText(message)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
 
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify((int) System.currentTimeMillis(), nb.build());
