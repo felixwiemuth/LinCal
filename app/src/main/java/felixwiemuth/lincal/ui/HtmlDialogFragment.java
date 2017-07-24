@@ -19,12 +19,14 @@ package felixwiemuth.lincal.ui;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
@@ -42,6 +44,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import felixwiemuth.lincal.R;
 
@@ -54,42 +59,99 @@ import felixwiemuth.lincal.R;
  */
 
 /**
- * Displays an HTML document in a dialog fragment.
+ * Displays an HTML document in a dialog fragment with the possibility to add special action links
+ * that can trigger execution of app code ({@see Action}).
  */
 public class HtmlDialogFragment extends DialogFragment {
 
+    /**
+     * An action to be performed when a "action:///action-name/arg1/arg2/..." link is clicked.
+     */
+    public interface Action {
+
+        /**
+         * Get the name of the action to be used in the URI.
+         *
+         * @return
+         */
+        String getName();
+
+        /**
+         * Perform an action.
+         *
+         * @param args    the path segments after the action name (arg1, arg2, ...), i.e.,
+         *                everything between the separators "/" which themselves are not included,
+         *                contains only non-empty arguments
+         * @param context the current context of the WebView
+         */
+        void run(List<String> args, Context context);
+    }
+
     private AsyncTask<Void, Void, String> loader;
+
+    private Map<String, Action> actions = new HashMap<>();
 
     private static final String FRAGMENT_TAG = "nz.net.speakman.androidlicensespage.HtmlDialogFragment";
     private static final String ARG_TITLE = "felixwiemuth.lincal.ARG_TITLE";
     private static final String ARG_RES_HTML_FILE = "felixwiemuth.lincal.ARG_RES_HTML_FILE";
+    private static final String ARG_ACTIONS = "felixwiemuth.lincal.ARG_ACTIONS";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        for (String actionName : getArguments().getStringArray(ARG_ACTIONS)) {
+            try {
+                Class<? extends Action> actionClass = (Class<? extends Action>) Class.forName(actionName);
+                Action action = actionClass.newInstance();
+                actions.put(action.getName(), action);
+            } catch (java.lang.InstantiationException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     /**
      * Builds and displays a HTML dialog fragment.
      *
-     * @param fm          A fragment manager instance used to display this HtmlDialogFragment.
-     * @param resTitle    The title for the dialog, as string resource
-     * @param resHtmlFile
+     * @param fm          a fragment manager instance used to display this HtmlDialogFragment
+     * @param resTitle    the title for the dialog, as string resource
+     * @param resHtmlFile the resource of the HTML file to display
+     * @param actions     {@link Action}s that should be registered with the WebView to be shown
      */
-    public static void displayHtmlDialogFragment(FragmentManager fm, @StringRes int resTitle, @RawRes int resHtmlFile) {
+    public static void displayHtmlDialogFragment(FragmentManager fm, @StringRes int resTitle, @RawRes int resHtmlFile, Class<? extends Action>... actions) {
         Bundle arguments = new Bundle();
         arguments.putInt(ARG_TITLE, resTitle);
         arguments.putInt(ARG_RES_HTML_FILE, resHtmlFile);
+        addActionsToBundle(arguments, actions);
         constructFragment(arguments).displayFragment(fm);
     }
 
     /**
      * Builds and displays a HTML dialog fragment.
      *
-     * @param fm          A fragment manager instance used to display this HtmlDialogFragment.
-     * @param title       The title for the dialog, as string
-     * @param resHtmlFile
+     * @param fm          a fragment manager instance used to display this HtmlDialogFragment
+     * @param title       the title for the dialog, as string
+     * @param resHtmlFile the resource of the HTML file to display
+     * @param actions     {@link Action}s that should be registered with the WebView to be shown
      */
-    public static void displayHtmlDialogFragment(FragmentManager fm, String title, @RawRes int resHtmlFile) {
+    public static void displayHtmlDialogFragment(FragmentManager fm, String title, @RawRes int resHtmlFile, Class<? extends Action>... actions) {
         Bundle arguments = new Bundle();
         arguments.putString(ARG_TITLE, title);
         arguments.putInt(ARG_RES_HTML_FILE, resHtmlFile);
+        addActionsToBundle(arguments, actions);
         constructFragment(arguments).displayFragment(fm);
+    }
+
+    private static void addActionsToBundle(Bundle bundle, Class<? extends Action>[] actions) {
+        String[] actionNames = new String[actions.length];
+        for (int i = 0; i < actionNames.length; i++) {
+            actionNames[i] = actions[i].getCanonicalName();
+        }
+        bundle.putStringArray(ARG_ACTIONS, actionNames);
     }
 
     private static HtmlDialogFragment constructFragment(Bundle arguments) {
@@ -172,30 +234,21 @@ public class HtmlDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View content = LayoutInflater.from(getActivity()).inflate(R.layout.html_dialog_fragment, null);
         webView = (WebView) content.findViewById(R.id.html_dialog_fragment_web_view);
+        // Set the WebViewClient (in API <24 have to parse URI manually)
         if (Build.VERSION.SDK_INT >= 24) {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
-                    if (webResourceRequest.getUrl().getScheme().equals("file")) { // @TargetApi(Build.VERSION_CODES.N_MR1)
-                        webView.loadUrl(webResourceRequest.getUrl().toString());
-                    } else {
-                        // If the URI is not pointing to a local file, open with an ACTION_VIEW Intent
-                        webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, webResourceRequest.getUrl()));
-                    }
-                    return true; // in both cases we handle the link manually
+                    Uri uri = webResourceRequest.getUrl(); // @TargetApi(Build.VERSION_CODES.N_MR1)
+                    return HtmlDialogFragment.this.loadUrl(webView, uri);
                 }
             });
         } else { //TODO test on an API < 24 device
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-                    if (Uri.parse(url).getScheme().equals("file")) {
-                        webView.loadUrl(url);
-                    } else {
-                        // If the URI is not pointing to a local file, open with an ACTION_VIEW Intent
-                        webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                    }
-                    return true; // in both cases we handle the link manually
+                    Uri uri = Uri.parse(url);
+                    return HtmlDialogFragment.this.loadUrl(webView, uri);
                 }
             });
         }
@@ -212,5 +265,31 @@ public class HtmlDialogFragment extends DialogFragment {
         }
         builder.setView(content);
         return builder.create();
+    }
+
+    private boolean loadUrl(WebView webView, Uri uri) {
+        if (uri.getScheme().equals("file")) {
+            webView.loadUrl(uri.toString());
+        } else if (uri.getScheme().equals("action")) {
+            List<String> segments = uri.getPathSegments();
+            if (segments.isEmpty()) {
+                throw new RuntimeException("Error in WebView: No action name provided.");
+            } else {
+                handleAction(segments.get(0), segments.subList(1, segments.size()));
+            }
+        } else {
+            // If the URI is not pointing to a local file, open with an ACTION_VIEW Intent
+            webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }
+        return true; // in both cases we handle the link manually
+    }
+
+    private void handleAction(String action, List<String> args) {
+        Action a = actions.get(action);
+        if (a == null) {
+            throw new RuntimeException("Error in WebView: no action \"" + action + "\" registered.");
+        } else {
+            a.run(args, getContext());
+        }
     }
 }
