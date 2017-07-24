@@ -6,12 +6,16 @@
    Applies to:
    - ACRA (Application Crash Reporting for Android)
        Copyright (c) 2013 Kevin Gaudin
+       https://github.com/ACRA/acra
    - Android Licenses Page
        Copyright (C) 2013 Adam Speakman
+       https://github.com/adamsp/AndroidLicensesPage
    - Guava: Google Core Libraries for Java
        Copyright (C) The Guava Authors
+       https://github.com/google/guava
    - Android support libraries
        Copyright (C) The Android Open Source Project
+       https://android.googlesource.com/platform/frameworks/support.git
 -------------------------------------------------------------------------------
 
    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
