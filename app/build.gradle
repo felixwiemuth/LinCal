@@ -47,4 +47,5 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'com.google.guava:guava:22.0-android'
     compile 'ch.acra:acra:4.9.1'
+    compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
 }
