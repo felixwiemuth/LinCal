@@ -47,13 +47,13 @@ There are a lot of small extensions and more features planned, some of them list
 
 - Display non-link content when clicking notifications
 - Possibility to show link before opening when clicking a notification
-- Option to not display notifications before the screen is turned on - this avoids accoustic or visual signals of a notification
+- Option to not display notifications before the screen is turned on - this avoids acoustic or visual signals of a notification
 - Default settings for notifications in addition to the calendar-specific settings
 - Open file manager from app to choose calendar to add
 - Improved layout/design
 - Richer content for notifications: custom included offline media, HTML pages
 - Widget to show today's notifications on click
-- Obfuscated calendar files: App makes file unreadable before sending it to someone, to not allow others to see entries in advance
+- Obfuscated calendar files: app makes file unreadable before sending it to someone, to not allow others to see entries in advance
 
 Usage
 -----
@@ -149,7 +149,7 @@ It is possible to use an older version of the app after a newer has been used. I
 
 Translations
 ------------
-You are welcome to add translations to the app, they will be incorporated after being checked to be appropriate and complete. You may file an [issue](https://github.com/felixwiemuth/LinCal/issues/new) with your plans if you want to make sure noone is already working on the translation. Note that translations might be temporarily disabled when they get outdated or incomplete with an update. They will be included again as soon as updated. 
+You are welcome to add translations to the app, they will be incorporated after being checked to be appropriate and complete. You may file an [issue](https://github.com/felixwiemuth/LinCal/issues/new) with your plans if you want to make sure no one is already working on the translation. Note that translations might be temporarily disabled when they get outdated or incomplete with an update. They will be included again as soon as updated. 
 
 ### Available translations
 Translations for the following languages are available (thanks to the respective translators):
