@@ -1,0 +1,83 @@
+<!--
+  ~ Copyright (C) 2015 Felix Wiemuth
+  ~ Copyright (C) 2017 Poussinou https://github.com/Poussinou
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="app_name" translatable="false">LinCal</string>
+    <string name="title_activity_calendar_view">Vue Calendrier</string>
+    <string name="title_activity_add_calendar">Ajouter calendrier</string>
+
+    <string name="menu_help">Aide</string>
+    <string name="menu_about">À Propos</string>
+
+    <string name="dialog_welcome_title">Bienvenue</string>
+    <string name="welcome_message">Bienvenue sur LinCal! Ceci est une des premières versions, et elle doit donc encore comporter quelques problèmes - consultez l\'onglet \"À Propos\" pour savoir comment les rapporter. LinCal est un logiciel libre (sous GNU General Public License) et ne comporte aucune garantie d\'aucune sorte.</string>
+
+    <string name="crash_toast_text">Une erreur inattendue a forcé l\'application à s\'arrêter. Envoyez s\'il vous plait cet email contenant des informations importantes à propos de l\'erreur au développeur. Vous pouvez ajouter des commentaires à propos du problème rencontré.</string>
+
+    <string name="invalidDateSpecificationException_base">Date spécifiée invalide :</string>
+    <string name="invalidDateSpecificationException_expected_full">la date spécifiée doit être de la forme (j/m/a)</string>
+    <string name="invalidDateSpecificationException_in_header">pour la date du calendrier</string>
+    <string name="invalidDateSpecificationException_first">comme première date</string>
+    <string name="invalidDateSpecificationException_format">erreur (utilisez le format j/m/a)</string>
+    <string name="dateSpecificationRequiredException">Une première date doit être spécifiée avec "@d j/m/a" avant que la première entrée ne puisse être ajoutée.</string>
+    <string name="invalidTimeSpecificationException_base">Heure spécifiée invalide :</string>
+    <string name="invalidTimeSpecificationException_format">(utilisez hh:mm)</string>
+
+
+    <string name="cal_title">Titre :</string>
+    <string name="cal_title_error_loading">(Le calendrier n\'a pas pu être chargé à cause d\'une erreur)</string>
+    <string name="cal_author">Auteur :</string>
+    <string name="cal_description">Description :</string>
+    <string name="cal_version">Version :</string>
+    <string name="cal_date">Date :</string>
+    <string name="setting_notifications_enabled">Activer les notifications</string>
+    <string name="setting_show_notifications_earliest">Montrer les notifications en premier :</string>
+    <string name="setting_show_notifications_on_screen_on">Montrer les notifications seulement lorsque l\'écran est allumé</string>
+    <string name="setting_entry_display_mode">Montrer les entrées :</string>
+    <string-array name="setting_entry_display_mode_options">
+        <item>Tout cacher</item>
+        <item>Cacher les prochaines</item>
+        <item>Tout montrer</item>
+    </string-array>
+    <string name="action_remove_cal">Supprimer le calendrier</string>
+    <string name="entry_hide_text">***</string>
+
+    <string name="dialog_warning_add_cal_title">Attention</string>
+    <string name="dialog_warning_add_cal_msg">Utilisez uniquement des calendriers de gens à qui vous faites confiance - ouvrir des liens pointant vers des sites dangereux implique un risque pour la sécurité de votre portable!</string>
+    <string name="add_cal_title">Personnaliser le titre (laissez vide pour utiliser le titre du calendrier) :</string>
+    <string name="add_cal_file">Fichier du calendrier (chemin complet):</string>
+    <string name="add_cal_notifications">Activer les notifications</string>
+    <string name="add_cal_file_button">Choisir…</string>
+    <string name="add_cal_button">Ajouter</string>
+    <string name="dialog_file_not_found">Fichier non trouvé</string>
+    <string name="dialog_parsing_error_title">Erreur d\'analyse</string>
+    <string name="dialog_error_title">Erreur</string>
+    <string name="dialog_error_dismiss">Fermer</string>
+    <string name="dialog_file_not_found_msg">Le fichier \"%s\" n\'existe pas.</string>
+    <string name="dialog_symbol_not_allowed_message">"Le symbole \"%s\" ne peut pas être utilisé dans un titre."</string>
+    <string name="dialog_cal_already_added_title">Calendrier déjà ajouté</string>
+    <string name="dialog_cal_already_added_msg">Ce calendrier a déjà été ajouté. Voulez-vous ajouter une copie indépendante de celui-ci?</string>
+    <string name="dialog_show_link">Montrer le lien</string>
+    <string name="dialog_cancel">Annuler</string>
+    <string name="dialog_open_link">Ouvrir le lien</string>
+    <string name="dialog_dismiss">Fermer</string>
+    <string name="dialog_yes">Oui</string>
+    <string name="dialog_no">Non</string>
+    <string name="dialog_remove_cal_title">Supprimer un calendrier</string>
+    <string name="dialog_remove_cal_msg">Supprimer le calendrier avec les réglages et les progrès actuels? Les fichiers du calendrier en eux-mêmes ne seront pas supprimés.</string>
+</resources>
