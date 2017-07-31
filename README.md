@@ -147,6 +147,57 @@ Downgrading
 -----------
 It is possible to use an older version of the app after a newer has been used. If the format of saving status and configuration of calendars is not compatible, a message will be shown with an option to reset the configuration.
 
+Translations
+------------
+You are welcome to add translations to the app, they will be incorporated after being checked to be appropriate and complete. You may file an [issue](https://github.com/felixwiemuth/LinCal/issues/new) with your plans if you want to make sure noone is already working on the translation. Note that translations might be temporarily disabled when they get outdated or incomplete with an update. They will be included again as soon as updated. 
+
+### Available translations
+Translations for the following languages are available (thanks to the respective translators):
+- French (by [Poussinou](https://github.com/Poussinou))
+
+### Planned translations
+Translations for the following languages are already planned:
+- German
+- Danish
+
+### How to translate the app
+- To translate, use a tool of your choice, for example [Android Studio](https://developer.android.com/studio/write/translations-editor.html) or the app [Stringlate](https://f-droid.org/app/io.github.lonamiwebs.stringlate).
+- Basically, translating works as follows (some of the steps are done automatically by some tools):
+  - [Fork](https://github.com/felixwiemuth/LinCal/fork) the project on Github and do all the following actions in your fork.
+  - Choose a file from the list below you want to translate. This file is contained in a folder under the [res](app/src/main/res/) folder (e.g. `values`, `raw` or `xml`). Create (if it doesn't already exist) an empty copy of this folder with `-x` appended, where `x` is the code of the language/region you are translating to ([list of codes](https://github.com/championswimmer/android-locales/blob/master/README.md)). Into this folder, put a copy of the original file and translate it by changing it. If you created the translation with a tool, instead of copying the original file, put the file obtained from the tool into the folder.
+  - In each file you change, change the first line of the license header to "Copyright (C) yyyy Felix Wiemuth and contributors (see CONTRIBUTORS.md)", do not change the year. If you create a new file, copy the license header from another file of that type and change the year to the current year.
+  - If possible, test your translations by running the app.
+  - Add or update the corresponding entry in the following places, where in parentheses you may add name, email, and/or link to Github account:
+    - section "Available translations" in this file
+    - section "Translations" in [About](app/src/main/res/raw/about.html)
+    - section "Translations" in [CONTRIBUTORS.md](CONTRIBUTORS.md)
+  - When you are done, commit your changes and create a [pull request](https://help.github.com/articles/creating-a-pull-request/).
+    - Include `closes #<issue number>` in your commit messages if you resolve an issue.
+    - Please rebase onto the master branch of the main repository and squash your commits into one or a few significant ones that are relevant for the project's history (if you don't do this, it may be done by the maintainers).
+  - For more information on how translations work in general see the [Android Developer Guide](https://developer.android.com/guide/topics/resources/localization.html).
+  - If you want to translate but need help, file an [issue](https://github.com/felixwiemuth/LinCal/issues/new).
+
+
+### How to update translations
+- Read "How to translate the app" and follow all relevant steps.
+- If you want to update someone else's translation:
+  - If you find typos or other obvious mistakes, simply correct them (and only add yourself to the lists of contributors if you find it appropriate).
+  - If you want to continue a translation or make more significant changes, first assign an [issue](https://github.com/felixwiemuth/LinCal/issues/new) to the person(s) who made the translation describing your intents and agree with them on what to do.
+- If you have started a translation, you will be notified by the maintainers when your translation has to be updated (you will be assigned an issue).
+- To update translations, use a diff utility to see changes in the original files since you last translated. To do this on Github, simply visit `https://github.com/felixwiemuth/LinCal/compare/<commit-last-translated>...<commit-to-translate>` where you replace the `<commit>` parameters with the corresponding commits' SHA-1 hashes (such a link may be provided to you by the maintainers when being asked to update translations). To see what commits changed a file click "History" when viewing the file.
+
+### Files that may be translated
+Please only translate the following files and note the importance of translations for different files (translations will only be accepted if they include `strings.xml`):
+- [strings.xml](app/src/main/res/values/strings.xml): contains the text used in the app's main user interface, should always be translated
+  - Do not translate entries with `translatable="false"` (remove those entries)
+  - Look for "TRANSLATION NOTE" comments 
+- [Help](app/src/main/res/raw/help.html): a help page in HTML (accessed in the app via the main menu), good if translated
+- [Change log](app/src/main/res/xml/changelog_master.xml): lists changes introduced with new versions of the app, good if translated
+  - Note: the translated file must be called `changelog.xml` instead of `changelog_master.xml`
+- [About](app/src/main/res/raw/about.html): an HTML page with information about the app (accessed in the app via the main menu), can be translated but it's less important
+  - Important: In the "License" section do not translate the first paragraph (the license text - an appropriate translation will be added by the maintainers if found) but do translate the heading "License" and everything after the first paragraph.
+
+
 Bug reports and feature requests
 --------------------------------
 Please report bugs using [Github](https://github.com/felixwiemuth/LinCal/issues). Always include version number (see "About" dialog in app), device name and Android version. Feature requests may also be filed as an issue.
