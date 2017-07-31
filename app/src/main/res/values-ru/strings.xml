@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2017 Felix Wiemuth
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- TRANSLATION NOTE: The following keys are used by the library ckChangeLog and replace the
+         default translations it provides. To translate them, first check whether the translations
+         provided (see https://github.com/cketti/ckChangeLog/tree/master/ckChangeLog/src/main/res)
+         are appropriate and if so copy them here.
+      -->
+    <string name="changelog_full_title">Change Log</string> <!-- TRANSLATION NOTE: Only translate if appropriate -->
+    <string name="changelog_title">What\'s New</string>
+    <string name="changelog_ok_button">OK</string>
+    <string name="changelog_show_full">More…</string>
+    <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
+</resources>
