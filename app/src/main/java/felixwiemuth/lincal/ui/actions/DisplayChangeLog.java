@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Felix Wiemuth
+ * Copyright (C) 2017 Felix Wiemuth
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,26 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package felixwiemuth.lincal.ui.actions;
 
-buildscript {
-    repositories {
-        jcenter()
+import android.content.Context;
+
+import java.util.List;
+
+import de.cketti.library.changelog.ChangeLog;
+import felixwiemuth.lincal.ui.HtmlDialogFragment;
+
+/**
+ * Displays the change log.
+ *
+ * @author Felix Wiemuth
+ */
+public class DisplayChangeLog implements HtmlDialogFragment.Action {
+    @Override
+    public String getName() {
+        return "display_changelog";
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+    @Override
+    public void run(List<String> args, Context context) {
+        ChangeLog cl = new ChangeLog(context);
+        cl.getLogDialog().show();
     }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

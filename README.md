@@ -1,6 +1,6 @@
 LinCal
 ======
-Copyright (C) 2016 Felix Wiemuth
+Copyright (C) 2016-2017 Felix Wiemuth and contributors
 
 License
 -------
@@ -27,7 +27,7 @@ About
 
 Project status
 --------------
-A first public release on [FDroid](https://f-droid.org/) will be available in the coming days.
+A first release is available on [F-Droid](https://f-droid.org/repository/browse/?fdid=felixwiemuth.lincal). A first update will be released in August and further smaller updates and improvements are planned for August and September 2017.
 
 Features
 --------
@@ -36,6 +36,7 @@ Features
 - Receive calendars from friends and add them to the LinCal app
   - Receive notifications when specified in the calendar
   - Click on notifications to open contained link
+  - Open links with matching app if installed (e.g. Dropbox, Spotify, ...)
   - Set an earliest notification time
   - List all entries in the calendar (optionally hide future or all entries)
   - Calendar files can be updated while in use
@@ -46,21 +47,20 @@ There are a lot of small extensions and more features planned, some of them list
 
 - Display non-link content when clicking notifications
 - Possibility to show link before opening when clicking a notification
-- Option to not display notifications before the screen is turned on - this avoids accoustic or visual signals of a notification
+- Option to not display notifications before the screen is turned on - this avoids acoustic or visual signals of a notification
 - Default settings for notifications in addition to the calendar-specific settings
 - Open file manager from app to choose calendar to add
 - Improved layout/design
 - Richer content for notifications: custom included offline media, HTML pages
 - Widget to show today's notifications on click
-- Force hide entries by calendar file
-- Obfuscated calendar files: App makes file unreadable before sending it to someone, to not allow others to see entries in advance
+- Obfuscated calendar files: app makes file unreadable before sending it to someone, to not allow others to see entries in advance
 
 Usage
 -----
 Using LinCal is divided into two parts: creating a calendar and using a calendar in the app.
 
 ### Creating a calendar
-A calendar is described by a text file, the format of which is described in this section.
+A calendar is described by a text file (which has to be in [UTF-8 encoding](https://www.w3.org/International/questions/qa-choosing-encodings)), the format of which is described in this section.
 For an example with explanations, see [ExampleCalendar](ExampleCalendar).
 The file consists of a "header section" followed by an "entry section".
 In general, each line starts with a command, indicated by `@`, to specify certain parameters of an entry or the calendar.
@@ -70,13 +70,22 @@ The header and entry section use the following commands:
 
 **Header section** (all commands are required)
 
-This information is displayed when a user views the calendar. It has no relevance to the functions of the app.
+The following commands are required. The information is displayed when a user views the calendar. It has no relevance to the functions of the app.
 
 - `@author`: Who created the calendar
 - `@title`: A title for the calendar, shown as title of notifications and in the list of calendars if the user doesn't choose another name
 - `@descr`: A more detailed description of the calendar
 - `@date`: Creation date of the calendar (must have the format `dd/mm/yyyy`)
 - `@version`: Can be used to distinguish different versions of a calendar
+
+The following commands are optional and concern the visibility of dates and descriptions of entries to the user (see [Using the app](#using-the-app)). Possible values for `<mode>` are `hideAll`, `hideFuture`, `hideAll`. The default is `set` and `hideFuture`. The `set` option only apply when the user initially adds the calendar, the `force` options can be changed when updating the calendar.
+
+- `@setDateDisplayMode <mode>`: Set an initial value for the *Show entry date* option 
+- `@forceDateDisplayMode <mode>`: Set a value for the *Show entry date* option such that the user cannot change it
+- `@setDescriptionDisplayMode <mode>`: Set an initial value for the *Show entry description* option 
+- `@forceDescriptionDisplayMode <mode>`: Set a value for the *Show entry description* option such that the user cannot change it
+
+ 
 
 **Entry section** (started with `@begin` on a single line after the header section)
 
@@ -90,8 +99,14 @@ Note that if no date is specified for an entry, the next calendar day after the 
 Thus, to add an entry for each day, except for the starting day no further dates have to be specified.
 
 - `@t hh:mm`: Specify the time the notification for the next entry should be shown
-- `@st hh:mm`: Set the default notification time - works like `@t`, but is valid for all following entries where `@t` is not specified (before the first usage of `@st` the default notification time is 0:00).
+- `@st hh:mm`: Set the default notification time - works like `@t`, but is valid for all following entries where `@t` is not specified (before the first usage of `@st` the default notification time is 0:00)
 - `@descr`: Add a description to the next entry which will be used as the notification text
+
+**Media**
+
+In the future, you will be able to add media like photos to a calendar. For now the best way to include media is to upload it to some cloud storage, create a shared link and use this link for a LinCal entry. If the user has the app of the cloud service installed, they might be able to open the link directly with that app.
+
+**Sending and updating calendars**
 
 In general, before sending a calendar to someone, make sure that the dates are correct and the links work by loading it into LinCal (see next section).
 
@@ -103,15 +118,15 @@ A calendar can be updated while in use (that is, the user simply replaces the ca
 *Warning:* Only use calendars from people you trust - opening links to malicious sites represents a security risk!
 
 Click the "+" button and enter the full path to the calendar file (e.g. `/sdcard/Downloads/MyCalendar.txt`) or open a calendar file directly and choose "Add calendar".
-Optionally enter a custom title for the calendar to be shown in the list of calendars and as the title of notifications.
+Optionally enter a custom title for the calendar to be shown in the list of calendars and as the title of notifications. Checking "Don't show any entries now" makes sure you don't see any entries directly after adding the calendar (but this can be changed later).
 
 **Viewing a calendar**
 
 Select a calendar from the list to view the calendar's information, settings and a list of its entries.
 
-- For each entry, the time as scheduled by the calendar is shown on the left. If the notification time differs, it is shown in brackets after the first time. Next to the time, the description of the entry is shown. Depending on the "Show entries" setting, the description might be hidden.
+- For each entry, the time as scheduled by the calendar is shown on the left. If the notification time differs, it is shown in brackets after the first time. Next to the time, the description of the entry is shown. Depending on the "Show entry" setting, the date or description might be hidden.
 
-- Click on an entry to show its description and options to see and open the link.
+- Click on an entry to show its description and options to see and open the link (hidden entries cannot be clicked).
 
 **Notifications**
 
@@ -121,8 +136,68 @@ A notification is shown exactly once for each entry in each calendar. Unless oth
 
 - *Enable notifications*: Only if this is checked notifications will be shown. When reenabling, notifications for past entries will be shown.
 - *Earliest notification time*: If enabled, no notifications will be shown before the given time - if they are scheduled earlier by the calendar, they will be shown exactly at the time specified here. If the author of the calendar hasn't specified any times, then the entries are scheduled for 0:00 - thus choose this time to make sure you won't receive notifications when you don't want to.
-- *Show entries*: This can be used to hide all or future entries, to not reveal a description text in advance. Entries can still be viewed by clicking on them.
+- *Show entry date/description*: This can be used to hide the date/description of all or future entries, to not reveal a description text in advance. "Future" here refers to the time as scheduled by the calendar (as opposed to notification time). Only entries where the description is not hidden can be clicked. If the option is greyed out the author of the calendar has set the value so it cannot be changed.
+
+**Problems**
+
+- If notifications stop working, reenable notifications in the calendar's settings.
+- If any text content of a calendar is displayed with cryptic or missing characters, this is probably because the calendar file does not use UTF-8 encoding as required (see above). Ask the author of the calendar to use the correct encoding.
+
+Downgrading
+-----------
+It is possible to use an older version of the app after a newer has been used. If the format of saving status and configuration of calendars is not compatible, a message will be shown with an option to reset the configuration.
+
+Translations
+------------
+You are welcome to add translations to the app, they will be incorporated after being checked to be appropriate and complete. You may file an [issue](https://github.com/felixwiemuth/LinCal/issues/new) with your plans if you want to make sure no one is already working on the translation. Note that translations might be temporarily disabled when they get outdated or incomplete with an update. They will be included again as soon as updated. 
+
+### Available translations
+Translations for the following languages are available (thanks to the respective translators):
+- French (by [Poussinou](https://github.com/Poussinou))
+
+### Planned translations
+Translations for the following languages are already planned:
+- German
+- Danish
+
+### How to translate the app
+- To translate, use a tool of your choice, for example [Android Studio](https://developer.android.com/studio/write/translations-editor.html) or the app [Stringlate](https://f-droid.org/app/io.github.lonamiwebs.stringlate).
+- Basically, translating works as follows (some of the steps are done automatically by some tools):
+  - [Fork](https://github.com/felixwiemuth/LinCal/fork) the project on Github and do all the following actions in your fork.
+  - Choose a file from the list below you want to translate. This file is contained in a folder under the [res](app/src/main/res/) folder (e.g. `values`, `raw` or `xml`). Create (if it doesn't already exist) an empty copy of this folder with `-x` appended, where `x` is the code of the language/region you are translating to ([list of codes](https://github.com/championswimmer/android-locales/blob/master/README.md)). Into this folder, put a copy of the original file and translate it by changing it. If you created the translation with a tool, instead of copying the original file, put the file obtained from the tool into the folder.
+  - In each file you change, change the first line of the license header to "Copyright (C) yyyy Felix Wiemuth and contributors (see CONTRIBUTORS.md)", do not change the year. If you create a new file, copy the license header from another file of that type and change the year to the current year.
+  - If possible, test your translations by running the app.
+  - Add or update the corresponding entry in the following places, where in parentheses you may add name, email, and/or link to Github account:
+    - section "Available translations" in this file
+    - section "Translations" in [About](app/src/main/res/raw/about.html)
+    - section "Translations" in [CONTRIBUTORS.md](CONTRIBUTORS.md)
+  - When you are done, commit your changes and create a [pull request](https://help.github.com/articles/creating-a-pull-request/).
+    - Include `closes #<issue number>` in your commit messages if you resolve an issue.
+    - Please rebase onto the master branch of the main repository and squash your commits into one or a few significant ones that are relevant for the project's history (if you don't do this, it may be done by the maintainers).
+  - For more information on how translations work in general see the [Android Developer Guide](https://developer.android.com/guide/topics/resources/localization.html).
+  - If you want to translate but need help, file an [issue](https://github.com/felixwiemuth/LinCal/issues/new).
+
+
+### How to update translations
+- Read "How to translate the app" and follow all relevant steps.
+- If you want to update someone else's translation:
+  - If you find typos or other obvious mistakes, simply correct them (and only add yourself to the lists of contributors if you find it appropriate).
+  - If you want to continue a translation or make more significant changes, first assign an [issue](https://github.com/felixwiemuth/LinCal/issues/new) to the person(s) who made the translation describing your intents and agree with them on what to do.
+- If you have started a translation, you will be notified by the maintainers when your translation has to be updated (you will be assigned an issue).
+- To update translations, use a diff utility to see changes in the original files since you last translated. To do this on Github, simply visit `https://github.com/felixwiemuth/LinCal/compare/<commit-last-translated>...<commit-to-translate>` where you replace the `<commit>` parameters with the corresponding commits' SHA-1 hashes (such a link may be provided to you by the maintainers when being asked to update translations). To see what commits changed a file click "History" when viewing the file.
+
+### Files that may be translated
+Please only translate the following files and note the importance of translations for different files (translations will only be accepted if they include `strings.xml`):
+- [strings.xml](app/src/main/res/values/strings.xml): contains the text used in the app's main user interface, should always be translated
+  - Do not translate entries with `translatable="false"` (remove those entries)
+  - Look for "TRANSLATION NOTE" comments 
+- [Help](app/src/main/res/raw/help.html): a help page in HTML (accessed in the app via the main menu), good if translated
+- [Change log](app/src/main/res/xml/changelog_master.xml): lists changes introduced with new versions of the app, good if translated
+  - Note: the translated file must be called `changelog.xml` instead of `changelog_master.xml`
+- [About](app/src/main/res/raw/about.html): an HTML page with information about the app (accessed in the app via the main menu), can be translated but it's less important
+  - Important: In the "License" section do not translate the first paragraph (the license text - an appropriate translation will be added by the maintainers if found) but do translate the heading "License" and everything after the first paragraph.
+
 
 Bug reports and feature requests
 --------------------------------
-Please report bugs using [Github](https://github.com/felixwiemuth/LinCal/issues). Always include version number (see "About" dialog in app), device and Android version. Feature requests may also be filed as an issue.
+Please report bugs using [Github](https://github.com/felixwiemuth/LinCal/issues). Always include version number (see "About" dialog in app), device name and Android version. Feature requests may also be filed as an issue.

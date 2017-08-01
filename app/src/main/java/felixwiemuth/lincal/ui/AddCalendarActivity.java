@@ -20,15 +20,16 @@ package felixwiemuth.lincal.ui;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
+import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.util.Time;
 import felixwiemuth.lincal.util.Util;
@@ -44,8 +45,7 @@ public class AddCalendarActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.hide();
+        Calendars.getInstance(this); // load calendars already here to check for updates before adding calendar (important for downgrade warning to be shown before clicking "add")
 
         Button chooseFileButton = (Button) findViewById(R.id.cb_file);
         Button addButton = (Button) findViewById(R.id.cb_add);
@@ -62,15 +62,21 @@ public class AddCalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String file = fileEditText.getText().toString();
                 EditText titleEditText = (EditText) findViewById(R.id.ce_title);
-                //TODO set entry display mode, notification mode and notification time from UI widgets
+                CheckBox notificationsCheckBox = (CheckBox) findViewById(R.id.cc_hideall);
+                CheckBox hideAllCheckBox = (CheckBox) findViewById(R.id.cc_hideall);
+                //TODO set notification mode and notification time from UI widgets
                 LinCalConfig config = new LinCalConfig();
                 config.setCalendarFile(file);
                 config.setCalendarTitle(titleEditText.getText().toString());
-                config.setEntryDisplayMode(LinCalConfig.EntryDisplayMode.HIDE_FUTURE);
-                config.setNotificationsEnabled(true);
+                config.setNotificationsEnabled(notificationsCheckBox.isChecked());
                 config.setEarliestNotificationTimeEnabled(true);
                 config.setEarliestNotificationTime(DEFAULT_EARLIEST_NOTIFICATION_TIME);
                 config.setOnScreenOn(false);
+                if (hideAllCheckBox.isChecked()) {
+                    config.setEntryDisplayModeDate(LinCal.EntryDisplayMode.HIDE_ALL);
+                    config.setEntryDisplayModeDescription(LinCal.EntryDisplayMode.HIDE_ALL);
+                }
+                // adding the calendar sets initial entryDisplayModeDate and entryDisplayModeDescription from the calendar (or to defaults) if not set by the user (above)
                 Calendars.addCalendarChecked(config, AddCalendarActivity.this, new Runnable() {
                     @Override
                     public void run() {

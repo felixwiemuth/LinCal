@@ -36,9 +36,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import de.cketti.library.changelog.ChangeLog;
 import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.Main;
 import felixwiemuth.lincal.R;
+import felixwiemuth.lincal.ui.actions.DisplayChangeLog;
 
 /**
  * An activity representing a list of calendars. Note that this activity does not update the
@@ -103,6 +105,12 @@ public class CalendarListActivity extends AppCompatActivity {
             }
         }
 
+        // NOTE: Welcome message covers change log which is correct.
+        ChangeLog cl = new ChangeLog(this);
+        if (cl.isFirstRun()) {
+            cl.getLogDialog().show();
+        }
+
         // Show welcome message on first launch and remember this in shared preferences
         SharedPreferences preferences = getPreferences(0);
         if (!preferences.contains("welcomeMessageShown")) {
@@ -128,7 +136,7 @@ public class CalendarListActivity extends AppCompatActivity {
                 try {
                     PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                     String title = getString(R.string.app_name) + " " + packageInfo.versionName;
-                    HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), title, R.raw.about);
+                    HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), title, R.raw.about, DisplayChangeLog.class);
                     return true;
                 } catch (PackageManager.NameNotFoundException ex) {
                     throw new RuntimeException(ex);

@@ -17,7 +17,11 @@
 
 package felixwiemuth.lincal.data;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,10 +34,14 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import felixwiemuth.lincal.Calendars;
+import felixwiemuth.lincal.R;
+
 /**
  * Holds configurations of all added calendars. Ensures that if an entry is added to the file also
  * the next ID in the first line of the file is updated such that no entries with the same id can
- * exist in the file.
+ * exist in the file. Automatically updates the configuration file if necessary (and the (removal
+ * of) the config-0 directory) on access.
  *
  * @author Felix Wiemuth
  */
@@ -43,6 +51,8 @@ public class LinCalConfigStore {
     public static final String NOTIFICATION_MODE_SCREEN_ON = "SCREEN_ON";
     public static final String CONFIG_FILE = "config.txt";
     public static final String CONFIG_FILE_OPENED = CONFIG_FILE + ".locked"; // name of the file while reading or writing from/to it
+    public static final String PREFFILE_CONFIG_FILE_ENTRY_VERSION = "config";
+    public static final String PREF_CONFIG_FILE_ENTRY_VERSION = "CONFIG_FILE_ENTRY_VERSION";
 
     private int nextId;
     private final List<LinCalConfig> entries = new ArrayList<>();
@@ -54,6 +64,22 @@ public class LinCalConfigStore {
      * @param context
      */
     public LinCalConfigStore(Context context) {
+        boolean stop = update(context); // if updating, this will also load, but to verify it works, it is good to load again anyway with the next statement
+        if (stop) {
+            return; // Note: this leaves the application with entries being empty and an invalid nextId which is fine
+        }
+        load(context, LinCalConfig.FORMAT_VERSION, null);
+    }
+
+    /**
+     * Load the configuration, replacing the configuration this instance represents.
+     *
+     * @param context
+     * @param configFileEntryVersion
+     * @param action                 action to be performed while the file is locked (can be null)
+     */
+    private void load(Context context, int configFileEntryVersion, Runnable action) {
+        entries.clear();
         //TODO check correct handling of exceptions
         lockConfigFile(context); //NOTE: this assumes that file exists
         try {
@@ -66,7 +92,10 @@ public class LinCalConfigStore {
                     throw new RuntimeException("File must start with an integer in the first line.", ex);
                 }
                 while ((line = in.readLine()) != null) {
-                    entries.add(new LinCalConfig(line));
+                    entries.add(new LinCalConfig(line, configFileEntryVersion));
+                }
+                if (action != null) {
+                    action.run();
                 }
             } catch (IOException | LinCalConfig.FormatException ex) {
                 throw new RuntimeException(ex); // unrecoverable errors
@@ -89,8 +118,10 @@ public class LinCalConfigStore {
      * is not present, it is created.
      *
      * @param context
+     * @param action  action to be performed after saving but before unlocking the file (can be
+     *                null)
      */
-    public void save(Context context) {
+    private void save(Context context, Runnable action) {
         lockConfigFile(context);
         PrintWriter writer;
         try {
@@ -104,6 +135,9 @@ public class LinCalConfigStore {
             writer.println(linCalConfig);
         }
         writer.close();
+        if (action != null) {
+            action.run();
+        }
         unlockConfigFile(context); //TODO if this throws an exception: ignoring error check at writer
         if (writer.checkError()) {
             throw new RuntimeException("Error while writing to configuration file.");
@@ -111,7 +145,18 @@ public class LinCalConfigStore {
     }
 
     /**
-     * Add an entry to this loaded configuration (call{@link #save(Context)} ve()} to persist).
+     * Write the configuration represented by this instance to the configuration file. If the file
+     * is not present, it is created.
+     *
+     * @param context
+     */
+    public void save(Context context) {
+        save(context, null);
+    }
+
+    /**
+     * Add an entry to this loaded configuration (call {@link #save(Context, Runnable)} to
+     * persist).
      *
      * @param config the configuration for the new calendar (the id will be overwritten).
      * @return the id of the new calendar
@@ -169,12 +214,86 @@ public class LinCalConfigStore {
     }
 
     /**
-     * Creates the configuration file in an initialized state and overwrites it if already
-     * existing.
+     * Update the configuration file to the current format if in an older format.
      *
      * @param context
+     * @return true, if further initialization is handled by this method
      */
-    public static void createInitialConfigurationFile(Context context) {
+    private boolean update(final Context context) {
+        final SharedPreferences pref = getVersionPref(context);
+        if (!pref.contains(PREF_CONFIG_FILE_ENTRY_VERSION)) { // This is the first request of the configuration file OR the first after updating to version 1
+            File dir = context.getFilesDir();
+            File configDir = new File(dir, "config-0"); // the existence of this directory in version 0 indicated that an initial configuration file had been created
+            if (configDir.exists()) { // This indicates that a configuration file of version 0 exists, a special update procedure to version 1 follows
+                configDir.delete(); // delete the empty directory used with version 0
+                load(context, 0, null); // load the configuration file with entry version 0
+                save(context, new Runnable() { // and save it in the new version, updating the version variable
+                    @Override
+                    public void run() {
+                        setVersion(pref, 1);
+                    }
+                });
+                return false;
+            } else {
+                createInitialConfigurationFile(context, pref);
+                setVersion(pref, LinCalConfig.FORMAT_VERSION); // it is okay if program fails before setting version here, it would just do the same procedure of creating an initial file on next request
+                return false;
+            }
+        } else { // This is the general update case
+            int fromVersion = pref.getInt(PREF_CONFIG_FILE_ENTRY_VERSION, -1);
+            if (fromVersion == LinCalConfig.FORMAT_VERSION) {
+                return false;
+            } else if (fromVersion > LinCalConfig.FORMAT_VERSION) {
+                if (!(context instanceof Activity)) { // check whether the context is an Activity and dialogs can be shown - if not throw an exception
+                    throw new RuntimeException("Application downgrade with incompatible config file formats - start app for further options.");
+                }
+                final Activity activity = (Activity) context;
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle(R.string.dialog_downgrade_title).setMessage(R.string.dialog_downgrade_msg).setNegativeButton(R.string.dialog_downgrade_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // At this point, the application should stop
+                        System.exit(0); // this should be safe here as it is called right after starting the app and no files should be open //TODO find an alternative which really terminates the app such that
+                    }
+                }).setPositiveButton(R.string.dialog_downgrade_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        createInitialConfigurationFile(context, pref); // reset configuration file
+                        Calendars.invalidate(); // the initial configuration file just created has to be loaded (e.g. to set correct nextId)
+                        setVersion(pref, LinCalConfig.FORMAT_VERSION); // set the current version
+                    }
+                }).setCancelable(false); // the app may not be used without selecting an option
+                builder.show();
+                return true; // leave application with an empty ConfigStore - should it try to load the configuration again, another dialog will be shown if the previous one has not been exited with
+            } else { // have to update config file entries from a lower version to the current
+                load(context, fromVersion, null);
+                save(context, new Runnable() {
+                    @Override
+                    public void run() {
+                        setVersion(pref, LinCalConfig.FORMAT_VERSION);
+                    }
+                });
+                return false; // to make sure the new format works, the file is directly loaded again
+            }
+        }
+    }
+
+    private SharedPreferences getVersionPref(Context context) {
+        return context.getSharedPreferences(PREFFILE_CONFIG_FILE_ENTRY_VERSION, 0);
+    }
+
+    private void setVersion(SharedPreferences pref, int version) {
+        pref.edit().putInt(PREF_CONFIG_FILE_ENTRY_VERSION, version).apply();
+    }
+
+    /**
+     * Creates the configuration file in an initialized state and overwrites it if already existing,
+     * sets the version variable of the configuration to the current version.
+     *
+     * @param context
+     * @param pref
+     */
+    private void createInitialConfigurationFile(Context context, SharedPreferences pref) {
         PrintWriter writer;
         try {
             //TODO check how to allow file to be public (other modes deprecated)

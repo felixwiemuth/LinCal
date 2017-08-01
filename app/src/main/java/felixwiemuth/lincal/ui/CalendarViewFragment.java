@@ -69,7 +69,8 @@ public class CalendarViewFragment extends Fragment {
     private TextView textViewEarliestNotificationTime;
     private CheckBox earliestNotificationTimeEnabled;
     //private CheckBox onScreenOnEnabled; //TODO implement
-    private Spinner entryDisplayMode;
+    private Spinner entryDisplayModeDate;
+    private Spinner entryDisplayModeDescription;
     private Button buttonRemoveCalendar;
     private RecyclerView entryList;
 
@@ -119,7 +120,7 @@ public class CalendarViewFragment extends Fragment {
         }
         Activity activity = this.getActivity();
         calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
-        Calendars calendars = Calendars.getInstance(getContext());
+        Calendars calendars = Calendars.getInstance(getContext()); // loads calendar and makes sure all values in config are set (e.g. forceEntryDisplayMode values)
         calendar = calendars.getCalendarByPos(getContext(), calendarPos);
         // If toolbar is present (handset mode), set title to calendar title
         //TODO add toolbar again
@@ -134,8 +135,20 @@ public class CalendarViewFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.calendar_view, container, false);
         TextView titleView = (TextView) rootView.findViewById(R.id.cal_title);
         TextView authorView = (TextView) rootView.findViewById(R.id.cal_author);
+
+        notificationsEnabled = (CheckBox) rootView.findViewById(R.id.notifications_enabled);
+        textViewEarliestNotificationTime = (TextView) rootView.findViewById(R.id.setting_earliest_notification_time);
+        earliestNotificationTimeEnabled = (CheckBox) rootView.findViewById(R.id.setting_earliest_notification_time_enabled);
+        entryDisplayModeDate = (Spinner) rootView.findViewById(R.id.setting_entry_display_mode_date);
+        entryDisplayModeDescription = (Spinner) rootView.findViewById(R.id.setting_entry_display_mode_description);
+        buttonRemoveCalendar = (Button) rootView.findViewById(R.id.button_remove_cal);
+
         if (calendar == null) {
             titleView.setText(R.string.cal_title_error_loading);
+            notificationsEnabled.setEnabled(false);
+            earliestNotificationTimeEnabled.setEnabled(false);
+            entryDisplayModeDate.setEnabled(false);
+            entryDisplayModeDescription.setEnabled(false);
         } else {
             titleView.setText(calendar.getTitle());
             authorView.setText(calendar.getAuthor());
@@ -145,72 +158,60 @@ public class CalendarViewFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.cal_descr)).setText(calendar.getDescription());
             ((TextView) rootView.findViewById(R.id.cal_version)).setText(calendar.getVersion());
             ((TextView) rootView.findViewById(R.id.cal_date)).setText(calendar.getDateStr());
+            if (calendar.hasForceEntryDisplayModeDate()) {
+                entryDisplayModeDate.setEnabled(false);
+            }
+            if (calendar.hasForceEntryDisplayModeDescription()) {
+                entryDisplayModeDescription.setEnabled(false);
+            }
         }
-
-        notificationsEnabled = (CheckBox) rootView.findViewById(R.id.notifications_enabled);
-        textViewEarliestNotificationTime = (TextView) rootView.findViewById(R.id.setting_earliest_notification_time);
-        earliestNotificationTimeEnabled = (CheckBox) rootView.findViewById(R.id.setting_earliest_notification_time_enabled);
-        entryDisplayMode = (Spinner) rootView.findViewById(R.id.setting_entry_display_mode);
-        buttonRemoveCalendar = (Button) rootView.findViewById(R.id.button_remove_cal);
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.setting_entry_display_mode_options, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        entryDisplayMode.setAdapter(spinnerAdapter);
+        entryDisplayModeDate.setAdapter(spinnerAdapter);
+        entryDisplayModeDescription.setAdapter(spinnerAdapter);
 
         loadSettings(); // loading settings before adding listeners prevents them from firing due to initialization (e.g. Spinner)
 
-        // Set listeners
-        final View.OnClickListener saveSettingsListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSettings();
-                NotificationService.runWithCalendar(getContext(), Calendars.getInstance(getContext()).getConfigByPos(calendarPos).getId()); //TODO reconsider when to call
-            }
-        };
-
-        notificationsEnabled.setOnClickListener(saveSettingsListener);
-        textViewEarliestNotificationTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadSettings(); // update earliestNotificationTime
-                DialogFragment dialogFragment = new TimePickerFragment();
-                Bundle arguments = new Bundle();
-                arguments.putInt("hour", earliestNotificationTime.getHour());
-                arguments.putInt("minute", earliestNotificationTime.getMinute());
-                arguments.putInt("calendarPos", calendarPos);
-                dialogFragment.setArguments(arguments);
-                dialogFragment.show(getFragmentManager(), "timePicker");
-            }
-        });
-        earliestNotificationTimeEnabled.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSettingsListener.onClick(v);
-                // have to update the displayed notification times (only show when enabled)
-                entryList.getAdapter().notifyDataSetChanged();
-            }
-        });
-        //TODO implement
-        //        onScreenOnEnabled = (CheckBox) rootView.findViewById(R.id.setting_show_notification_on_screen_on);
-        //        onScreenOnEnabled.setOnClickListener(saveSettingsListener);
-        entryDisplayMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            int selected = entryDisplayMode.getSelectedItemPosition();
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (selected != position) {
-                    saveSettingsListener.onClick(view);
-                    // have to update the displayed entries
-                    entryList.getAdapter().notifyDataSetChanged();
-                    selected = position;
+        if (calendar != null) {
+            // Set listeners
+            final View.OnClickListener saveSettingsListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveSettings();
+                    NotificationService.runWithCalendar(getContext(), Calendars.getInstance(getContext()).getConfigByPos(calendarPos).getId()); //TODO reconsider when to call
                 }
-            }
+            };
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            notificationsEnabled.setOnClickListener(saveSettingsListener);
+            textViewEarliestNotificationTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loadSettings(); // update earliestNotificationTime
+                    DialogFragment dialogFragment = new TimePickerFragment();
+                    Bundle arguments = new Bundle();
+                    arguments.putInt("hour", earliestNotificationTime.getHour());
+                    arguments.putInt("minute", earliestNotificationTime.getMinute());
+                    arguments.putInt("calendarPos", calendarPos);
+                    dialogFragment.setArguments(arguments);
+                    dialogFragment.show(getFragmentManager(), "timePicker");
+                }
+            });
+            earliestNotificationTimeEnabled.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveSettingsListener.onClick(v);
+                    // have to update the displayed notification times (only show when enabled)
+                    entryList.getAdapter().notifyDataSetChanged();
+                }
+            });
+            //TODO implement
+            //        onScreenOnEnabled = (CheckBox) rootView.findViewById(R.id.setting_show_notification_on_screen_on);
+            //        onScreenOnEnabled.setOnClickListener(saveSettingsListener);
+            entryDisplayModeDate.setOnItemSelectedListener(new AdapterViewOnItemSelectedListener(entryDisplayModeDate.getSelectedItemPosition(), saveSettingsListener));
+            entryDisplayModeDescription.setOnItemSelectedListener(new AdapterViewOnItemSelectedListener(entryDisplayModeDescription.getSelectedItemPosition(), saveSettingsListener));
+        }
 
-            }
-        });
         buttonRemoveCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,7 +246,34 @@ public class CalendarViewFragment extends Fragment {
                 builder.show();
             }
         });
+
         return rootView;
+    }
+
+    // listener used for both {@link Spinner}s
+    private class AdapterViewOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        int selected;
+        View.OnClickListener saveSettingsListener;
+
+        public AdapterViewOnItemSelectedListener(int selected, View.OnClickListener saveSettingsListener) {
+            this.selected = selected;
+            this.saveSettingsListener = saveSettingsListener;
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (selected != position) {
+                saveSettingsListener.onClick(view);
+                // have to update the displayed entries
+                entryList.getAdapter().notifyDataSetChanged();
+                selected = position;
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
     }
 
     public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
@@ -273,19 +301,25 @@ public class CalendarViewFragment extends Fragment {
                 dateStr += " (" + notificationTimeStr + ")";
             }
             final String descr = entry.getDescription();
-            holder.dateView.setText(dateStr);
-            if (config.getEntryDisplayMode() == LinCalConfig.EntryDisplayMode.SHOW_ALL
-                    || config.getEntryDisplayMode() == LinCalConfig.EntryDisplayMode.HIDE_FUTURE && entry.getDate().getTime().getTime() <= System.currentTimeMillis()) {
-                holder.descriptionView.setText(descr);
+            boolean isEntryDue = entry.getDate().getTime().getTime() <= System.currentTimeMillis();
+            if (config.getEntryDisplayModeDate() == LinCal.EntryDisplayMode.SHOW_ALL
+                    || config.getEntryDisplayModeDate() == LinCal.EntryDisplayMode.HIDE_FUTURE && isEntryDue) {
+                holder.dateView.setText(dateStr);
             } else {
-                holder.descriptionView.setText(getString(R.string.entry_hide_text));
+                holder.dateView.setText(R.string.entry_hide_date_text);
             }
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showEntryDialog(entry, false);
-                }
-            });
+            if (config.getEntryDisplayModeDescription() == LinCal.EntryDisplayMode.SHOW_ALL
+                    || config.getEntryDisplayModeDescription() == LinCal.EntryDisplayMode.HIDE_FUTURE && isEntryDue) {
+                holder.descriptionView.setText(descr);
+                holder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showEntryDialog(entry, false);
+                    }
+                });
+            } else {
+                holder.descriptionView.setText(getString(R.string.entry_hide_description_text));
+            }
         }
 
         private void showEntryDialog(final CEntry entry, boolean showLink) {
@@ -360,7 +394,8 @@ public class CalendarViewFragment extends Fragment {
         config.setNotificationsEnabled(notificationsEnabled.isChecked());
         config.setEarliestNotificationTimeEnabled(earliestNotificationTimeEnabled.isChecked());
         //config.setOnScreenOn(onScreenOnEnabled.isChecked()); //TODO implement
-        config.setEntryDisplayMode(LinCalConfig.EntryDisplayMode.values()[entryDisplayMode.getSelectedItemPosition()]);
+        config.setEntryDisplayModeDate(LinCal.EntryDisplayMode.values()[entryDisplayModeDate.getSelectedItemPosition()]);
+        config.setEntryDisplayModeDescription(LinCal.EntryDisplayMode.values()[entryDisplayModeDescription.getSelectedItemPosition()]);
         calendars.save(getContext());
     }
 
@@ -372,7 +407,8 @@ public class CalendarViewFragment extends Fragment {
         earliestNotificationTime = config.getEarliestNotificationTime();
         textViewEarliestNotificationTime.setText(earliestNotificationTime.toString());
         //onScreenOnEnabled.setChecked(config.isOnScreenOn()); //TODO implement
-        entryDisplayMode.setSelection(config.getEntryDisplayMode().ordinal());
+        entryDisplayModeDate.setSelection(config.getEntryDisplayModeDate().ordinal());
+        entryDisplayModeDescription.setSelection(config.getEntryDisplayModeDescription().ordinal());
     }
 
     private String s(int resId) {

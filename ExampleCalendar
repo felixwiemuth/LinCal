@@ -10,6 +10,10 @@
 # The version field can be used to distinguish different versions of a calendar
 @version 1
 
+# Make sure the user cannot see or open entries not due yet ("hideFuture"). Also possible: "hideAll", "showAll". Replacing "force" by "set" allows the user to change these settings. The default is "set" and "hideFuture".
+@forceDateDisplayMode hideFuture
+@forceDescrDisplayMode hideFuture
+
 # This indicates that the definition of the calendar entries themselves begins now
 @begin
 

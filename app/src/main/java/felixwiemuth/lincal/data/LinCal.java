@@ -37,8 +37,19 @@ public class LinCal {
     private final String description;
     private final String version;
     private final Calendar date;
+    private final EntryDisplayMode entryDisplayModeDate;
+    private final EntryDisplayMode entryDisplayModeDescription;
+    private final boolean forceEntryDisplayModeDate;
+    private final boolean forceEntryDisplayModeDescription;
 
     private final List<CEntry> entries; // simple list, ordering is constructed at creation, no adaptation of list allowed
+
+    //NOTE order of constants must correspond to order of strings in spinner for UI
+    public enum EntryDisplayMode {
+        HIDE_ALL,
+        HIDE_FUTURE,
+        SHOW_ALL
+    }
 
     public static class Builder {
 
@@ -71,6 +82,10 @@ public class LinCal {
         private String description;
         private String version;
         private Calendar date;
+        private EntryDisplayMode entryDisplayModeDate = EntryDisplayMode.HIDE_FUTURE;
+        private EntryDisplayMode entryDisplayModeDescription = EntryDisplayMode.HIDE_FUTURE;
+        private boolean forceEntryDisplayModeDate = false;
+        private boolean forceEntryDisplayModeDescription = false;
         private final List<CEntry> entries = new ArrayList<>();
 
         private Builder() {
@@ -102,15 +117,34 @@ public class LinCal {
             return this;
         }
 
+        public Builder entryDisplayModeDate(final EntryDisplayMode value) {
+            this.entryDisplayModeDate = value;
+            return this;
+        }
+
+        public Builder entryDisplayModeDescription(final EntryDisplayMode value) {
+            this.entryDisplayModeDescription = value;
+            return this;
+        }
+
+        public void forceEntryDisplayModeDate(final boolean forceEntryDisplayModeDate) {
+            this.forceEntryDisplayModeDate = forceEntryDisplayModeDate;
+        }
+
+        public void forceEntryDisplayModeDescription(final boolean forceEntryDisplayModeDescription) {
+            this.forceEntryDisplayModeDescription = forceEntryDisplayModeDescription;
+        }
+
         public Builder addCEntry(final CEntry entry) {
             entries.add(entry);
             return this;
         }
 
         /**
-         * Build an instance of {@link LinCal} described by this builder. All properties must have
-         * been set to non-null values. Entries will be sorted by date, entries with the same date
-         * stay in the order added.
+         * Build an instance of {@link LinCal} described by this builder. The properties from {@link
+         * Field} must have been set to non-null values, other properties are given default values
+         * if not set. Entries will be sorted by date, entries with the same date stay in the order
+         * added.
          *
          * @return
          * @throws MissingFieldException if one of the fields is not set
@@ -133,7 +167,7 @@ public class LinCal {
             }
             List<CEntry> sortedEntries = new ArrayList<>(entries); // make a copy to keep builder valid
             Collections.sort(sortedEntries);
-            return new LinCal(title, author, description, version, date, sortedEntries);
+            return new LinCal(title, author, description, version, date, entryDisplayModeDate, entryDisplayModeDescription, forceEntryDisplayModeDate, forceEntryDisplayModeDescription , sortedEntries);
         }
 
     }
@@ -142,12 +176,16 @@ public class LinCal {
         return new LinCal.Builder();
     }
 
-    private LinCal(final String title, final String author, final String description, final String version, final Calendar date, final List<CEntry> entries) {
+    private LinCal(final String title, final String author, final String description, final String version, final Calendar date, final EntryDisplayMode entryDisplayModeDate, final EntryDisplayMode entryDisplayModeDescription, final boolean forceEntryDisplayModeDate, boolean forceEntryDisplayModeDescription, final List<CEntry> entries) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.version = version;
         this.date = date;
+        this.entryDisplayModeDate = entryDisplayModeDate;
+        this.entryDisplayModeDescription = entryDisplayModeDescription;
+        this.forceEntryDisplayModeDate = forceEntryDisplayModeDate;
+        this.forceEntryDisplayModeDescription = forceEntryDisplayModeDescription;
         this.entries = entries;
     }
 
@@ -173,6 +211,46 @@ public class LinCal {
 
     public String getDateStr() {
         return Main.dfDay.format(date.getTime());
+    }
+
+    /**
+     * The date of entries of this calendar should be shown
+     * according to the returned mode.
+     *
+     * @return
+     */
+    public EntryDisplayMode getEntryDisplayModeDate() {
+        return entryDisplayModeDate;
+    }
+
+    /**
+     * The description of entries of this calendar should be shown
+     * according to the returned mode.
+     *
+     * @return
+     */
+    public EntryDisplayMode getEntryDisplayModeDescription() {
+        return entryDisplayModeDescription;
+    }
+
+    /**
+     * If {@code true}, the date of entries of this calendar should only be shown according to the
+     * mode returned by {@link #getEntryDisplayModeDate()} and should not be changeable.
+     *
+     * @return
+     */
+    public boolean hasForceEntryDisplayModeDate() {
+        return forceEntryDisplayModeDate;
+    }
+
+    /**
+     * If {@code true}, the date of entries of this calendar should only be shown according to the
+     * mode returned by {@link #getEntryDisplayModeDescription()} and should not be changeable.
+     *
+     * @return
+     */
+    public boolean hasForceEntryDisplayModeDescription() {
+        return forceEntryDisplayModeDescription;
     }
 
     public CEntry get(int location) {

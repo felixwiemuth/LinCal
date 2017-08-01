@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Felix Wiemuth
+ * Copyright (C) 2017 Felix Wiemuth
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,26 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package felixwiemuth.lincal.parser;
 
-buildscript {
-    repositories {
-        jcenter()
+import linearfileparser.ParseException;
+
+/**
+ * @author Felix Wiemuth
+ */
+public class InvalidDisplayModeSpecificationException extends ParseException {
+
+    public InvalidDisplayModeSpecificationException(int line, String msg) {
+        super(line, msg);
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

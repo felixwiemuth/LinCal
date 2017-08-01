@@ -64,7 +64,7 @@ public class Calendars {
 
     /**
      * Obtain an instance to access calendars. Note that subsequent calls to this method may return
-     * different instances as the runtime system may unload classed. If you want to save changes
+     * different instances as the runtime system may unload classes. If you want to save changes
      * made to an instance make sure to call {@link #save(Context)} on the same instance as obtained
      * by calling this method.
      *
@@ -86,11 +86,12 @@ public class Calendars {
     }
 
     /**
-     * Get the calendar at the given position in adding order.
+     * Get the calendar at the given position in adding order. Returns the calendar from cache if
+     * already present or loads it otherwise.
      *
      * @param context
      * @param pos
-     * @return
+     * @return the calendar from cache or {@code null} if there was an error loading it
      */
     public LinCal getCalendarByPos(Context context, int pos) {
         try {
@@ -101,16 +102,31 @@ public class Calendars {
     }
 
     /**
-     * Get the calendar with the given id.
+     * Get the calendar with the given id. Returns the calendar from cache if already present or
+     * loads it otherwise, updating the config with values from the calendar.
      *
      * @param context
      * @param id
-     * @return the calendar or {@code null} if there was an error loading the calendar
+     * @return the calendar or {@code null} if there was an error loading it (it will be tried to be
+     * loaded again on next call of this method)
      */
     public LinCal getCalendarById(Context context, int id) {
         if (calendarsById.get(id) == null) {
-            // load (parse) the calendar
-            calendarsById.put(id, loadCalendar(context, getConfigById(id).getCalendarFile())); //NOTE if the returned calendar is null it will be loaded again on next request
+            LinCalConfig config = getConfigById(id);
+            LinCal calendar = loadCalendar(context, config.getCalendarFile());
+            if (calendar == null) {
+                config.setNotificationsEnabled(false); // disable notifications to avoid further error notifications when running the service (which can't process the calendar anyway)
+                save(context);
+            } else {
+                calendarsById.put(id, calendar);
+                // The following settings are overridden by the calendar's values but should not be saved (in case the calendar removes its settings, the previous values are restored)
+                if (calendar.hasForceEntryDisplayModeDate()) {
+                    config.setEntryDisplayModeDate(calendar.getEntryDisplayModeDate());
+                }
+                if (calendar.hasForceEntryDisplayModeDescription()) {
+                    config.setEntryDisplayModeDate(calendar.getEntryDisplayModeDescription());
+                }
+            }
         }
         return calendarsById.get(id);
     }
@@ -188,8 +204,14 @@ public class Calendars {
             config.setCalendarTitle(calendar.getTitle());
         }
         if (config.getCalendarTitle().contains(LinCalConfig.SEPARATOR)) {
-            showErrorDialog(R.string.dialog_error_title, String.format(context.getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR), context);
+            showErrorDialog(R.string.dialog_error_title, String.format(context.getString(R.string.dialog_symbol_not_allowed_message), LinCalConfig.SEPARATOR), true, context);
             return;
+        }
+        if (config.getEntryDisplayModeDate() == null) {
+            config.setEntryDisplayModeDate(calendar.getEntryDisplayModeDate());
+        }
+        if (config.getEntryDisplayModeDescription() == null) {
+            config.setEntryDisplayModeDescription(calendar.getEntryDisplayModeDescription());
         }
         if (instance.configStore.containsCalendarFile(config.getCalendarFile())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -256,13 +278,13 @@ public class Calendars {
      */
     public static LinCal loadCalendar(Context context, String file) {
         try {
-            return new LinCalParser(context).parse(new File(file));
+            return new LinCalParser().parse(new File(file), context);
         } catch (FileNotFoundException ex) {
-            showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), file), context);
+            showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), file), true, context);
         } catch (IOException ex) {
-            showErrorDialog(R.string.dialog_error_title, ex.getMessage(), context);
+            showErrorDialog(R.string.dialog_error_title, ex.getMessage(), true, context);
         } catch (ParseException ex) {
-            showErrorDialog(R.string.dialog_parsing_error_title, ex.getMessage(), context);
+            showErrorDialog(R.string.dialog_parsing_error_title, ex.getMessage(), true, context);
         }
         return null;
     }
@@ -291,5 +313,14 @@ public class Calendars {
      */
     public Calendar calcNotificationTime(CEntry entry, int calendarPos) {
         return calcNotificationTime(entry, getConfigByPos(calendarPos));
+    }
+
+    /**
+     * Invalidate the current instance. Should be called when the configuration file is changed in
+     * another way than through this class. Note that any changes made to the current instance which
+     * have not been written back (by calling {@link #save(Context)}) will be lost.
+     */
+    public static void invalidate() {
+        instance = null;
     }
 }

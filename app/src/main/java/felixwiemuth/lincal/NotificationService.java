@@ -59,9 +59,15 @@ public class NotificationService extends IntentService {
         Calendar now = Calendar.getInstance();
         Calendar nextAlarm = null;
         for (int i = 0; i < calendars.getCalendarCount(); i++) {
-            Calendar nextTime = processCalendar(calendars.getCalendarByPos(this, i), calendars.getConfigByPos(i), now);
-            if (nextAlarm == null || (nextTime != null && nextTime.before(nextAlarm))) {
-                nextAlarm = nextTime;
+            LinCalConfig config = calendars.getConfigByPos(i);
+            if (config.isNotificationsEnabled()) { // only load calendar if notifications are enabled
+                LinCal cal = calendars.getCalendarByPos(this, i);
+                if (cal != null) { // if the calendar could not be loaded, skip it (this will also skip scheduling of next notifications for this calendar)
+                    Calendar nextTime = processCalendar(cal, config, now);
+                    if (nextAlarm == null || (nextTime != null && nextTime.before(nextAlarm))) {
+                        nextAlarm = nextTime;
+                    }
+                }
             }
         }
         calendars.save(this);
@@ -79,10 +85,16 @@ public class NotificationService extends IntentService {
         stopSelf();
     }
 
+    /**
+     * Send notifications due for a calendar (regardless whether it has {@code
+     * cal.isNotificationsEnabled() == true}.
+     *
+     * @param cal
+     * @param config
+     * @param now
+     * @return
+     */
     private Calendar processCalendar(LinCal cal, LinCalConfig config, Calendar now) {
-        if (!config.isNotificationsEnabled()) {
-            return null;
-        }
         int pos = config.getPos();
         while (pos < cal.size() && (!Calendars.calcNotificationTime(cal.get(pos), config).after(now))) {
             sendNotification(cal.get(pos), pos, config);

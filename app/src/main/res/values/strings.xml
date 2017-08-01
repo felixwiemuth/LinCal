@@ -15,7 +15,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">LinCal</string>
     <string name="title_activity_calendar_view">Calendar view</string>
     <string name="title_activity_add_calendar">Add Calendar</string>
@@ -25,6 +25,17 @@
 
     <string name="dialog_welcome_title">Welcome</string>
     <string name="welcome_message">Welcome to LinCal! This is an early version which might still contain some problems - see \"About\" on how to report them. LinCal is free software (licensed under the GNU General Public License) and comes without any warranty.</string>
+
+    <!-- TRANSLATION NOTE: The following keys are used by the library ckChangeLog and replace the
+         default translations it provides. To translate them, first check whether the translations
+         provided (see https://github.com/cketti/ckChangeLog/tree/master/ckChangeLog/src/main/res)
+         are appropriate and if so copy them here.
+      -->
+    <string name="changelog_full_title">Change Log</string> <!-- TRANSLATION NOTE: Only translate if appropriate -->
+    <string name="changelog_title">What\'s New</string>
+    <string name="changelog_ok_button">OK</string>
+    <string name="changelog_show_full">More…</string>
+    <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
 
     <string name="crash_toast_text">An unexpected error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You might add your comments about the problem.</string>
 
@@ -47,22 +58,28 @@
     <string name="setting_notifications_enabled">Enable notifications</string>
     <string name="setting_show_notifications_earliest">Show notifications earliest:</string>
     <string name="setting_show_notifications_on_screen_on">Show notifications only after screen turned on</string>
-    <string name="setting_entry_display_mode">Show entries:</string>
+    <string name="setting_entry_display_mode_date">Show entry date:</string>
+    <string name="setting_entry_display_mode_description">Show entry description:</string>
     <string-array name="setting_entry_display_mode_options">
         <item>Hide all</item>
         <item>Hide future</item>
         <item>Show all</item>
     </string-array>
     <string name="action_remove_cal">Remove calendar</string>
-    <string name="entry_hide_text">***</string>
+    <string name="entry_hide_date_text" translatable="false">***</string>
+    <string name="entry_hide_description_text" translatable="false">***</string>
 
     <string name="dialog_warning_add_cal_title">Warning</string>
     <string name="dialog_warning_add_cal_msg">Only use calendars from people you trust - opening links to malicious sites is a security risk!</string>
     <string name="add_cal_title">Custom title (leave empty to use calendar\'s title):</string>
     <string name="add_cal_file">Calendar file (full path):</string>
     <string name="add_cal_notifications">Enable notifications</string>
+    <string name="add_cal_hideall">Don\'t show any entries now</string>
     <string name="add_cal_file_button">Choose…</string>
     <string name="add_cal_button">Add</string>
+    <string name="add_cal_info_title">Note:</string>
+    <string name="add_cal_info_1">You can also add a calendar by opening the file directly (using a file manager etc.)</string>
+    <string name="add_cal_info_2">Once added, the calendar file has to stay at the same location. This has the advantage that you can simply update a calendar by changing the file, without readding it to LinCal. If, for example, a friend wants to make a calendar for you that they update regularly, they could share it from the cloud and you use an app that synchronizes the file on your device automatically with the one in the cloud. Then your calendar will always be up-to-date. If you want to move a calendar file, you have to remove the calendar from LinCal first and readd it after moving the file.</string>
     <string name="dialog_file_not_found">File not found</string>
     <string name="dialog_parsing_error_title">Parsing error</string>
     <string name="dialog_error_title">Error</string>
@@ -79,4 +96,12 @@
     <string name="dialog_no">No</string>
     <string name="dialog_remove_cal_title">Remove calendar</string>
     <string name="dialog_remove_cal_msg">Remove calendar with settings and current progress? The calendar file itself will not be removed.</string>
+    <string name="dialog_downgrade_title">Application downgrade</string>
+    <string name="dialog_downgrade_msg">You seem to have used a newer version of LinCal before. The newer format of saving status and configuration of calendars is not compatible with this old version. To use it anyway, the status and configuration of calendars has to be reset, i.e., you have to readd all calendars.</string>
+    <string name="dialog_downgrade_yes">Reset configuration</string>
+    <string name="dialog_downgrade_no">Close app</string>
+
+    <string name="notification_lincal_error_title">LinCal error</string>
+    <string name="notification_lincal_error_description">The following error has occurred while LinCal processed the added calendars to schedule notifications:</string>
+    <string name="notification_lincal_error_file_not_found">Note that calendar files may not be moved after added (see help).</string>
 </resources>
