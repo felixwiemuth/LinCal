@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="title_activity_calendar_view">カレンダー表示</string>
     <string name="title_activity_add_calendar">カレンダーを追加</string>
 
@@ -25,6 +25,17 @@
 
     <string name="dialog_welcome_title">ようこそ</string>
     <string name="welcome_message">LinCal へようこそ！ これは初期のバージョンです。まだいくつかの問題があるかもしれません - 問題を報告する方法については \"アプリについて\" を参照してください。 LinCal はフリーソフトウェアであり (GNU 一般公衆利用許諾契約書に基づいてライセンスされています)、何の保証もありません。</string>
+
+    <!-- TRANSLATION NOTE: The following keys are used by the library ckChangeLog and replace the
+         default translations it provides. To translate them, first check whether the translations
+         provided (see https://github.com/cketti/ckChangeLog/tree/master/ckChangeLog/src/main/res)
+         are appropriate and if so copy them here.
+      -->
+    <string name="changelog_full_title">変更履歴</string> <!-- TRANSLATION NOTE: Only translate if appropriate -->
+    <string name="changelog_title">新着情報</string>
+    <string name="changelog_ok_button">OK</string>
+    <string name="changelog_show_full">さらに…</string>
+    <string name="changelog_version_format">バージョン <xliff:g id="version_name">%s</xliff:g></string>
 
     <string name="crash_toast_text">予期しないエラーが発生して、アプリケーションが強制的に停止しました。 エラーに関する重要な情報が記載されたこのメールを開発者に送信してください。 問題についてのコメントを追加することもできます。</string>
 
@@ -47,22 +58,28 @@
     <string name="setting_notifications_enabled">通知を有効にする</string>
     <string name="setting_show_notifications_earliest">最も早い通知を表示する:</string>
     <string name="setting_show_notifications_on_screen_on">画面をオンにした後にのみ通知を表示する</string>
-    <string name="setting_entry_display_mode">エントリーの表示:</string>
+    <string name="setting_entry_display_mode_date">エントリー日を表示:</string>
+    <string name="setting_entry_display_mode_description">エントリーの詳細を表示:</string>
     <string-array name="setting_entry_display_mode_options">
         <item>すべて非表示</item>
         <item>未来を非表示</item>
         <item>すべて表示</item>
     </string-array>
     <string name="action_remove_cal">カレンダーを削除</string>
-    <string name="entry_hide_text">***</string>
+
+
 
     <string name="dialog_warning_add_cal_title">警告</string>
     <string name="dialog_warning_add_cal_msg">あなたが信頼できる人のカレンダーのみを使用してください - 悪意のあるサイトへのリンクを開くことはセキュリティリスクです!</string>
     <string name="add_cal_title">カスタムタイトル (空にするとカレンダーのタイトルを使用します):</string>
     <string name="add_cal_file">カレンダーファイル (完全なパス):</string>
     <string name="add_cal_notifications">通知を有効にする</string>
+    <string name="add_cal_hideall">すべてのエントリーを表示しない</string>
     <string name="add_cal_file_button">選択…</string>
     <string name="add_cal_button">追加</string>
+    <string name="add_cal_info_title">注:</string>
+    <string name="add_cal_info_1">ファイルを直接開いてカレンダーを追加することもできます (ファイルマネージャーなどを使用して)</string>
+    <string name="add_cal_info_2">一度追加すると、カレンダーファイルは同じ場所に保存する必要があります。 これには、ファイルを LinCal に読み込まずに、変更するだけでカレンダーを簡単に更新できるという利点があります。 たとえば、友だちが定期的に更新するカレンダーを作成したい場合、クラウドから共有することができ、デバイス上のファイルをクラウド内のファイルと自動的に同期させるアプリケーションを使用することができます。 あなたのカレンダーは常に最新のものになります。 カレンダーファイルを移動したい場合は、まず LinCal からカレンダーを削除し、ファイルを移動してから読み込んでください。</string>
     <string name="dialog_file_not_found">ファイルが見つかりません</string>
     <string name="dialog_parsing_error_title">解析エラー</string>
     <string name="dialog_error_title">エラー</string>
@@ -79,4 +96,12 @@
     <string name="dialog_no">いいえ</string>
     <string name="dialog_remove_cal_title">カレンダーを削除</string>
     <string name="dialog_remove_cal_msg">設定と現在の状況を含むカレンダーを削除しますか? カレンダーファイル自体は削除されません。</string>
+    <string name="dialog_downgrade_title">アプリケーションのダウングレード</string>
+    <string name="dialog_downgrade_msg">あなたは以前新しいバージョンの LinCal を使用していたようです。 新しい形式のカレンダーの保存ステータスと設定は、この古いバージョンと互換性がありません。 とにかく使用するには、カレンダーのステータスと設定をリセットする必要があります。つまり、すべてのカレンダーを読み込む必要があります。</string>
+    <string name="dialog_downgrade_yes">設定をリセット</string>
+    <string name="dialog_downgrade_no">アプリを閉じる</string>
+
+    <string name="notification_lincal_error_title">LinCal エラー</string>
+    <string name="notification_lincal_error_description">追加されたカレンダーを処理して通知をスケジュールする際、LinCal で次のエラーが発生しました:</string>
+    <string name="notification_lincal_error_file_not_found">カレンダーファイルは追加後に移動できないことにご注意ください（ヘルプを参照）。</string>
 </resources>
