@@ -154,6 +154,7 @@ You are welcome to add translations to the app, they will be incorporated after 
 ### Available translations
 Translations for the following languages are available (thanks to the respective translators):
 - French (by [Poussinou](https://github.com/Poussinou))
+- Japanese (by [naofum](https://github.com/naofum))
 
 ### Planned translations
 Translations for the following languages are already planned:
