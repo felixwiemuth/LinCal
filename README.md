@@ -152,9 +152,14 @@ Translations
 You are welcome to add translations to the app, they will be incorporated after being checked to be appropriate and complete. You may file an [issue](https://github.com/felixwiemuth/LinCal/issues/new) with your plans if you want to make sure no one is already working on the translation. Note that translations might be temporarily disabled when they get outdated or incomplete with an update. They will be included again as soon as updated. 
 
 ### Available translations
-Translations for the following languages are available (thanks to the respective translators):
-- French (by [Poussinou](https://github.com/Poussinou))
-- Japanese (by [naofum](https://github.com/naofum))
+The following table shows for which languages translations are available, also noting in which versions the translation is included, which parts of the app are translated and which translations need an update.
+
+| Language | Translators | Included | Strings | Help | Change log | About |
+| -------- | ----------- | -------- | :-----: | :--: | :--------: | :---: |
+| Japanese | [naofum](https://github.com/naofum) | 1.1.0+ | + | - | - | - |
+| French | [Poussinou](https://github.com/poussinou) | | o | o | - | o |
+
+Legend: (-) not translated (+) fully translated (o) partially translated / needs update
 
 ### Planned translations
 Translations for the following languages are already planned:
@@ -169,7 +174,7 @@ Translations for the following languages are already planned:
   - In each file you change, change the first line of the license header to "Copyright (C) yyyy Felix Wiemuth and contributors (see CONTRIBUTORS.md)", do not change the year. If you create a new file, copy the license header from another file of that type and change the year to the current year.
   - If possible, test your translations by running the app.
   - Add or update the corresponding entry in the following places, where in parentheses you may add name, email, and/or link to Github account:
-    - section "Available translations" in this file
+    - section "Available translations" in this file (do not edit "Included" field)
     - section "Translations" in [About](app/src/main/res/raw/about.html)
     - section "Translations" in [CONTRIBUTORS.md](CONTRIBUTORS.md)
   - When you are done, commit your changes and create a [pull request](https://help.github.com/articles/creating-a-pull-request/).
