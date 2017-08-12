@@ -97,64 +97,64 @@ public class LinCalParser extends LinearFileParser {
         addSection(HEADER);
         addSection(MAIN);
 
-        addKeyProcessor(HEADER, new KeyProcessor(BEGIN_MAIN) {
+        addKeyProcessor(HEADER, new KeyProcessor(BEGIN_MAIN, true) {
             @Override
             public void process(String arg, ListIterator it) throws ParseException {
                 changeSection(MAIN);
             }
         });
 
-        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_TITLE) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_TITLE, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 c.title(arg);
             }
         });
-        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_AUTHOR) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_AUTHOR, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 c.author(arg);
             }
         });
-        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_DESCRIPTION) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_DESCRIPTION, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 c.description(arg);
             }
         });
-        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_VERSION) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_VERSION, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 c.version(arg);
             }
         });
-        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_DATE) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(CAL_DATE, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 setDate(arg, 3, s(R.string.invalidDateSpecificationException_in_header));
                 c.date(currentDate);
             }
         });
-        addKeyProcessor(HEADER, new ArgKeyProcessor(SET_ENTRY_DISPLAY_MODE_DATE) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(SET_ENTRY_DISPLAY_MODE_DATE, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 c.entryDisplayModeDate(parseEntryDisplayMode(arg));
             }
         });
-        addKeyProcessor(HEADER, new ArgKeyProcessor(SET_ENTRY_DISPLAY_MODE_DESCRIPTION) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(SET_ENTRY_DISPLAY_MODE_DESCRIPTION, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 c.entryDisplayModeDescription(parseEntryDisplayMode(arg));
             }
         });
-        addKeyProcessor(HEADER, new ArgKeyProcessor(FORCE_ENTRY_DISPLAY_MODE_DATE) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(FORCE_ENTRY_DISPLAY_MODE_DATE, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 c.entryDisplayModeDate(parseEntryDisplayMode(arg));
                 c.forceEntryDisplayModeDate(true);
             }
         });
-        addKeyProcessor(HEADER, new ArgKeyProcessor(FORCE_ENTRY_DISPLAY_MODE_DESCRIPTION) {
+        addKeyProcessor(HEADER, new ArgKeyProcessor(FORCE_ENTRY_DISPLAY_MODE_DESCRIPTION, true) {
             @Override
             public void _process(String arg, ListIterator<String> it) throws ParseException {
                 c.entryDisplayModeDescription(parseEntryDisplayMode(arg));
