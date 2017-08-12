@@ -68,7 +68,7 @@ The format is `@cmd arg`, where *cmd* is the name of the command and *arg* is th
 Any lines starting with `#` are ignored (can be used for comments) and so are empty lines.
 The header and entry section use the following commands:
 
-**Header section** (all commands are required)
+**Header section**
 
 The following commands are required. The information is displayed when a user views the calendar. It has no relevance to the functions of the app.
 
