@@ -62,7 +62,7 @@ public class AddCalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String file = fileEditText.getText().toString();
                 EditText titleEditText = (EditText) findViewById(R.id.ce_title);
-                CheckBox notificationsCheckBox = (CheckBox) findViewById(R.id.cc_hideall);
+                CheckBox notificationsCheckBox = (CheckBox) findViewById(R.id.cc_notifications);
                 CheckBox hideAllCheckBox = (CheckBox) findViewById(R.id.cc_hideall);
                 //TODO set notification mode and notification time from UI widgets
                 LinCalConfig config = new LinCalConfig();
