@@ -5,6 +5,7 @@
         <change>Added new commands to the LinCal calendar format to set an initial or force a permanent mode of displaying entry date and description (hide all, hide future, show all), see README</change>
         <change>When viewing a calendar where the file cannot be found or contains errors, all settings are disabled</change>
         <change>When a notification is due for a calendar and its file cannot be found or contains errors, an error notification is shown instead (clicking it launches the app)</change>
+        <change>Opening multiple instances of list of calendars or screen to add a new calendar (e.g. by clicking notification or by adding calendar from file manager) is now prevented.</change>
         <change>Added Japanese translation</change>
     </release>
     <release version="1.0.0" versioncode="9">

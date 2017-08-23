@@ -17,6 +17,7 @@
 
 package felixwiemuth.lincal.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ public class AddCalendarActivity extends AppCompatActivity {
 
     public static final Time DEFAULT_EARLIEST_NOTIFICATION_TIME = new Time(12, 0);
 
+    private EditText fileEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +52,10 @@ public class AddCalendarActivity extends AppCompatActivity {
 
         Button chooseFileButton = (Button) findViewById(R.id.cb_file);
         Button addButton = (Button) findViewById(R.id.cb_add);
-        final EditText fileEditText = (EditText) findViewById(R.id.ce_file);
+        fileEditText = (EditText) findViewById(R.id.ce_file);
 
         // Set file if activity was opened by file
-        Uri uri = getIntent().getData();
-        if (uri != null) {
-            fileEditText.setText(uri.getPath());
-        }
+        setFile(getIntent());
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,12 +95,15 @@ public class AddCalendarActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setFile(intent);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
+    private void setFile(Intent intent) {
+        Uri uri = intent.getData();
+        if (uri != null) {
+            fileEditText.setText(uri.getPath());
+        }
     }
 }

@@ -60,7 +60,8 @@
         <activity
             android:name=".ui.AddCalendarActivity"
             android:label="@string/title_activity_add_calendar"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
