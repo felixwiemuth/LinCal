@@ -206,4 +206,4 @@ Please only translate the following files and note the importance of translation
 
 Bug reports and feature requests
 --------------------------------
-Please report bugs using [Github](https://github.com/felixwiemuth/LinCal/issues). Always include version number (see "About" dialog in app), device name and Android version. Feature requests may also be filed as an issue.
+Please report bugs on [Github](https://github.com/felixwiemuth/LinCal/issues). Always include version number (see "About" dialog in app), device name and Android version. Feature requests may also be filed as an issue.
