@@ -18,6 +18,7 @@
 package felixwiemuth.lincal.parser;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.google.common.collect.EnumHashBiMap;
 
@@ -289,7 +290,7 @@ public class LinCalParser extends LinearFileParser {
     }
 
     /**
-     * @param file
+     * @param path simple path or content URI to the calendar file
      * @param context application context needed to provide String resources
      * @return
      * @throws IOException
@@ -298,7 +299,7 @@ public class LinCalParser extends LinearFileParser {
      * @throws UnknownSectionException
      * @throws ParseException
      */
-    public LinCal parse(File file, Context context) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
+    public LinCal parse(String path, Context context) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
         this.context = context;
         // Initialize parser
         currentDate.setTimeInMillis(0);
@@ -307,8 +308,18 @@ public class LinCalParser extends LinearFileParser {
         firstDateSet = false;
         c = LinCal.builder();
         e = CEntry.builder();
-        // Run parser
-        _parse(file);
+        // Check whether the file is a content URI or a simple file path, run parser
+        Uri uri = Uri.parse(path);
+        String scheme = uri.getScheme();
+        if (scheme != null) {
+            if (scheme.equals("content")) {
+            _parse(context.getContentResolver().openInputStream(uri));
+            } else {
+                throw new RuntimeException("Unsupported Uri Scheme.");
+            }
+        } else {
+            _parse(new File(path));
+        }
         try {
             return c.build();
         } catch (LinCal.Builder.MissingFieldException ex) {

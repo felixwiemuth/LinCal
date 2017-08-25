@@ -20,6 +20,7 @@ package felixwiemuth.lincal;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -273,14 +274,14 @@ public class Calendars {
      * Load a calendar and show an error dialog on failure.
      *
      * @param context
-     * @param file
+     * @param path    simple path or content URI to the calendar file
      * @return the loaded calendar or {@code null} if there was an error
      */
-    public static LinCal loadCalendar(Context context, String file) {
+    public static LinCal loadCalendar(Context context, String path) {
         try {
-            return new LinCalParser().parse(new File(file), context);
+            return new LinCalParser().parse(path, context);
         } catch (FileNotFoundException ex) {
-            showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), file), true, context);
+            showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), path), true, context);
         } catch (IOException ex) {
             showErrorDialog(R.string.dialog_error_title, ex.getMessage(), true, context);
         } catch (ParseException ex) {

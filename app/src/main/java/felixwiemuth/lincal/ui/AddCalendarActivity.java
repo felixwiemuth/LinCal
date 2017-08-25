@@ -37,6 +37,8 @@ import felixwiemuth.lincal.util.Util;
 
 public class AddCalendarActivity extends AppCompatActivity {
 
+    private static final int RESULT_CODE_SELECT_FILE = 0;
+
     public static final Time DEFAULT_EARLIEST_NOTIFICATION_TIME = new Time(12, 0);
 
     private EditText fileEditText;
@@ -56,6 +58,16 @@ public class AddCalendarActivity extends AppCompatActivity {
 
         // Set file if activity was opened by file
         setFile(getIntent());
+
+        chooseFileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*"); // required
+                startActivityForResult(intent, RESULT_CODE_SELECT_FILE);
+            }
+        });
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +92,10 @@ public class AddCalendarActivity extends AppCompatActivity {
                 Calendars.addCalendarChecked(config, AddCalendarActivity.this, new Runnable() {
                     @Override
                     public void run() {
-                        // Return to CalendarListActivity
+                        // Return to CalendarListActivity, notify about the added calendar to update UI
+                        Intent resultData = new Intent();
+                        resultData.putExtra(CalendarListActivity.EXTRA_RESULT_CAL_ADDED, Calendars.getInstance(AddCalendarActivity.this).getCalendarCount()-1);
+                        setResult(RESULT_OK, resultData);
                         AddCalendarActivity.this.finish();
                     }
                 });
@@ -98,6 +113,16 @@ public class AddCalendarActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setFile(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_CODE_SELECT_FILE) {
+            if (data != null) {
+                fileEditText.setText(data.getDataString());
+            }
+        }
     }
 
     private void setFile(Intent intent) {

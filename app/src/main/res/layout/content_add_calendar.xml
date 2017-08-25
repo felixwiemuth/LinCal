@@ -72,7 +72,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/ce_file"
-            android:enabled="false"
             android:text="@string/add_cal_file_button" />
     </LinearLayout>
 
