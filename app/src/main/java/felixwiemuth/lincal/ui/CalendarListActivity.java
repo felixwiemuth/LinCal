@@ -59,9 +59,14 @@ public class CalendarListActivity extends AppCompatActivity {
     public static final String EXTRA_ARG_CONFIG_CHANGED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED"; //TODO update this to "calendar added"
     /**
      * If the activity receives a result with this int extra, the UI is notified of a calendar
-     * haveing been removed at the given position.
+     * having been removed at the given position.
      */
     public static final String EXTRA_RESULT_CAL_REMOVED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_RESULT_CAL_REMOVED";
+    /**
+     * If the activity receives a result with this int extra, the UI is notified of a calendar
+     * having been added at the given position.
+     */
+    public static final String EXTRA_RESULT_CAL_ADDED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_RESULT_CAL_ADDED";
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet device.
@@ -83,7 +88,7 @@ public class CalendarListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CalendarListActivity.this, AddCalendarActivity.class));
+                startActivityForResult(new Intent(CalendarListActivity.this, AddCalendarActivity.class), 0);
             }
         });
 
@@ -154,8 +159,14 @@ public class CalendarListActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null && data.hasExtra(EXTRA_RESULT_CAL_REMOVED)) {
-            notifyCalendarRemoved(data.getIntExtra(EXTRA_RESULT_CAL_REMOVED, -1));
+        if (data != null) {
+            if (data.hasExtra(EXTRA_RESULT_CAL_REMOVED)) {
+                notifyCalendarRemoved(data.getIntExtra(EXTRA_RESULT_CAL_REMOVED, -1));
+            } else if (data.hasExtra(EXTRA_RESULT_CAL_ADDED)) {
+                int pos = data.getIntExtra(EXTRA_RESULT_CAL_ADDED, -1);
+                recyclerView.getAdapter().notifyItemInserted(pos);
+                recyclerView.scrollToPosition(pos);
+            }
         }
     }
 

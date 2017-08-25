@@ -232,7 +232,7 @@ public class CalendarViewFragment extends Fragment {
                         // Notify calendar list that the calendar with the given position was removed and return to calendar list in case of CalendarViewActivity
                         Activity hostActivity = getActivity();
                         if (hostActivity instanceof CalendarListActivity) {
-                            ((CalendarListActivity) hostActivity).notifyCalendarRemoved(calendarPos);
+                            ((CalendarListActivity) hostActivity).notifyCalendarRemoved(calendarPos); // The host activity should be running while the fragment is running
                         } else if (hostActivity instanceof CalendarViewActivity) {
                             Intent resultData = new Intent();
                             resultData.putExtra(CalendarListActivity.EXTRA_RESULT_CAL_REMOVED, calendarPos);
