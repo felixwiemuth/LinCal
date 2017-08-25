@@ -27,7 +27,7 @@ About
 
 Project status
 --------------
-A first release is available on [F-Droid](https://f-droid.org/repository/browse/?fdid=felixwiemuth.lincal). A first update will be released in August and further smaller updates and improvements are planned for August and September 2017.
+The current version is 1.1.0 (2017-08-23) and is available on [F-Droid](https://f-droid.org/repository/browse/?fdid=felixwiemuth.lincal). Smaller updates and improvements are planned for August and September 2017.
 
 Features
 --------
