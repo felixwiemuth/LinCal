@@ -120,6 +120,11 @@ public class AddCalendarActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_CODE_SELECT_FILE) {
             if (data != null) {
+                // Persist permissions on the file (see https://developer.android.com/guide/topics/providers/document-provider.html#client)
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
                 fileEditText.setText(data.getDataString());
             }
         }
