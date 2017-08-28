@@ -53,11 +53,6 @@ import felixwiemuth.lincal.ui.actions.DisplayChangeLog;
 public class CalendarListActivity extends AppCompatActivity {
 
     /**
-     * If this extra is given when starting the activity, all calendars are reloaded. If the value
-     * is "true", the last calendar in the list is selected.
-     */
-    public static final String EXTRA_ARG_CONFIG_CHANGED = "felixwiemuth.lincal.CalendarListActivity.EXTRA_ARG_CONFIG_CHANGED"; //TODO update this to "calendar added"
-    /**
      * If the activity receives a result with this int extra, the UI is notified of a calendar
      * having been removed at the given position.
      */
@@ -103,12 +98,6 @@ public class CalendarListActivity extends AppCompatActivity {
             // If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
-        }
-
-        if (getIntent().hasExtra(EXTRA_ARG_CONFIG_CHANGED)) {
-            if (getIntent().getBooleanExtra(EXTRA_ARG_CONFIG_CHANGED, false)) { // this means a calendar was added, so select the last entry
-                recyclerView.scrollToPosition(recyclerView.getChildCount()); //TODO this just scrolls, actually selecting the item is more tricky: http://stackoverflow.com/questions/27377830/what-is-the-equivalent-listview-setselection-in-case-of-recycler-view
-            }
         }
 
         // NOTE: Welcome message covers change log which is correct.
@@ -166,7 +155,9 @@ public class CalendarListActivity extends AppCompatActivity {
             } else if (data.hasExtra(EXTRA_RESULT_CAL_ADDED)) {
                 int pos = data.getIntExtra(EXTRA_RESULT_CAL_ADDED, -1);
                 recyclerView.getAdapter().notifyItemInserted(pos);
+                // Scroll to added calendar and open it
                 recyclerView.scrollToPosition(pos);
+                recyclerView.findViewHolderForAdapterPosition(pos).itemView.performClick();
             }
         }
     }
