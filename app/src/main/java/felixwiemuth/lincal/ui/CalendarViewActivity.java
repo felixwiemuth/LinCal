@@ -31,7 +31,7 @@ import felixwiemuth.lincal.R;
  * only used on narrow width devices. On tablet-size devices, item details are presented
  * side-by-side with a list of items in a {@link CalendarListActivity}.
  */
-public class CalendarViewActivity extends AppCompatActivity {
+public class CalendarViewActivity extends LinCalMenuAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

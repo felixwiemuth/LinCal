@@ -50,7 +50,7 @@ import felixwiemuth.lincal.ui.actions.DisplayChangeLog;
  * details. On tablets, the activity presents the list of items and item details side-by-side using
  * two vertical panes.
  */
-public class CalendarListActivity extends AppCompatActivity {
+public class CalendarListActivity extends LinCalMenuAppCompatActivity {
 
     /**
      * If the activity receives a result with this int extra, the UI is notified of a calendar
@@ -111,33 +111,6 @@ public class CalendarListActivity extends AppCompatActivity {
         if (!preferences.contains("welcomeMessageShown")) {
             Main.showWelcomeMessage(this);
             preferences.edit().putBoolean("welcomeMessageShown", true).apply();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_help:
-                HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), R.string.menu_help, R.raw.help);
-                return true;
-            case R.id.menu_about:
-                try {
-                    PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    String title = getString(R.string.app_name) + " " + packageInfo.versionName;
-                    HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), title, R.raw.about, DisplayChangeLog.class);
-                    return true;
-                } catch (PackageManager.NameNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 
