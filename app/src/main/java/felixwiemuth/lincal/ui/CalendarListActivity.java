@@ -144,7 +144,6 @@ public class CalendarListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         SimpleItemRecyclerViewAdapter adapter = new SimpleItemRecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
-        //addListChangeListener(adapter);
     }
 
     @Override
