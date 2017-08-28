@@ -28,6 +28,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,12 +123,11 @@ public class CalendarViewFragment extends Fragment {
         calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
         Calendars calendars = Calendars.getInstance(getContext()); // loads calendar and makes sure all values in config are set (e.g. forceEntryDisplayMode values)
         calendar = calendars.getCalendarByPos(getContext(), calendarPos);
-        // If toolbar is present (handset mode), set title to calendar title
-        //TODO add toolbar again
-        //        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-        //        if (appBarLayout != null) {
-        //            appBarLayout.setTitle(calendars.getConfigByPos(calendarPos).getCalendarTitle());
-        //        }
+        // Set Toolbar title to calendar title (as set by user) to show which calendar is selected (in narrow as well as wide)
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setTitle(calendars.getConfigByPos(calendarPos).getCalendarTitle());
+        }
     }
 
     @Override
