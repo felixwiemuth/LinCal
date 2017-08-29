@@ -16,7 +16,6 @@
 
 package felixwiemuth.lincal.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -96,19 +95,20 @@ public class HtmlDialogFragment extends DialogFragment {
     private static final String ARG_RES_HTML_FILE = "felixwiemuth.lincal.ARG_RES_HTML_FILE";
     private static final String ARG_ACTIONS = "felixwiemuth.lincal.ARG_ACTIONS";
 
+    private HtmlDialogFragment() {
+
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //noinspection ConstantConditions
         for (String actionName : getArguments().getStringArray(ARG_ACTIONS)) {
             try {
                 Class<? extends Action> actionClass = (Class<? extends Action>) Class.forName(actionName);
                 Action action = actionClass.newInstance();
                 actions.put(action.getName(), action);
-            } catch (java.lang.InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
+            } catch (java.lang.InstantiationException | ClassNotFoundException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -122,6 +122,7 @@ public class HtmlDialogFragment extends DialogFragment {
      * @param resHtmlFile the resource of the HTML file to display
      * @param actions     {@link Action}s that should be registered with the WebView to be shown
      */
+    @SafeVarargs
     public static void displayHtmlDialogFragment(FragmentManager fm, @StringRes int resTitle, @RawRes int resHtmlFile, Class<? extends Action>... actions) {
         Bundle arguments = new Bundle();
         arguments.putInt(ARG_TITLE, resTitle);
@@ -138,6 +139,7 @@ public class HtmlDialogFragment extends DialogFragment {
      * @param resHtmlFile the resource of the HTML file to display
      * @param actions     {@link Action}s that should be registered with the WebView to be shown
      */
+    @SafeVarargs
     public static void displayHtmlDialogFragment(FragmentManager fm, String title, @RawRes int resHtmlFile, Class<? extends Action>... actions) {
         Bundle arguments = new Bundle();
         arguments.putString(ARG_TITLE, title);
@@ -154,6 +156,11 @@ public class HtmlDialogFragment extends DialogFragment {
         bundle.putStringArray(ARG_ACTIONS, actionNames);
     }
 
+    /**
+     * @param arguments must include ARG_ACTIONS added by {@link #addActionsToBundle(Bundle,
+     *                  Class[])}
+     * @return
+     */
     private static HtmlDialogFragment constructFragment(Bundle arguments) {
         // Create and show the dialog.
         HtmlDialogFragment newFragment = new HtmlDialogFragment();
@@ -229,7 +236,6 @@ public class HtmlDialogFragment extends DialogFragment {
     }
 
     @NonNull
-    @SuppressLint("InflateParams")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View content = LayoutInflater.from(getActivity()).inflate(R.layout.html_dialog_fragment, null);
@@ -244,6 +250,7 @@ public class HtmlDialogFragment extends DialogFragment {
                 }
             });
         } else { //TODO test on an API < 24 device
+            //noinspection deprecation
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView webView, String url) {
