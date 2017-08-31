@@ -17,7 +17,7 @@
 
 package felixwiemuth.lincal.parser;
 
-import linearfileparser.ParseException;
+import felixwiemuth.linearfileparser.ParseException;
 
 /**
  *

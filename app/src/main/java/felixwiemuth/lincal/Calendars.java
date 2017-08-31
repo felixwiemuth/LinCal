@@ -32,7 +32,7 @@ import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.parser.LinCalParser;
-import linearfileparser.ParseException;
+import felixwiemuth.linearfileparser.ParseException;
 
 import static felixwiemuth.lincal.util.Util.showErrorDialog;
 

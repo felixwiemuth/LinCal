@@ -33,12 +33,12 @@ import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.util.Time;
-import linearfileparser.ArgKeyProcessor;
-import linearfileparser.IllegalLineException;
-import linearfileparser.LinearFileParser;
-import linearfileparser.ParseException;
-import linearfileparser.UnknownKeyException;
-import linearfileparser.UnknownSectionException;
+import felixwiemuth.linearfileparser.ArgKeyProcessor;
+import felixwiemuth.linearfileparser.IllegalLineException;
+import felixwiemuth.linearfileparser.LinearFileParser;
+import felixwiemuth.linearfileparser.ParseException;
+import felixwiemuth.linearfileparser.UnknownKeyException;
+import felixwiemuth.linearfileparser.UnknownSectionException;
 
 /**
  * Parses calendars specified in a text file.
@@ -315,7 +315,7 @@ public class LinCalParser extends LinearFileParser {
             if (scheme.equals("content")) {
             _parse(context.getContentResolver().openInputStream(uri));
             } else {
-                throw new RuntimeException("Unsupported Uri Scheme.");
+                throw new RuntimeException("Unsupported Uri Scheme."); //TODO localize, no RuntimeException
             }
         } else {
             _parse(new File(path));
@@ -324,7 +324,7 @@ public class LinCalParser extends LinearFileParser {
             return c.build();
         } catch (LinCal.Builder.MissingFieldException ex) {
             //NOTE: could do the check already with a "leave action" of the header section but that would require much more code
-            throw new ParseException(getCurrentLineNumber(), "Missing field in header section: " + ex.getField());
+            throw new ParseException(getCurrentLineNumber(), "Missing field in header section: " + ex.getField()); //TODO localize
         } finally {
             context = null; // possibly free resources
         }
