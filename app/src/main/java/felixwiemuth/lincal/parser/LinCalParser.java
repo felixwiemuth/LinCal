@@ -324,7 +324,7 @@ public class LinCalParser extends LinearFileParser {
             return c.build();
         } catch (LinCal.Builder.MissingFieldException ex) {
             //NOTE: could do the check already with a "leave action" of the header section but that would require much more code
-            throw new ParseException(getCurrentLineNumber(), "Missing field in header section: " + ex.getField()); //TODO localize
+            throw newParseException(getCurrentLineNumber(), "Missing field in header section: " + ex.getField()); //TODO localize
         } finally {
             context = null; // possibly free resources
         }
