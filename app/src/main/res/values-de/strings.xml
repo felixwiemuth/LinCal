@@ -26,6 +26,7 @@
     <string name="menu_about">Über</string>
 
     <string name="dialog_welcome_title">Willkommen</string>
+    <string name="welcome_message">Willkommen bei LinCal! Es handelt sich um eine frühe Version, welche noch Fehler enthalten kann - schau in \"Über\" wie man diese meldet. LinCal ist eine kostenlose Software (lizenziert unter der GNU General Public License) und übernimmt keine Gewähr.</string>
 
     <!-- TRANSLATION NOTE: The following keys are used by the library ckChangeLog and replace the
          default translations it provides. To translate them, first check whether the translations
@@ -57,6 +58,7 @@
     <string name="cal_version">Version:</string>
     <string name="cal_date">Datum:</string>
     <string name="setting_notifications_enabled">Aktiviere Benachrichtigungen</string>
+    <string name="setting_show_notifications_earliest">Zeige Benachrichtigung zuerst:</string>
     <string name="setting_show_notifications_on_screen_on">Zeige Benachrichtigungen nur nach dem das Display eingeschaltet wurde</string>
     <string name="setting_entry_display_mode_date">Zeige Eintragsdatum</string>
     <string name="setting_entry_display_mode_description">Zeige Eintragsbeschreibung:</string>
@@ -77,6 +79,7 @@
     <string name="add_cal_button">Hinzufügen</string>
     <string name="add_cal_info_title">Bemerkung:</string>
     <string name="add_cal_info_1">Durch direktes öffnen der Datei (in einem Dateimanager etc.), kann man ebenfalls einen Kalender hinzufügen.</string>
+    <string name="add_cal_info_2">Einmal hinzugefügt muss die Kalender Datei am selben Ort bleiben. Dies hat den Vorteil, dass man einen Kalender durch Ändern der Datei updaten kann, ohne ihn erneut in LinCal hinzuzufügen. Wenn zum Beispiel dir ein Freund einen Kalender erstellen möchte und diesen regelmäßig updatet, könnte er ihn über eine Cloud teilen und du ihn mit einer App die Datei synchronisieren. Somit wäre dein Kalender immer auf dem neusten Stand. Wenn man eine Kalender Datei verschieben möchte, muss man den Kalender erst von LinCal entfernen und nach dem Verschieben erneut hinzufügen.</string>
     <string name="dialog_file_not_found">Datei nicht gefunden</string>
     <string name="dialog_parsing_error_title">Fehler beim Parsen</string>
     <string name="dialog_error_title">Fehler</string>
@@ -92,11 +95,13 @@
     <string name="dialog_yes">Ja</string>
     <string name="dialog_no">Nein</string>
     <string name="dialog_remove_cal_title">Kalender entfernen</string>
+    <string name="dialog_remove_cal_msg">Entferne den Kalender samt Einstellungen und aktuellem Fortschritt? Die Kalender Datei selbst wird nicht entfernt werden.</string>
     <string name="dialog_downgrade_title">Anwendung downgraden</string>
     <string name="dialog_downgrade_msg">Es scheint Sie haben zuvor eine neuere Version von LinCal benutzt. Die neuere Speicherformatierung für Status und Konfiguration der Kalender ist nicht abwärtskompatibel mit dieser Version. Um diese trotzdem zu nutzen, muss der Status und die Konfigurationen der Kalender zurück gesetzt werden, d. h. Sie müssen alle Kalender erneut hinzufügen.</string>
     <string name="dialog_downgrade_yes">Einstellungen zurücksetzen</string>
     <string name="dialog_downgrade_no">Anwendung schließen</string>
 
     <string name="notification_lincal_error_title">LinCal Fehler</string>
+    <string name="notification_lincal_error_description">Der folgende Fehler ist aufgetreten, während LinCal die hinzugefügten Kalender verarbeitet hat um Benachrichtigungen zu erfassen.</string>
     <string name="notification_lincal_error_file_not_found">Beachte dass Kalenderdateien nicht verschoben werden dürfen, nachdem sie hinzugefügt wurden (s. Hilfe).</string>
 </resources>
