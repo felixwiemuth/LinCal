@@ -301,6 +301,7 @@ public class LinCalParser extends LinearFileParser {
      */
     public LinCal parse(String path, Context context) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
         this.context = context;
+        setResourceProvider(new AndroidResourceProvider(context));
         // Initialize parser
         currentDate.setTimeInMillis(0);
         defaultTime = new Time(0, 0);
@@ -327,6 +328,7 @@ public class LinCalParser extends LinearFileParser {
             throw newParseException(getCurrentLineNumber(), "Missing field in header section: " + ex.getField()); //TODO localize
         } finally {
             context = null; // possibly free resources
+            setResourceProvider(null);
         }
     }
 

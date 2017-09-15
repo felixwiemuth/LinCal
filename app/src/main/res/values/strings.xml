@@ -16,9 +16,12 @@
   -->
 
 <resources
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation" >
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    tools:ignore="MissingTranslation">
+
+    <string name="implementation_error">(Implementation error: this should never be visible, please contact developer)</string>
+
     <string name="app_name" translatable="false">LinCal</string>
     <string name="title_activity_calendar_view">Calendar view</string>
     <string name="title_activity_add_calendar">Add Calendar</string>
@@ -39,6 +42,16 @@
     <string name="changelog_ok_button">OK</string>
     <string name="changelog_show_full">More…</string>
     <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
+
+    <!-- The following keys are used by the library LinearFileParser and replace the default
+         translations it provides, to better match the application context.
+      -->
+    <string name="linearfileparser_error_at_line">Error at line\u0020</string>
+    <string name="linearfileparser_illegal_line">@string/implementation_error</string>
+    <string name="linearfileparser_unknown_section">@string/implementation_error</string>
+    <string name="linearfileparser_unknown_key">\"%2$s\" is not a valid command.</string>
+    <string name="linearfileparser_repeated_key">The command \"%s\" may only be used once in the header section.</string>
+    <string name="linearfileparser_missing_argument">The command \"%s\" requires an argument.</string>
 
     <string name="crash_toast_text">An unexpected error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You might add your comments about the problem.</string>
 
