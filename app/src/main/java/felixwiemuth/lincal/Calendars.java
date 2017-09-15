@@ -32,6 +32,7 @@ import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.data.LinCalConfigStore;
 import felixwiemuth.lincal.parser.LinCalParser;
+import felixwiemuth.lincal.parser.UnsupportedUriException;
 import felixwiemuth.linearfileparser.ParseException;
 
 import static felixwiemuth.lincal.util.Util.showErrorDialog;
@@ -278,6 +279,8 @@ public class Calendars {
     public static LinCal loadCalendar(Context context, String path) {
         try {
             return new LinCalParser().parse(path, context);
+        } catch (UnsupportedUriException ex) {
+            showErrorDialog(R.string.dialog_unsupported_URI_title, String.format(context.getString(R.string.dialog_unsupported_URI_msg), ex.getScheme()), true, context);
         } catch (FileNotFoundException ex) {
             showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), path), true, context);
         } catch (IOException ex) {

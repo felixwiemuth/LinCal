@@ -294,13 +294,14 @@ public class LinCalParser extends LinearFileParser {
      * @param path    simple path or content URI to the calendar file
      * @param context application context needed to provide String resources
      * @return
+     * @throws UnsupportedUriException if the URI given has a scheme which is not supported
      * @throws IOException
      * @throws FileNotFoundException
      * @throws UnknownKeyException
      * @throws UnknownSectionException
      * @throws ParseException
      */
-    public LinCal parse(String path, Context context) throws IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
+    public LinCal parse(String path, Context context) throws UnsupportedUriException, IOException, FileNotFoundException, UnknownKeyException, UnknownSectionException, ParseException {
         this.context = context;
         setResourceProvider(new AndroidResourceProvider(context));
         // Initialize parser
@@ -317,7 +318,7 @@ public class LinCalParser extends LinearFileParser {
             if (scheme.equals("content")) {
                 _parse(context.getContentResolver().openInputStream(uri));
             } else {
-                throw new RuntimeException("Unsupported Uri Scheme."); //TODO localize, no RuntimeException
+                throw new UnsupportedUriException(scheme);
             }
         } else {
             _parse(new File(path));
