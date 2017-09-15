@@ -28,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import de.cketti.library.changelog.ChangeLog;
@@ -118,11 +119,17 @@ public class CalendarListActivity extends LinCalMenuAppCompatActivity {
             if (data.hasExtra(EXTRA_RESULT_CAL_REMOVED)) {
                 notifyCalendarRemoved(data.getIntExtra(EXTRA_RESULT_CAL_REMOVED, -1));
             } else if (data.hasExtra(EXTRA_RESULT_CAL_ADDED)) {
-                int pos = data.getIntExtra(EXTRA_RESULT_CAL_ADDED, -1);
+                final int pos = data.getIntExtra(EXTRA_RESULT_CAL_ADDED, -1);
                 recyclerView.getAdapter().notifyItemInserted(pos);
                 // Scroll to added calendar and open it
                 recyclerView.scrollToPosition(pos);
-                recyclerView.findViewHolderForAdapterPosition(pos).itemView.performClick();
+                recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        recyclerView.findViewHolderForAdapterPosition(pos).itemView.performClick();
+                        recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
             }
         }
     }
