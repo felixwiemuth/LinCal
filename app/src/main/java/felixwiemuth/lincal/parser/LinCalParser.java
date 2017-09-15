@@ -225,10 +225,11 @@ public class LinCalParser extends LinearFileParser {
     private LinCal.EntryDisplayMode parseEntryDisplayMode(String arg) throws InvalidDisplayModeSpecificationException {
         LinCal.EntryDisplayMode mode = ENTRY_DISPLAY_MODE_STRING_MAP.inverse().get(arg);
         if (mode == null) {
-            throw new InvalidDisplayModeSpecificationException(getCurrentLineNumber(), "Valid display modes are: "
-                    + ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.HIDE_ALL) + ", "
-                    + ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.HIDE_FUTURE) + ", "
-                    + ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.SHOW_ALL));
+            StringBuilder displayModes = new StringBuilder()
+                    .append(ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.HIDE_ALL)).append(", ")
+                    .append(ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.HIDE_FUTURE)).append(", ")
+                    .append(ENTRY_DISPLAY_MODE_STRING_MAP.get(LinCal.EntryDisplayMode.SHOW_ALL));
+            throw new InvalidDisplayModeSpecificationException(getCurrentLineNumber(), sf(R.string.invalidDisplayModeSpecificationException, displayModes.toString()));
         }
         return mode;
     }
@@ -278,19 +279,19 @@ public class LinCalParser extends LinearFileParser {
                 }
             }
         } catch (NumberFormatException ex) {
-            throw new InvalidDateSpecificationException(getCurrentLineNumber(), s(R.string.invalidDateSpecificationException_base) + " " + ex.getMessage());
+            throw new InvalidDateSpecificationException(getCurrentLineNumber(), s(R.string.invalidDateSpecificationException_base) + " " + s(R.string.invalidDateSpecificationException_format) + ".");
         }
         return changed;
     }
 
     private void setTime(String timeSpec, Time time) throws InvalidTimeSpecificationException {
         if (!time.set(timeSpec)) {
-            throw new InvalidTimeSpecificationException(getCurrentLineNumber(), s(R.string.invalidTimeSpecificationException_base) + " " + timeSpec + " " + s(R.string.invalidTimeSpecificationException_format));
+            throw new InvalidTimeSpecificationException(getCurrentLineNumber(), s(R.string.invalidTimeSpecificationException_base) + " " + timeSpec + " " + s(R.string.invalidTimeSpecificationException_format) + ".");
         }
     }
 
     /**
-     * @param path simple path or content URI to the calendar file
+     * @param path    simple path or content URI to the calendar file
      * @param context application context needed to provide String resources
      * @return
      * @throws IOException
@@ -314,7 +315,7 @@ public class LinCalParser extends LinearFileParser {
         String scheme = uri.getScheme();
         if (scheme != null) {
             if (scheme.equals("content")) {
-            _parse(context.getContentResolver().openInputStream(uri));
+                _parse(context.getContentResolver().openInputStream(uri));
             } else {
                 throw new RuntimeException("Unsupported Uri Scheme."); //TODO localize, no RuntimeException
             }
@@ -325,7 +326,7 @@ public class LinCalParser extends LinearFileParser {
             return c.build();
         } catch (LinCal.Builder.MissingFieldException ex) {
             //NOTE: could do the check already with a "leave action" of the header section but that would require much more code
-            throw newParseException(getCurrentLineNumber(), "Missing field in header section: " + ex.getField()); //TODO localize
+            throw newParseException(getCurrentLineNumber(), sf(R.string.parseException_missing_field, ex.getField()));
         } finally {
             context = null; // possibly free resources
             setResourceProvider(null);
@@ -334,5 +335,9 @@ public class LinCalParser extends LinearFileParser {
 
     private String s(int i) {
         return context.getString(i);
+    }
+
+    private String sf(int i, Object... args) {
+        return String.format(s(i), args);
     }
 }
