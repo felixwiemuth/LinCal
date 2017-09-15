@@ -22,7 +22,7 @@ import android.net.Uri;
 
 import com.google.common.collect.EnumHashBiMap;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
@@ -321,7 +321,7 @@ public class LinCalParser extends LinearFileParser {
                 throw new UnsupportedUriException(scheme);
             }
         } else {
-            _parse(new File(path));
+            _parse(new FileInputStream(path));
         }
         try {
             return c.build();
