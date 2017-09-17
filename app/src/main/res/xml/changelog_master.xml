@@ -2,8 +2,10 @@
 <changelog>
     <release version="1.2.0" versioncode="11" >
         <change>It is now possible to choose a calendar file directly from the app. Calendars from Google Drive can be added this way and will stay up-to-date automatically.</change>
+        <change>After adding a calendar, it will be opened direclty.</change>
         <change>Fixed: In special cases it could happen that a calendar added was not displayed directly in the list of calendars.</change>
         <change>When viewing a calendar on narrow screens, the toolbar with menu stays and the title given to the calendar is displayed.</change>
+        <change>Error messages from loading calendars are now more clear and can be translated.</change>
     </release>
     <release version="1.1.0" versioncode="10" >
         <change>Split option to hide future or all entries into one for the entry's date and one for the entry's description</change>
