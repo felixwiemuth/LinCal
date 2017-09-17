@@ -95,9 +95,7 @@
     <string name="add_cal_hideall">Don\'t show any entries now</string>
     <string name="add_cal_file_button">Choose…</string>
     <string name="add_cal_button">Add</string>
-    <string name="add_cal_info_title">Note:</string>
-    <string name="add_cal_info_1">You can also add a calendar by opening the file directly (using a file manager etc.)</string>
-    <string name="add_cal_info_2">Once added, the calendar file has to stay at the same location. This has the advantage that you can simply update a calendar by changing the file, without readding it to LinCal. If, for example, a friend wants to make a calendar for you that they update regularly, they could share it from the cloud and you use an app that synchronizes the file on your device automatically with the one in the cloud. Then your calendar will always be up-to-date. If you want to move a calendar file, you have to remove the calendar from LinCal first and readd it after moving the file.</string>
+    <string name="add_cal_info">Important: Do not move the calendar file after adding it.</string>
     <string name="dialog_unsupported_URI_title">Unsupported URI</string>
     <string name="dialog_unsupported_URI_msg">The URI scheme \"%s\" is not supported.</string>
     <string name="dialog_file_not_found">File not found</string>

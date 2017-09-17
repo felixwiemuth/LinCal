@@ -76,9 +76,6 @@
     <string name="add_cal_hideall">すべてのエントリーを表示しない</string>
     <string name="add_cal_file_button">選択…</string>
     <string name="add_cal_button">追加</string>
-    <string name="add_cal_info_title">注:</string>
-    <string name="add_cal_info_1">ファイルを直接開いてカレンダーを追加することもできます (ファイルマネージャーなどを使用して)</string>
-    <string name="add_cal_info_2">一度追加すると、カレンダーファイルは同じ場所に保存する必要があります。 これには、ファイルを LinCal に読み込まずに、変更するだけでカレンダーを簡単に更新できるという利点があります。 たとえば、友だちが定期的に更新するカレンダーを作成したい場合、クラウドから共有することができ、デバイス上のファイルをクラウド内のファイルと自動的に同期させるアプリケーションを使用することができます。 あなたのカレンダーは常に最新のものになります。 カレンダーファイルを移動したい場合は、まず LinCal からカレンダーを削除し、ファイルを移動してから読み込んでください。</string>
     <string name="dialog_file_not_found">ファイルが見つかりません</string>
     <string name="dialog_parsing_error_title">解析エラー</string>
     <string name="dialog_error_title">エラー</string>
