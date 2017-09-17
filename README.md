@@ -203,6 +203,7 @@ Please only translate the following files and note the importance of translation
 - [strings.xml](app/src/main/res/values/strings.xml): contains the text used in the app's main user interface, should always be translated
   - Do not translate entries with `translatable="false"` (remove those entries)
   - Look for "TRANSLATION NOTE" comments 
+  - Keep order and structure of the original file and do not delete comments
 - [Help](app/src/main/res/raw/help.html): a help page in HTML (accessed in the app via the main menu), good if translated
 - [Change log](app/src/main/res/xml/changelog_master.xml): lists changes introduced with new versions of the app, good if translated
   - Note: the translated file must be called `changelog.xml` instead of `changelog_master.xml`
