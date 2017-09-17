@@ -4,7 +4,7 @@ This file lists people who made contributions to the project. The exact contribu
 
 Development and maintenance
 ---------------------------
-The app is currently developed and maintained by Felix Wiemuth. 
+The app is currently developed and maintained by Felix Wiemuth (Github: [felixwiemuth](https://github.com/felixwiemuth/)).
 
 Translations
 ------------
