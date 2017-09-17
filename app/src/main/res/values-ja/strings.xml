@@ -64,9 +64,7 @@
         <item>すべて表示</item>
     </string-array>
     <string name="action_remove_cal">カレンダーを削除</string>
-
-
-
+    
     <string name="dialog_warning_add_cal_title">警告</string>
     <string name="dialog_warning_add_cal_msg">あなたが信頼できる人のカレンダーのみを使用してください - 悪意のあるサイトへのリンクを開くことはセキュリティリスクです!</string>
     <string name="add_cal_title">カスタムタイトル (空にするとカレンダーのタイトルを使用します):</string>
@@ -75,11 +73,11 @@
     <string name="add_cal_hideall">すべてのエントリーを表示しない</string>
     <string name="add_cal_file_button">選択…</string>
     <string name="add_cal_button">追加</string>
-    <string name="dialog_file_not_found">ファイルが見つかりません</string>
+    <string name="dialog_file_not_found_title">ファイルが見つかりません</string>
+    <string name="dialog_file_not_found_msg">ファイル \"%s\" が存在しません。</string>
     <string name="dialog_parsing_error_title">解析エラー</string>
     <string name="dialog_error_title">エラー</string>
     <string name="dialog_error_dismiss">閉じる</string>
-    <string name="dialog_file_not_found_msg">ファイル \"%s\" が存在しません。</string>
     <string name="dialog_symbol_not_allowed_message">"記号 \"%s\" はタイトルで使用できません。"</string>
     <string name="dialog_cal_already_added_title">カレンダーは既に追加されています</string>
     <string name="dialog_cal_already_added_msg">カレンダーは既に追加されています。 別の、独立したコピーを追加しますか?</string>
@@ -96,6 +94,7 @@
     <string name="dialog_downgrade_yes">設定をリセット</string>
     <string name="dialog_downgrade_no">アプリを閉じる</string>
 
+    <!-- NOTE: the following strings are not used so far -->
     <string name="notification_lincal_error_title">LinCal エラー</string>
     <string name="notification_lincal_error_description">追加されたカレンダーを処理して通知をスケジュールする際、LinCal で次のエラーが発生しました:</string>
     <string name="notification_lincal_error_file_not_found">カレンダーファイルは追加後に移動できないことにご注意ください（ヘルプを参照）。</string>

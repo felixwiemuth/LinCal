@@ -65,7 +65,6 @@
     <string name="invalidTimeSpecificationException_base">Invalid time specification:</string>
     <string name="invalidTimeSpecificationException_format">(use hh:mm)</string>
 
-
     <string name="cal_title">Title:</string>
     <string name="cal_title_error_loading">(The calendar could not be loaded due to an error)</string>
     <string name="cal_author">Author:</string>
@@ -97,11 +96,11 @@
     <string name="add_cal_info">Important: Do not move the calendar file after adding it.</string>
     <string name="dialog_unsupported_URI_title">Unsupported URI</string>
     <string name="dialog_unsupported_URI_msg">The URI scheme \"%s\" is not supported.</string>
-    <string name="dialog_file_not_found">File not found</string>
+    <string name="dialog_file_not_found_title">File not found</string>
+    <string name="dialog_file_not_found_msg">The file \"%s\" does not exist.</string>
     <string name="dialog_parsing_error_title">Parsing error</string>
     <string name="dialog_error_title">Error</string>
     <string name="dialog_error_dismiss">Close</string>
-    <string name="dialog_file_not_found_msg">The file \"%s\" does not exist.</string>
     <string name="dialog_symbol_not_allowed_message">"The symbol \"%s\" is not allowed in a title."</string>
     <string name="dialog_cal_already_added_title">Calendar already added</string>
     <string name="dialog_cal_already_added_msg">The calendar has already been added. Do you want to add another, independent copy?</string>
@@ -118,6 +117,7 @@
     <string name="dialog_downgrade_yes">Reset configuration</string>
     <string name="dialog_downgrade_no">Close app</string>
 
+    <!-- NOTE: the following strings are not used so far -->
     <string name="notification_lincal_error_title">LinCal error</string>
     <string name="notification_lincal_error_description">The following error has occurred while LinCal processed the added calendars to schedule notifications:</string>
     <string name="notification_lincal_error_file_not_found">Note that calendar files may not be moved after added (see help).</string>

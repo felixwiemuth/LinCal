@@ -282,7 +282,7 @@ public class Calendars {
         } catch (UnsupportedUriException ex) {
             showErrorDialog(R.string.dialog_unsupported_URI_title, String.format(context.getString(R.string.dialog_unsupported_URI_msg), ex.getScheme()), true, context);
         } catch (FileNotFoundException ex) {
-            showErrorDialog(R.string.dialog_file_not_found, String.format(context.getString(R.string.dialog_file_not_found_msg), path), true, context);
+            showErrorDialog(R.string.dialog_file_not_found_title, String.format(context.getString(R.string.dialog_file_not_found_msg), path), true, context);
         } catch (IOException ex) {
             showErrorDialog(R.string.dialog_error_title, ex.getMessage(), true, context);
         } catch (ParseException ex) {

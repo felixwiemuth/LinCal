@@ -92,7 +92,7 @@
     <string name="add_cal_info">Wichtig: Die Kalendardatei nach dem Hinzufügen nicht verschieben.</string>
     <string name="dialog_unsupported_URI_title">Nicht unterstützte URI</string>
     <string name="dialog_unsupported_URI_msg">Das URI-Schema \"%s\" wird nicht unterstützt.</string>
-    <string name="dialog_file_not_found">Datei nicht gefunden</string>
+    <string name="dialog_file_not_found_title">Datei nicht gefunden</string>
     <string name="dialog_file_not_found_msg">Die Datei \"%s\" existiert nicht.</string>
     <string name="dialog_parsing_error_title">Parsing-Fehler</string>
     <string name="dialog_error_title">Fehler</string>
@@ -112,6 +112,8 @@
     <string name="dialog_downgrade_msg">Du scheinst zuvor eine neuere Version von LinCal benutzt zu haben. Das neuere Format, in dem Status und Konfiguration von Kalendern gespeichert werden, ist mit dieser alten Version nicht kompatibel. Um diese Version dennoch zu benutzen, müssen Status und Konfiguration der Kalender zurückgesetzt werden, d.h. alle Kalendar müssen neu hinzugefügt werden.</string>
     <string name="dialog_downgrade_yes">Konfiguration zurücksetzen</string>
     <string name="dialog_downgrade_no">App schließen</string>
+
+    <!-- NOTE: the following strings are not used so far -->
     <string name="notification_lincal_error_title">LinCal Fehler</string>
     <string name="notification_lincal_error_description">Der folgende Fehler trat beim Durchlaufen der hinzugefügten Kalendar zur Planung von Benachrichtigungen auf:</string>
     <string name="notification_lincal_error_file_not_found">Beachte, dass Kalendardateien nicht verschoben werden dürfen, nachdem sie hinzugefügt wurden (siehe Hilfe).</string>
