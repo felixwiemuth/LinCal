@@ -162,6 +162,7 @@ The following table shows for which languages translations are available, also n
 | Language | Translators | Included | Strings | Help | Change log | About |
 | -------- | ----------- | -------- | :-----: | :--: | :--------: | :---: |
 | Japanese | [naofum](https://github.com/naofum) | 1.1.0+ | o | - | - | - |
+| German | [felixwiemuth](https://github.com/felixwiemuth/), [jaller94](https://github.com/jaller94) | 1.2.0+ | + | - | - | - |
 | French | [Poussinou](https://github.com/poussinou) | | o | o | - | o |
 
 Legend: (-) not translated (+) fully translated (o) partially translated / needs update

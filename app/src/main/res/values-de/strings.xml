@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2017 Felix Wiemuth
+  ~ Copyright (C) 2017 Felix Wiemuth and contributors (see CONTRIBUTORS.md)
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -17,24 +17,102 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="implementation_error">(Implementierungsfehler: dies sollte niemals sichtbar sein, bitte Entwickler kontaktieren)</string>
+
+    <string name="title_activity_add_calendar">Kalendar hinzufügen</string>
+
+    <string name="menu_help">Hilfe</string>
+    <string name="menu_about">Über</string>
+
+    <string name="dialog_welcome_title">Willkommen</string>
+    <string name="welcome_message">Willkommen zu LinCal! Dies ist eine frühe Version, welche möglicherweise Fehler enthält - siehe \\\"Über\\\", um zu erfahren, wie sie gemeldet werden können. LinCal ist freie Software (lizenziert unter der GNU General Public License) und kommt ohne Garantien.</string>
+
     <!-- TRANSLATION NOTE: The following keys are used by the library ckChangeLog and replace the
          default translations it provides. To translate them, first check whether the translations
          provided (see https://github.com/cketti/ckChangeLog/tree/master/ckChangeLog/src/main/res)
          are appropriate and if so copy them here.
       -->
-    <string name="changelog_full_title">Change Log</string> <!-- TRANSLATION NOTE: Only translate if appropriate -->
-    <string name="changelog_title">What\'s New</string>
+    <string name="changelog_full_title">Alle Änderungen</string> <!-- TRANSLATION NOTE: Only translate if appropriate -->
+    <string name="changelog_title">Das ist neu</string>
     <string name="changelog_ok_button">OK</string>
-    <string name="changelog_show_full">More…</string>
+    <string name="changelog_show_full">Mehr…</string>
     <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
 
     <!-- The following keys are used by the library LinearFileParser and replace the default
          translations it provides, to better match the application context.
       -->
-    <string name="linearfileparser_error_at_line">Error at line\u0020</string>
+    <string name="linearfileparser_error_at_line">Fehler in Zeile</string>
     <string name="linearfileparser_illegal_line">@string/implementation_error</string>
     <string name="linearfileparser_unknown_section">@string/implementation_error</string>
-    <string name="linearfileparser_unknown_key">\"%2$s\" is not a valid command.</string>
-    <string name="linearfileparser_repeated_key">The command \"%s\" may only be used once in the header section.</string>
-    <string name="linearfileparser_missing_argument">The command \"%s\" requires an argument.</string>
+    <string name="linearfileparser_unknown_key">\"%2$s\" ist kein gültiger Befehl.</string>
+    <string name="linearfileparser_repeated_key">Der Befehl \"%s\" darf nur einmal im Anfangsbereich benutzt werden.</string>
+    <string name="linearfileparser_missing_argument">Der Befehl \"%s\" benötigt ein Argument.</string>
+    
+    <string name="crash_toast_text">Ein unerwarteter Fehler führte zum Beenden der App. Bitte sende diese Email mit wichtigen Informationen über den Fehler an den Entwickler. Du kannst eine Beschreibung des Fehlers ergänzen (vorzugsweise auf Englisch oder Deutsch).</string>
+
+    <string name="parseException_missing_field">Fehlende Angabe im Anfangsabschnitt: %s.</string>
+    <string name="invalidDisplayModeSpecificationException">Ungültiger Wert</string>
+    <string name="invalidDateSpecificationException_base">Ungültige Datumsangabe:</string>
+    <string name="invalidDateSpecificationException_expected_full">vollständige Datumsangabe erwartet (t/m/j)</string>
+    <string name="invalidDateSpecificationException_in_header">für das Datum des Kalenders</string>
+    <string name="invalidDateSpecificationException_first">als erstes Datum</string>
+    <string name="invalidDateSpecificationException_format">fehlerhaftes Format (benutze t/m/j)</string>
+    <string name="dateSpecificationRequiredException">Bevor der erste Eintrag hinzugefügt werden kann muss ein erstes Datum mit \"@d t/m/j\" angegeben werden.</string>
+    <string name="invalidTimeSpecificationException_base">Ungültige Zeitangabe:</string>
+    <string name="invalidTimeSpecificationException_format">(benutze hh:mm)</string>
+
+    <string name="cal_title">Titel:</string>
+    <string name="cal_title_error_loading">(Der Kalendar konnte wegen eines Fehlers nicht geladen werden)</string>
+    <string name="cal_author">Autor:</string>
+    <string name="cal_description">Beschreibung:</string>
+    <string name="cal_version">Version:</string>
+    <string name="cal_date">Datum:</string>
+    <string name="setting_notifications_enabled">Benachrichtigungen aktivieren</string>
+    <string name="setting_show_notifications_earliest">Zeige Benachrichtigungen frühestens:</string>
+    <string name="setting_show_notifications_on_screen_on">Zeige Benachrichtigungen erst nach Einschalten des Bildschrims</string>
+    <string name="setting_entry_display_mode_date">Zeige Eintragsdatum:</string>
+    <string name="setting_entry_display_mode_description">Zeige Eintragsbeschreibung:</string>
+    <string-array name="setting_entry_display_mode_options">
+        <item>Alle ausblenden</item>
+        <item>Zukünftige ausblenden</item>
+        <item>Alle zeigen</item>
+    </string-array>
+    <string name="action_remove_cal">Kalender entfernen</string>
+
+    <string name="dialog_warning_add_cal_title">Warnung</string>
+    <string name="dialog_warning_add_cal_msg">Verwende nur Kalendar von Personen, denen du vertraust - Links zu bösartigen Seiten zu öffnen stellt ein Sicherheitsrisiko dar!</string>
+
+    <string name="add_cal_title">Benutzerdefinierter Titel (frei lassen, um Titel des Kalendars zu verwenden):</string>
+    <string name="add_cal_file">Kalendardatei (vollständiger Pfad):</string>
+    <string name="add_cal_notifications">Benachrichtigungen aktivieren</string>
+    <string name="add_cal_hideall">Zeige jetzt keine Einträge</string>
+    <string name="add_cal_file_button">Öffnen…</string>
+    <string name="add_cal_button">Hinzufügen</string>
+    <string name="add_cal_info">Wichtig: Die Kalendardatei nach dem Hinzufügen nicht verschieben.</string>
+    <string name="dialog_unsupported_URI_title">Nicht unterstützte URI</string>
+    <string name="dialog_unsupported_URI_msg">Das URI-Schema \"%s\" wird nicht unterstützt.</string>
+    <string name="dialog_file_not_found">Datei nicht gefunden</string>
+    <string name="dialog_file_not_found_msg">Die Datei \"%s\" existiert nicht.</string>
+    <string name="dialog_parsing_error_title">Parsing-Fehler</string>
+    <string name="dialog_error_title">Fehler</string>
+    <string name="dialog_error_dismiss">Schließen</string>
+    <string name="dialog_symbol_not_allowed_message">Das Symbol \"%s\" ist in einem Title nicht erlaubt.</string>
+    <string name="dialog_cal_already_added_title">Kalendar bereits hinzugefügt</string>
+    <string name="dialog_cal_already_added_msg">Der Kalendar wurde schon hinzugefügt. Möchtest du eine weitere, unabhängige Kopie hinzufügen?</string>
+    <string name="dialog_show_link">Link anzeigen</string>
+    <string name="dialog_cancel">Abbrechen</string>
+    <string name="dialog_open_link">Link öffnen</string>
+    <string name="dialog_dismiss">Schließen</string>
+    <string name="dialog_yes">Ja</string>
+    <string name="dialog_no">Nein</string>
+    <string name="dialog_remove_cal_title">Kalendar entfernen</string>
+    <string name="dialog_remove_cal_msg">Kalendar mit Einstellungen und aktuellem Fortschritt entfernen? Die Kalendardatei selbst wird nicht entfernt.</string>
+    <string name="dialog_downgrade_title">App downgrade</string>
+    <string name="dialog_downgrade_msg">Du scheinst zuvor eine neuere Version von LinCal benutzt zu haben. Das neuere Format, in dem Status und Konfiguration von Kalendern gespeichert werden, ist mit dieser alten Version nicht kompatibel. Um diese Version dennoch zu benutzen, müssen Status und Konfiguration der Kalender zurückgesetzt werden, d.h. alle Kalendar müssen neu hinzugefügt werden.</string>
+    <string name="dialog_downgrade_yes">Konfiguration zurücksetzen</string>
+    <string name="dialog_downgrade_no">App schließen</string>
+    <string name="notification_lincal_error_title">LinCal Fehler</string>
+    <string name="notification_lincal_error_description">Der folgende Fehler trat beim Durchlaufen der hinzugefügten Kalendar zur Planung von Benachrichtigungen auf:</string>
+    <string name="notification_lincal_error_file_not_found">Beachte, dass Kalendardateien nicht verschoben werden dürfen, nachdem sie hinzugefügt wurden (siehe Hilfe).</string>
 </resources>

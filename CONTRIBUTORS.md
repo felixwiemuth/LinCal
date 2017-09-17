@@ -11,3 +11,4 @@ Translations
 The following people have created translations of text occurring in the app:
 - [Poussinou](https://github.com/Poussinou): French
 - [naofum](https://github.com/naofum): Japanese
+- [felixwiemuth](https://github.com/felixwiemuth/), [jaller94](https://github.com/jaller94): German
