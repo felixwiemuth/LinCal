@@ -16,7 +16,6 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="title_activity_calendar_view">カレンダー表示</string>
     <string name="title_activity_add_calendar">カレンダーを追加</string>
 
     <string name="menu_help">ヘルプ</string>

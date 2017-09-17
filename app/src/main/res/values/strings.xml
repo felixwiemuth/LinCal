@@ -23,7 +23,6 @@
     <string name="implementation_error">(Implementation error: this should never be visible, please contact developer)</string>
 
     <string name="app_name" translatable="false">LinCal</string>
-    <string name="title_activity_calendar_view">Calendar view</string>
     <string name="title_activity_add_calendar">Add Calendar</string>
 
     <string name="menu_help">Help</string>
