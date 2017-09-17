@@ -52,7 +52,7 @@
     <string name="linearfileparser_repeated_key">The command \"%s\" may only be used once in the header section.</string>
     <string name="linearfileparser_missing_argument">The command \"%s\" requires an argument.</string>
 
-    <string name="crash_toast_text">An unexpected error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You might add your comments about the problem.</string>
+    <string name="crash_toast_text">An unexpected error occurred forcing the application to stop. Please send this email to the developer containing important information about the error. You may add your comments about the problem (preferably in English or German).</string>
 
     <string name="parseException_missing_field">Missing field in header section: %s.</string>
     <string name="invalidDisplayModeSpecificationException">Invalid specifier for display mode (valid values are: %s).</string>
