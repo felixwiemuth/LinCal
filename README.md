@@ -39,7 +39,7 @@ Features
   - Open links with matching app if installed (e.g. Dropbox, Spotify, ...)
   - Set an earliest notification time
   - List all entries in the calendar (optionally hide future or all entries)
-  - Calendar files can be updated while in use
+  - Calendar files can be updated while in use and synced with the cloud (e.g. Google Drive or Nextcloud)
 
 Planned features
 ----------------
@@ -49,7 +49,6 @@ There are a lot of small extensions and more features planned, some of them list
 - Possibility to show link before opening when clicking a notification
 - Option to not display notifications before the screen is turned on - this avoids acoustic or visual signals of a notification
 - Default settings for notifications in addition to the calendar-specific settings
-- Open file manager from app to choose calendar to add
 - Improved layout/design
 - Richer content for notifications: custom included offline media, HTML pages
 - Widget to show today's notifications on click
@@ -108,17 +107,23 @@ In the future, you will be able to add media like photos to a calendar. For now 
 
 **Sending and updating calendars**
 
-In general, before sending a calendar to someone, make sure that the dates are correct and the links work by loading it into LinCal (see next section).
+In general, before sending a calendar to someone, make sure that the dates are correct and the links work by loading it into LinCal (see "Adding a calendar").
 
 A calendar can be updated while in use (that is, the user simply replaces the calendar file on their device). However, at the time the new file is next loaded by the app (which usually is at the next due notification) no entries in the past must have been added or deleted. Thus, in general make sure that you only make changes to entries past the one the user will see next. For a better overview it is therefore advisable to specify entries in the order of occurrence, though this is not required.
+
+An easy way to be able to update a calendar without the user having to manually replace it is to have it in cloud storage. The user either has to add the calendar by selecting it from cloud storage (only if it is listed when choosing a file with the app, that is, the cloud storage provider must support this, like Google Drive or Nextcloud) or by making sure the file on local storage is automatically synchronized with the cloud (see also "Adding a calendar").
 
 ### Using the app
 **Adding a calendar**
 
 *Warning:* Only use calendars from people you trust - opening links to malicious sites represents a security risk!
 
-Click the "+" button and enter the full path to the calendar file (e.g. `/sdcard/Downloads/MyCalendar.txt`) or open a calendar file directly and choose "Add calendar".
-Optionally enter a custom title for the calendar to be shown in the list of calendars and as the title of notifications. Checking "Don't show any entries now" makes sure you don't see any entries directly after adding the calendar (but this can be changed later).
+Click the "+" button and then "Choose..." to select a calendar file or enter the full path directly (e.g. `/sdcard/Downloads/MyCalendar.txt`). Alternatively, select the calendar file in a file manager and choose LinCal to open it.
+Optionally enter a custom title for the calendar to be shown in the list of calendars and as the title of notifications. Checking "Don't show any entries now" makes sure you don't see any entries directly after adding the calendar (but this can be changed later). Finally click "Add calendar".
+
+*Note:* LinCal does not create a copy when adding a calendar but always uses the file at the location chosen. This allows calendars to be updated by simply replacing the calendar file with a new version. By synchronizing it with the cloud, automatic updates can be achieved. LinCal will use the newer version as soon it has been restarted. If you want to move a calendar file, you have to remove the calendar from LinCal first and readd it after moving the file.
+
+Calendars can be added from a cloud storage provider that supports the Android Storage Access Framework (SAF). When clicking "Choose...", you can for example add calendars from Google Drive or Nextcloud. This way the calendar will be automatically updated from the cloud as soon as the cloud services synchronizes (and LinCal restarts). Note, however, that if you are offline and the cloud storage cache is cleared, LinCal won't get access to the calendar file and show an error.
 
 **Viewing a calendar**
 
