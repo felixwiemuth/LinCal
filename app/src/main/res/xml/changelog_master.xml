@@ -6,6 +6,7 @@
         <change>Fixed: In special cases it could happen that a calendar added was not displayed directly in the list of calendars.</change>
         <change>When viewing a calendar on narrow screens, the toolbar with menu stays and the title given to the calendar is displayed.</change>
         <change>Error messages from loading calendars are now more clear and can be translated.</change>
+        <change>Added German translation.</change>
     </release>
     <release version="1.1.0" versioncode="10" >
         <change>Split option to hide future or all entries into one for the entry's date and one for the entry's description</change>
