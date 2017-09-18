@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2017 Felix Wiemuth
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<changelog>
+    <release version="1.2.0" versioncode="11" >
+        <change>Es ist jetzt möglich, eine Kalenderdatei direkt in der App auszuwählen; Kalender von Google Drive, Nextcloud und anderen Cloud-Speicher-Anbietern können auf diese Weise hinzugefügt werden und bleiben so automatisch aktuell</change>
+        <change>Nachdem ein Kalender hinzugefügt wurde, wird er direkt geöffnet</change>
+        <change>Behoben: In besonderen Fällen konnte es passieren, dass ein neu hinzugefügter Kalender nicht gleich in der Liste der Kalender erschien</change>
+        <change>When viewing a calendar on narrow screens, the toolbar with menu stays and the title given to the calendar is displayed</change>
+        <change>Fehlermeldungen beim Laden von Kalendern sind jetzt verständlicher und können übersetzt werden</change>
+        <change>Deutsche Übersetzung hinzugefügt</change>
+    </release>
+    <release version="1.1.0" versioncode="10" >
+        <change>Option, zuknüftigen Einträge auszublenden aufgeteilt in eine für das Datum und eine für die Beschreibung</change>
+        <change>Neue Befehle zum LinCal-Kalenderformat hinzugefügt, um den Modus für das Anzeigen von Datum und Beschreibung eines Eintrags initial oder dauerhaft festzulegen (s. README)</change>
+        <change>Kalender-Info und Optionen scrollen nun mit den Einträgen, um Platz zu sparen</change>
+        <change>Beim Anzeigen eines Kalenders, dessen Datei nicht gefunden werden kann, sind alle Einstellungen deaktiviert</change>
+        <change>Wenn eine Benachrichtigungen für einen Kalender fällig ist und dessen Datei nicht gefunden werden kann oder Fehler enthält wird stattdessen eine Fehler-Benachrichtigung angezeigt (Anklicken dieser öffnet die App)</change>
+        <change>Das mehrfache Öffnen der Kalenderliste oder der Ansicht zum Hinzufügen eines neuen Kalenders wird nun verhindert</change>
+        <change>Japanische Übersetzung hinzugefügt</change>
+    </release>
+    <release version="1.0.0" versioncode="9">
+        <change>Erste veröffentlichte Version</change>
+    </release>
+</changelog>
