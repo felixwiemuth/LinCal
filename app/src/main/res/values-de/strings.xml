@@ -26,7 +26,7 @@
     <string name="menu_about">Über</string>
 
     <string name="dialog_welcome_title">Willkommen</string>
-    <string name="welcome_message">Willkommen zu LinCal! Dies ist eine frühe Version, welche möglicherweise Fehler enthält - siehe \\\"Über\\\", um zu erfahren, wie sie gemeldet werden können. LinCal ist freie Software (lizenziert unter der GNU General Public License) und kommt ohne Garantien.</string>
+    <string name="welcome_message">Willkommen zu LinCal! Dies ist eine frühe Version, welche möglicherweise Fehler enthält - siehe \"Über\", um zu erfahren, wie sie gemeldet werden können. LinCal ist freie Software (lizenziert unter der GNU General Public License) und kommt ohne Garantien.</string>
 
     <!-- TRANSLATION NOTE: The following keys are used by the library ckChangeLog and replace the
          default translations it provides. To translate them, first check whether the translations
