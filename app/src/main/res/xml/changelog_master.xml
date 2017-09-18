@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release version="1.2.0" versioncode="11" >
-        <change>It is now possible to choose a calendar file directly from the app. Calendars from Google Drive can be added this way and will stay up-to-date automatically.</change>
-        <change>After adding a calendar, it will be opened direclty.</change>
-        <change>Fixed: In special cases it could happen that a calendar added was not displayed directly in the list of calendars.</change>
-        <change>When viewing a calendar on narrow screens, the toolbar with menu stays and the title given to the calendar is displayed.</change>
-        <change>Error messages from loading calendars are now more clear and can be translated.</change>
-        <change>Added German translation.</change>
+        <change>It is now possible to choose a calendar file directly from the app; Calendars from Google Drive, Nextcloud and other cloud storage providers can be added this way and will stay up-to-date automatically</change>
+        <change>After adding a calendar, it will be opened direclty</change>
+        <change>Fixed: In special cases it could happen that a newly calendar added did not appear directly in the list of calendars</change>
+        <change>When viewing a calendar on narrow screens, the toolbar with menu stays and the title given to the calendar is displayed</change>
+        <change>Error messages from loading calendars are now more clear and can be translated</change>
+        <change>Added German translation</change>
     </release>
     <release version="1.1.0" versioncode="10" >
         <change>Split option to hide future or all entries into one for the entry's date and one for the entry's description</change>
         <change>Added new commands to the LinCal calendar format to set an initial or force a permanent mode of displaying entry date and description (hide all, hide future, show all), see README</change>
-        <change>Calendar info and options now scroll away with entries, saving space.</change>
+        <change>Calendar info and options now scroll away with entries, saving space</change>
         <change>When viewing a calendar where the file cannot be found or contains errors, all settings are disabled</change>
         <change>When a notification is due for a calendar and its file cannot be found or contains errors, an error notification is shown instead (clicking it launches the app)</change>
-        <change>Opening multiple instances of list of calendars or screen to add a new calendar (e.g. by clicking notification or by adding calendar from file manager) is now prevented.</change>
+        <change>Opening multiple instances of the list of calendars or the screen to add a new calendar (e.g. by clicking notification or by adding calendar from file manager) is now prevented</change>
         <change>Added Japanese translation</change>
     </release>
     <release version="1.0.0" versioncode="9">
