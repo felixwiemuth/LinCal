@@ -20,7 +20,6 @@ package felixwiemuth.lincal.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import felixwiemuth.lincal.R;
@@ -36,9 +35,6 @@ public class CalendarViewActivity extends LinCalMenuAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_view);
-        // Activate the ActionBar for further use
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         // Show the Up button in the action bar
         ActionBar actionBar = getSupportActionBar();

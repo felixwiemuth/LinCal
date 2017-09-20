@@ -40,7 +40,6 @@
         <activity
             android:name=".ui.CalendarListActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -50,8 +49,7 @@
         </activity>
         <activity
             android:name=".ui.CalendarViewActivity"
-            android:parentActivityName=".ui.CalendarListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".ui.CalendarListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.CalendarListActivity"/>
@@ -59,7 +57,6 @@
         <activity
             android:name=".ui.AddCalendarActivity"
             android:label="@string/title_activity_add_calendar"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

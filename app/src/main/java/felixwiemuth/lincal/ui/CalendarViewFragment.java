@@ -27,8 +27,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,15 +119,12 @@ public class CalendarViewFragment extends Fragment {
         if (!getArguments().containsKey(ARG_CALENDAR_POS)) {
             throw new RuntimeException("Missing argument: CalendarViewFragment.ARG_CALENDAR_POS");
         }
-        Activity activity = this.getActivity();
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
         calendarPos = getArguments().getInt(ARG_CALENDAR_POS);
         Calendars calendars = Calendars.getInstance(getContext()); // loads calendar and makes sure all values in config are set (e.g. forceEntryDisplayMode values)
         calendar = calendars.getCalendarByPos(getContext(), calendarPos);
-        // Set Toolbar title to calendar title (as set by user) to show which calendar is selected (in narrow as well as wide)
-        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            toolbar.setTitle(calendars.getConfigByPos(calendarPos).getCalendarTitle());
-        }
+        // Set ActionBar title to calendar title (as set by user) to show which calendar is selected (in narrow as well as wide)
+        activity.getSupportActionBar().setTitle(calendars.getConfigByPos(calendarPos).getCalendarTitle());
     }
 
     @Override

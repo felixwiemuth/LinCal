@@ -21,8 +21,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,7 +33,7 @@ import felixwiemuth.lincal.data.LinCalConfig;
 import felixwiemuth.lincal.util.Time;
 import felixwiemuth.lincal.util.Util;
 
-public class AddCalendarActivity extends AppCompatActivity {
+public class AddCalendarActivity extends LinCalMenuAppCompatActivity {
 
     private static final int RESULT_CODE_SELECT_FILE = 0;
 
@@ -47,8 +45,6 @@ public class AddCalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_calendar);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         Calendars.getInstance(this); // load calendars already here to check for updates before adding calendar (important for downgrade warning to be shown before clicking "add")
 
