@@ -79,6 +79,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:launchMode="singleTop">
+        </activity>
+
         <service
             android:name=".NotificationService"
             android:enabled="true"

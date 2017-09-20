@@ -17,6 +17,10 @@
   -->
 
 <changelog>
+    <release version="1.3.0" versioncode="12" >
+        <change>Einstellungen-Ansicht hinzugefügt</change>
+        <change>Es ist jetzt möglich, die Sprache der App in den Einstellungen zu ändern</change>
+    </release>
     <release version="1.2.0" versioncode="11" >
         <change>Es ist jetzt möglich, eine Kalenderdatei direkt in der App auszuwählen; Kalender von Google Drive, Nextcloud und anderen Cloud-Speicher-Anbietern können auf diese Weise hinzugefügt werden und bleiben so automatisch aktuell</change>
         <change>Nachdem ein Kalender hinzugefügt wurde, wird er direkt geöffnet</change>

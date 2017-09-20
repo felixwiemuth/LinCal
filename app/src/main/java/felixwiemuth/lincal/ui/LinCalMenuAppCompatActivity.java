@@ -17,22 +17,35 @@
 
 package felixwiemuth.lincal.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import felixwiemuth.lincal.LocaleHelper;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.ui.actions.DisplayChangeLog;
 
 /**
- * {@link AppCompatActivity} with the LinCal main menu in the action bar.
+ * {@link AppCompatActivity} with the LinCal main menu in the action bar. Automatically recreates
+ * the activity when the locale has changed.
  *
  * @author Felix Wiemuth
  */
 public class LinCalMenuAppCompatActivity extends AppCompatActivity {
+    private String initialLocale;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initialLocale = LocaleHelper.getPersistedLocale(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,6 +60,10 @@ public class LinCalMenuAppCompatActivity extends AppCompatActivity {
             case R.id.menu_help:
                 HtmlDialogFragment.displayHtmlDialogFragment(getSupportFragmentManager(), R.string.menu_help, R.raw.help);
                 return true;
+            case R.id.menu_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.menu_about:
                 try {
                     PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -58,6 +75,19 @@ public class LinCalMenuAppCompatActivity extends AppCompatActivity {
                 }
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleHelper.onAttach(base));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (initialLocale != null && !initialLocale.equals(LocaleHelper.getPersistedLocale(this))) {
+            recreate();
         }
     }
 }

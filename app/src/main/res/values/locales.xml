@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2016 Felix Wiemuth
+  ~ Copyright (C) 2017 Felix Wiemuth
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -16,19 +16,17 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/menu_help"
-        android:title="@string/menu_help"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_about"
-        android:title="@string/menu_about"
-        app:showAsAction="never"/>
-</menu>
+<!-- Lists available locales used for setting the locale manually.
+     For now only language codes (locale codes without country and variant) are supported.
+     Has to be in sync with "settings_language_values" in strings.xml (the entries must correspond).
+  -->
+<resources>
+    <string name="system_locale" translatable="false">system</string>
+    <string name="default_locale" translatable="false"></string>
+    <string-array name="locales">
+        <item>@string/system_locale</item> <!-- system setting -->
+        <item>@string/default_locale</item> <!-- default locale -->
+        <item>de</item>
+        <item>ja</item>
+    </string-array>
+</resources>

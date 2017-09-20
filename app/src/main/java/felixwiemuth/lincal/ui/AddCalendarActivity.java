@@ -46,6 +46,8 @@ public class AddCalendarActivity extends LinCalMenuAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_calendar);
 
+        setTitle(R.string.title_activity_add_calendar); // required for the title to use the locale set by LocaleHelper
+
         Calendars.getInstance(this); // load calendars already here to check for updates before adding calendar (important for downgrade warning to be shown before clicking "add")
 
         Button chooseFileButton = (Button) findViewById(R.id.cb_file);

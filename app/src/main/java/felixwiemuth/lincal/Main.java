@@ -19,6 +19,7 @@ package felixwiemuth.lincal;
 
 import android.app.Application;
 import android.content.Context;
+import android.preference.PreferenceManager;
 
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
@@ -45,6 +46,12 @@ public class Main extends Application {
         if (!BuildConfig.DEBUG) {
             ACRA.init(this);
         }
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleHelper.onAttach(base));
     }
 
     public static void showWelcomeMessage(Context context) {
