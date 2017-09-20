@@ -25,7 +25,7 @@
         <change>Es ist jetzt möglich, eine Kalenderdatei direkt in der App auszuwählen; Kalender von Google Drive, Nextcloud und anderen Cloud-Speicher-Anbietern können auf diese Weise hinzugefügt werden und bleiben so automatisch aktuell</change>
         <change>Nachdem ein Kalender hinzugefügt wurde, wird er direkt geöffnet</change>
         <change>Behoben: In besonderen Fällen konnte es passieren, dass ein neu hinzugefügter Kalender nicht gleich in der Liste der Kalender erschien</change>
-        <change>When viewing a calendar on narrow screens, the toolbar with menu stays and the title given to the calendar is displayed</change>
+        <change>Beim Anzeigen eines Kalenders auf schmalen Displays bleibt die Toolbar mit dem Menü erhalten und der Titel des Kalenders wird angezeigt</change>
         <change>Fehlermeldungen beim Laden von Kalendern sind jetzt verständlicher und können übersetzt werden</change>
         <change>Deutsche Übersetzung hinzugefügt</change>
     </release>
