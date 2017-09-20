@@ -46,7 +46,6 @@ android {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
@@ -54,4 +53,5 @@ dependencies {
     compile 'com.google.guava:guava:22.0-android'
     compile 'ch.acra:acra:4.9.1'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
+    testCompile 'junit:junit:4.12'
 }
