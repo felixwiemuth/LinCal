@@ -49,7 +49,6 @@ There are a lot of small extensions and more features planned, some of them list
 - Possibility to show link before opening when clicking a notification
 - Option to not display notifications before the screen is turned on - this avoids acoustic or visual signals of a notification
 - Default settings for notifications in addition to the calendar-specific settings
-- Improved layout/design
 - Richer content for notifications: custom included offline media, HTML pages
 - Widget to show today's notifications on click
 - Obfuscated calendar files: app makes file unreadable before sending it to someone, to not allow others to see entries in advance
