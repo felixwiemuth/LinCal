@@ -1,6 +1,6 @@
 Contributing
 ============
-You are welcome to contribute to LinCal. This file is about code contributions. For other possibilities to contribute see [Readme](README.md#Contributing).
+You are welcome to contribute to LinCal. This file is about code contributions. For other possibilities to contribute see [Readme](README.md#contributing).
 
 Contribution guidelines
 -----------------------
