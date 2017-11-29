@@ -27,8 +27,7 @@ About
 
 Project status
 --------------
-The current version is 1.1.0 (2017-08-23) and is available on [F-Droid](https://f-droid.org/repository/browse/?fdid=felixwiemuth.lincal). Smaller updates and improvements are planned for August and September 2017.
-
+The current version is 1.3.0 (2017-09-21) and is available on [F-Droid](https://f-droid.org/repository/browse/?fdid=felixwiemuth.lincal) (2017-09-27). Further development is planned but there won't happen much before February/March 2018. However, translations will be incorporated and other contributions are also possible (see [Contributing](#Contributing)).
 Features
 --------
 - Create calendars easily in a text file
@@ -211,6 +210,12 @@ Please only translate the following files and note the importance of translation
 - [About](app/src/main/res/raw/about.html): an HTML page with information about the app (accessed in the app via the main menu), can be translated but it's less important
   - Important: In the "License" section do not translate the first paragraph (the license text - an appropriate translation will be added by the maintainers if found) but do translate the heading "License" and everything after the first paragraph.
 
+Contributing
+------------
+If you have ideas on how to improve LinCal, you are welcome to contribute. There are several ways you can contribute:
+- Share your ideas in an issue
+- [Translate](#Translations) LinCal
+- Implement features: please see [Contributing](CONTRIBUTING.md) for more information
 
 Bug reports and feature requests
 --------------------------------
