@@ -122,7 +122,7 @@ Optionally enter a custom title for the calendar to be shown in the list of cale
 
 *Note:* LinCal does not create a copy when adding a calendar but always uses the file at the location chosen. This allows calendars to be updated by simply replacing the calendar file with a new version. By synchronizing it with the cloud, automatic updates can be achieved. LinCal will use the newer version as soon it has been restarted. If you want to move a calendar file, you have to remove the calendar from LinCal first and readd it after moving the file.
 
-Calendars can be added from a cloud storage provider that supports the Android Storage Access Framework (SAF). When clicking "Choose...", you can for example add calendars from Google Drive or Nextcloud. This way the calendar will be automatically updated from the cloud as soon as the cloud services synchronizes (and LinCal restarts). Note, however, that if you are offline and the cloud storage cache is cleared, LinCal won't get access to the calendar file and show an error.
+Calendars can be added from a cloud storage provider that supports the Android Storage Access Framework (SAF). When clicking "Choose...", you can for example add calendars from Google Drive or Nextcloud. This way the calendar will be automatically updated from the cloud as soon as the cloud service synchronizes (and LinCal restarts). Note, however, that if you are offline and the cloud storage cache is cleared, LinCal won't get access to the calendar file and show an error.
 
 **Viewing a calendar**
 
