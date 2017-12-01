@@ -80,8 +80,8 @@ The following commands are optional and concern the visibility of dates and desc
 
 - `@setDateDisplayMode <mode>`: Set an initial value for the *Show entry date* option 
 - `@forceDateDisplayMode <mode>`: Set a value for the *Show entry date* option such that the user cannot change it
-- `@setDescriptionDisplayMode <mode>`: Set an initial value for the *Show entry description* option 
-- `@forceDescriptionDisplayMode <mode>`: Set a value for the *Show entry description* option such that the user cannot change it
+- `@setDescrDisplayMode <mode>`: Set an initial value for the *Show entry description* option 
+- `@forceDescrDisplayMode <mode>`: Set a value for the *Show entry description* option such that the user cannot change it
 
  
 
