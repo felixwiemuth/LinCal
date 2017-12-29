@@ -23,7 +23,7 @@
 <resources>
     <string name="system_locale" translatable="false">system</string>
     <string name="default_locale" translatable="false"></string>
-    <string-array name="locales">
+    <string-array name="locales" translatable="false">
         <item>@string/system_locale</item> <!-- system setting -->
         <item>@string/default_locale</item> <!-- default locale -->
         <item>de</item>
