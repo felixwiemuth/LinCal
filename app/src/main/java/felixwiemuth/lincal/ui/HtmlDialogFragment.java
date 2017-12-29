@@ -95,10 +95,6 @@ public class HtmlDialogFragment extends DialogFragment {
     private static final String ARG_RES_HTML_FILE = "felixwiemuth.lincal.ARG_RES_HTML_FILE";
     private static final String ARG_ACTIONS = "felixwiemuth.lincal.ARG_ACTIONS";
 
-    private HtmlDialogFragment() {
-
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
