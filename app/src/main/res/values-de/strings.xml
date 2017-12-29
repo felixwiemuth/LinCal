@@ -54,7 +54,7 @@
     <!-- The following keys are used by the library LinearFileParser and replace the default
          translations it provides, to better match the application context.
       -->
-    <string name="linearfileparser_error_at_line">Fehler in Zeile</string>
+    <string name="linearfileparser_error_at_line">Fehler in Zeile\u0020</string>
     <string name="linearfileparser_illegal_line">@string/implementation_error</string>
     <string name="linearfileparser_unknown_section">@string/implementation_error</string>
     <string name="linearfileparser_unknown_key">\"%2$s\" ist kein gültiger Befehl.</string>
