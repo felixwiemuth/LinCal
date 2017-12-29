@@ -50,7 +50,7 @@ public class Calendars {
     private LinCalConfigStore configStore;
     /**
      * NOTE: It would be enough to load every calendar file once but as adding the same calendar
-     * file multiple times is not a usual use case we chose the simpler way of loading once per id.
+     * file multiple times is not a usual use case we choose the simpler way of loading once per id.
      */
     private final Map<Integer, LinCal> calendarsById = new HashMap<>();
     private final Map<Integer, LinCalConfig> configsById = new HashMap<>();
