@@ -20,8 +20,10 @@ package felixwiemuth.lincal.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -30,6 +32,7 @@ import felixwiemuth.lincal.Calendars;
 import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
+import felixwiemuth.lincal.util.ImplementationError;
 import felixwiemuth.lincal.util.Time;
 import felixwiemuth.lincal.util.Util;
 
@@ -57,15 +60,21 @@ public class AddCalendarActivity extends LinCalMenuAppCompatActivity {
         // Set file if activity was opened by file
         setFile(getIntent());
 
-        chooseFileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("*/*"); // required
-                startActivityForResult(intent, RESULT_CODE_SELECT_FILE);
-            }
-        });
+        // On API < 19 cannot use SAF, thus remove the file selection button
+        if (android.os.Build.VERSION.SDK_INT < 19) {
+            ViewGroup chooseFileButtonParent = (ViewGroup) chooseFileButton.getParent();
+            chooseFileButtonParent.removeView(chooseFileButton);
+        } else {
+            chooseFileButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("*/*"); // required
+                    startActivityForResult(intent, RESULT_CODE_SELECT_FILE);
+                }
+            });
+        }
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +101,7 @@ public class AddCalendarActivity extends LinCalMenuAppCompatActivity {
                     public void run() {
                         // Return to CalendarListActivity, notify about the added calendar to update UI
                         Intent resultData = new Intent();
-                        resultData.putExtra(CalendarListActivity.EXTRA_RESULT_CAL_ADDED, Calendars.getInstance(AddCalendarActivity.this).getCalendarCount()-1);
+                        resultData.putExtra(CalendarListActivity.EXTRA_RESULT_CAL_ADDED, Calendars.getInstance(AddCalendarActivity.this).getCalendarCount() - 1);
                         setResult(RESULT_OK, resultData);
                         AddCalendarActivity.this.finish();
                     }
@@ -121,8 +130,12 @@ public class AddCalendarActivity extends LinCalMenuAppCompatActivity {
                 // Persist permissions on the file (see https://developer.android.com/guide/topics/providers/document-provider.html#client)
                 int takeFlags = data.getFlags();
                 takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                           | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                if (Build.VERSION.SDK_INT < 19) {
+                    throw new ImplementationError("SAF may not be used with API < 19");
+                } else {
+                    getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+                }
                 fileEditText.setText(data.getDataString());
             }
         }
