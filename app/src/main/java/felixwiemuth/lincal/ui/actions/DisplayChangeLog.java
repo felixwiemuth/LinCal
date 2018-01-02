@@ -38,6 +38,6 @@ public class DisplayChangeLog implements HtmlDialogFragment.Action {
     @Override
     public void run(List<String> args, Context context) {
         ChangeLog cl = new ChangeLog(context);
-        cl.getLogDialog().show();
+        cl.getFullLogDialog().show();
     }
 }
