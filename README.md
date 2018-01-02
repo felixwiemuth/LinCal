@@ -108,7 +108,7 @@ In the future, you will be able to add media like photos to a calendar. For now 
 
 In general, before sending a calendar to someone, make sure that the dates are correct and the links work by loading it into LinCal (see "Adding a calendar").
 
-A calendar can be updated while in use (that is, the user simply replaces the calendar file on their device). However, at the time the new file is next loaded by the app (which usually is at the next due notification) no entries in the past must have been added or deleted. Thus, in general make sure that you only make changes to entries past the one the user will see next. For a better overview it is therefore advisable to specify entries in the order of occurrence, though this is not required.
+A calendar can be updated while in use (the user simply replaces the calendar file on their device). However, at the time the new file is next loaded by the app (which usually is at the next due notification) no entries in the past must have been added or deleted. Thus, in general make sure that you only make changes to entries past the one the user will see next. For a better overview it is therefore advisable to specify entries in the order of occurrence, though this is not required.
 
 An easy way to be able to update a calendar without the user having to manually replace it is to have it in cloud storage. The user either has to add the calendar by selecting it from cloud storage (only if it is listed when choosing a file with the app, that is, the cloud storage provider must support this, like Google Drive or Nextcloud) or by making sure the file on local storage is automatically synchronized with the cloud (see also "Adding a calendar").
 
