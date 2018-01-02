@@ -17,6 +17,12 @@
   -->
 
 <changelog>
+    <release version="1.3.1" versioncode="13" >
+        <change>Behoben: Bei schmalen Bildschirmen lief der Text für Kalendereinstellungen bei manchen Sprachen über den Bildschirm hinaus</change>
+        <change>Fehler in Android-Versionen vor KitKat behoben</change>
+        <change>„Show changes” in „Über” zeigt jetzt direkt alle Änderungen</change>
+        <change>Tippfehler korrigiert</change>
+    </release>
     <release version="1.3.0" versioncode="12" >
         <change>Neues Launcher-Icon</change>
         <change>Einstellungen-Ansicht hinzugefügt</change>
