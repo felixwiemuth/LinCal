@@ -104,7 +104,11 @@ public class HtmlDialogFragment extends DialogFragment {
                 Class<? extends Action> actionClass = (Class<? extends Action>) Class.forName(actionName);
                 Action action = actionClass.newInstance();
                 actions.put(action.getName(), action);
-            } catch (java.lang.InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+            } catch (java.lang.InstantiationException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         }
