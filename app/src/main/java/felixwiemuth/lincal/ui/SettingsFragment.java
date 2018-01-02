@@ -56,7 +56,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case KEY_PREF_LANGUAGE:
-                LocaleHelper.setLocale(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()).getString(key, ""));
+                LocaleHelper.setLocale(getActivity(), PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(key, ""));
                 getActivity().recreate(); // necessary here because this Activity is currently running and thus a recreate() in onResume() would be too late
                 break;
         }
