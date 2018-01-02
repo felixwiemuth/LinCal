@@ -76,7 +76,7 @@ The following commands are required. The information is displayed when a user vi
 - `@date`: Creation date of the calendar (must have the format `dd/mm/yyyy`)
 - `@version`: Can be used to distinguish different versions of a calendar
 
-The following commands are optional and concern the visibility of dates and descriptions of entries to the user (see [Using the app](#using-the-app)). Possible values for `<mode>` are `hideAll`, `hideFuture`, `hideAll`. The default is `set` and `hideFuture`. The `set` option only apply when the user initially adds the calendar, the `force` options can be changed when updating the calendar.
+The following commands are optional and concern the visibility of dates and descriptions of entries to the user (see [Using the app](#using-the-app)). Possible values for `<mode>` are `hideAll`, `hideFuture`, `hideAll`. The default is `set` and `hideFuture`. The `set` options only apply when the user initially adds the calendar, the `force` options can be changed when updating the calendar.
 
 - `@setDateDisplayMode <mode>`: Set an initial value for the *Show entry date* option 
 - `@forceDateDisplayMode <mode>`: Set a value for the *Show entry date* option such that the user cannot change it
@@ -95,6 +95,8 @@ An entry for the calendar is specified by first using some of the commands `@d` 
 
 Note that if no date is specified for an entry, the next calendar day after the date for the last entry is used.
 Thus, to add an entry for each day, except for the starting day no further dates have to be specified.
+To add two entries for the same day, `@d ...` has to be used to avoid the increment to the next day.
+It is possible to have multiple entries at the same day and time (they will be displayed in the order given).
 
 - `@t hh:mm`: Specify the time the notification for the next entry should be shown
 - `@st hh:mm`: Set the default notification time - works like `@t`, but is valid for all following entries where `@t` is not specified (before the first usage of `@st` the default notification time is 0:00)
