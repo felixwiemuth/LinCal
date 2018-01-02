@@ -49,6 +49,7 @@ import felixwiemuth.lincal.R;
 import felixwiemuth.lincal.data.CEntry;
 import felixwiemuth.lincal.data.LinCal;
 import felixwiemuth.lincal.data.LinCalConfig;
+import felixwiemuth.lincal.util.ImplementationError;
 import felixwiemuth.lincal.util.Time;
 
 /**
@@ -236,7 +237,7 @@ public class CalendarViewFragment extends Fragment {
                             hostActivity.setResult(Activity.RESULT_OK, resultData);
                             hostActivity.finish();
                         } else {
-                            throw new RuntimeException("CalendarViewFragment may only be contained in either CalendarListActivity or CalendarViewActivity.");
+                            throw new ImplementationError("CalendarViewFragment may only be contained in either CalendarListActivity or CalendarViewActivity.");
                         }
                     }
                 });

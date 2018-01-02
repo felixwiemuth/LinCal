@@ -20,6 +20,7 @@ package felixwiemuth.lincal.parser;
 import android.content.Context;
 
 import felixwiemuth.lincal.R;
+import felixwiemuth.lincal.util.ImplementationError;
 import felixwiemuth.linearfileparser.localization.ResourceProvider;
 
 /**
@@ -57,7 +58,7 @@ public class AndroidResourceProvider implements ResourceProvider {
             case MISSING_ARGUMENT:
                 return s(R.string.linearfileparser_missing_argument);
             default:
-                throw new RuntimeException("Implementation error: No resource provided for key " + key);
+                throw new ImplementationError("No resource provided for key " + key);
         }
     }
 
