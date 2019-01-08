@@ -16,6 +16,7 @@
 
 package felixwiemuth.lincal.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -195,8 +196,9 @@ public class HtmlDialogFragment extends DialogFragment {
     private WebView webView;
     private ProgressBar indeterminateProgress;
 
+    @SuppressLint("StaticFieldLeak")
     private void loadPage() {
-        // Load asynchronously in case of a very large file.
+        // Load asynchronously in case of a very large file. The (implicit) reference to the outer class (fragment) in AsyncTask is not a problem as the fragment should stay alive while loading.
         loader = new AsyncTask<Void, Void, String>() {
 
             @Override
