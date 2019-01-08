@@ -27,7 +27,7 @@ About
 
 Project status
 --------------
-The current version is 1.3.1 (2018-01-02) and is available on [F-Droid](https://f-droid.org/repository/browse/?fdid=felixwiemuth.lincal) (2018-02-16). Further development is planned but there won't happen much before February/March 2018. However, translations will be incorporated and other contributions are also possible (see [Contributing](#contributing)).
+The current version is 1.3.1 (2018-01-02) and is available on [F-Droid](https://f-droid.org/repository/browse/?fdid=felixwiemuth.lincal) (2018-02-16). Further development is intended but currently not planned. However, translations will be incorporated and other contributions are also possible (see [Contributing](#contributing)).
 
 Features
 --------
