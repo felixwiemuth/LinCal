@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2017 Felix Wiemuth
+  ~ Copyright (C) 2015 Felix Wiemuth
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -16,15 +15,123 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    tools:ignore="MissingTranslation">
+
+    <string name="implementation_error">(Implementation error: this should never be visible, please contact developer)</string>
+
+    <string name="app_name" translatable="false">LinCal</string>
+    <string name="title_activity_add_calendar">Добавить календарь</string>
+    <string name="title_activity_settings">Настройки</string>
+
+    <string name="menu_help">Помощь</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_about">О приложении</string>
+
+    <string name="preferences_category_general">Основные</string>
+    <string name="preferences_language">Язык</string>
+    <!-- NOTE: Order alphabetically after "Default". Has to be in sync with "locales" in locales.xml (the entries must correspond) -->
+    <string-array name="settings_language_values">
+        <item>Default (Системные настройки)</item>
+        <item>English</item>
+        <item>German</item>
+        <item>Japan</item>
+	<item>Russian</item>
+    </string-array>
+
+    <string name="dialog_welcome_title">Добро пожаловать</string>
+    <string name="welcome_message">Добро пожаловать в LinCal! Эта версия программы может содержать некоторые проблемы - см. «О программе» о том, как сообщить об проблемах. LinCal - это бесплатное программное обеспечение (лицензируется в соответствии с GNU General Public License) и поставляется без каких-либо гарантий.</string>
+
     <!-- TRANSLATION NOTE: The following keys are used by the library ckChangeLog and replace the
          default translations it provides. To translate them, first check whether the translations
          provided (see https://github.com/cketti/ckChangeLog/tree/master/ckChangeLog/src/main/res)
          are appropriate and if so copy them here.
       -->
-    <string name="changelog_full_title">Change Log</string> <!-- TRANSLATION NOTE: Only translate if appropriate -->
-    <string name="changelog_title">What\'s New</string>
+    <string name="changelog_full_title">История изменений</string> <!-- TRANSLATION NOTE: Only translate if appropriate -->
+    <string name="changelog_title">Что нового?</string>
     <string name="changelog_ok_button">OK</string>
-    <string name="changelog_show_full">More…</string>
+    <string name="changelog_show_full">Подробнее…</string>
     <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
+
+    <!-- The following keys are used by the library LinearFileParser and replace the default
+         translations it provides, to better match the application context.
+      -->
+    <string name="linearfileparser_error_at_line">Error at line\u0020</string>
+    <string name="linearfileparser_illegal_line">@string/implementation_error</string>
+    <string name="linearfileparser_unknown_section">@string/implementation_error</string>
+    <string name="linearfileparser_unknown_key">\"%2$s\" недействительная команда.</string>
+    <string name="linearfileparser_repeated_key">Эта команда \"%s\" может использоваться только один раз в секции заголовка.</string>
+    <string name="linearfileparser_missing_argument">Эта команда \"%s\" требует аргумента.</string>
+
+    <string name="crash_toast_text">Произошла непредвиденная ошибка, вынудившая приложение остановиться. Отправьте email разработчику, содержащее информацию об ошибке. Вы можете добавить свои комментарии о проблеме (желательно на английском или немецком языке).</string>
+
+    <string name="parseException_missing_field">Отсутствует поле в заголовке: %s.</string>
+    <string name="invalidDisplayModeSpecificationException">Недопустимый спецификатор для режима отображения (допустимые значения: %s).</string>
+    <string name="invalidDateSpecificationException_base">Недействительная спецификация даты:</string>
+    <string name="invalidDateSpecificationException_expected_full">ожидается полная спецификация даты (д/м/г)</string>
+    <string name="invalidDateSpecificationException_in_header">для даты календаря</string>
+    <string name="invalidDateSpecificationException_first">как первая дата</string>
+    <string name="invalidDateSpecificationException_format">ошибка формата (используйте д/м/г)</string>
+    <string name="dateSpecificationRequiredException">Первая дата должна быть указана с "@d д/м/г" перед добавлением первой записи.</string>
+    <string name="invalidTimeSpecificationException_base">Недействительная спецификация времени:</string>
+    <string name="invalidTimeSpecificationException_format">(используйте чч:мм)</string>
+
+    <string name="cal_title">Название:</string>
+    <string name="cal_title_error_loading">(Не удалось загрузить календарь из-за ошибки)</string>
+    <string name="cal_author">Автор:</string>
+    <string name="cal_description">Описание:</string>
+    <string name="cal_version">Версия:</string>
+    <string name="cal_date">Дата:</string>
+    <string name="setting_notifications_enabled">Включить уведомления</string>
+    <string name="setting_show_notifications_earliest">Показывать уведомления раньше:</string>
+    <string name="setting_show_notifications_on_screen_on">Показывать уведомления только после включения экрана</string>
+    <string name="setting_entry_display_mode_date">Показать дату записи:</string>
+    <string name="setting_entry_display_mode_description">Показать описание записи:</string>
+    <string-array name="setting_entry_display_mode_options">
+        <item>Скрыть все</item>
+        <item>Скрыть будущие</item>
+        <item>Показать все</item>
+    </string-array>
+    <string name="action_remove_cal">Удалить календарь</string>
+    <string name="entry_hide_date_text" translatable="false">***</string>
+    <string name="entry_hide_description_text" translatable="false">***</string>
+
+    <string name="dialog_warning_add_cal_title">Предупреждение</string>
+    <string name="dialog_warning_add_cal_msg">Используйте календари только от людей, которым вы доверяете - открытие ссылок на вредоносные сайты является риском для безопасности!</string>
+    <string name="add_cal_title">Пользовательское название (оставить пустым для использования заголовка календаря):</string>
+    <string name="add_cal_file">Файл календаря (полный путь):</string>
+    <string name="add_cal_notifications">Включить уведомления</string>
+    <string name="add_cal_hideall">Не показывать записи сейчас</string>
+    <string name="add_cal_file_button">Выберите…</string>
+    <string name="add_cal_button">Добавить</string>
+    <string name="add_cal_info">Важно: Не перемещайте файл календаря после его добавления.</string>
+    <string name="dialog_unsupported_URI_title">Неподдерживаемый URI</string>
+    <string name="dialog_unsupported_URI_msg">Эта схема URI \"%s\" не поддерживается.</string>
+    <string name="dialog_file_not_found_title">Файл не найден</string>
+    <string name="dialog_file_not_found_msg">Этот файл \"%s\" не существует.</string>
+    <string name="dialog_parsing_error_title">Ошибка анализа</string>
+    <string name="dialog_error_title">Ошибка</string>
+    <string name="dialog_error_dismiss">Закрыть</string>
+    <string name="dialog_symbol_not_allowed_message">"Этот символ \"%s\" не разрешен в заголовке."</string>
+    <string name="dialog_cal_already_added_title">Календарь уже добавлен</string>
+    <string name="dialog_cal_already_added_msg">TКалендарь уже добавлен. Вы хотите добавить другую независимую копию?</string>
+    <string name="dialog_show_link">Показать ссылку</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="dialog_open_link">Открыть ссылку</string>
+    <string name="dialog_dismiss">Закрыть</string>
+    <string name="dialog_yes">Да</string>
+    <string name="dialog_no">Нет</string>
+    <string name="dialog_remove_cal_title">Удалить календарь</string>
+    <string name="dialog_remove_cal_msg">Удалить календарь с настройками и текущим прогрессом? Сам файл календаря не будет удален.</string>
+    <string name="dialog_downgrade_title">Старая версия приложения</string>
+    <string name="dialog_downgrade_msg">Кажется, ранее вы использовали новую версию LinCal. Новый формат сохранения статуса и конфигурации календарей больше не совместим с этой версией. Чтобы использовать его в любом случае, необходимо сбросить статус и конфигурацию календарей, т.е. вы должны переочитать все календари.</string>
+    <string name="dialog_downgrade_yes">Сбросить конфигурацию</string>
+    <string name="dialog_downgrade_no">Закрыть приложение</string>
+
+    <!-- NOTE: the following strings are not used so far -->
+    <string name="notification_lincal_error_title">Ошибка LinCal</string>
+    <string name="notification_lincal_error_description">Произошла следующая ошибка, пока LinCal обрабатывал добавленные календари для планирования уведомлений:</string>
+    <string name="notification_lincal_error_file_not_found">Обратите внимание, что файлы календарей не могут быть перемещены после добавления (см. помощь).</string>
 </resources>
